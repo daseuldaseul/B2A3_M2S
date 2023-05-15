@@ -44,9 +44,9 @@ public class ObtainOrder extends BaseTimeEntity{
     private Item item;    //품목 코드
 
     //공통 코드
-    private String state;   //수주 상태
+    private String orderState;   //수주 상태
 
-    private String unit;    //단위
+    private String orderUnit;    //단위
     //공통 코드
 
 

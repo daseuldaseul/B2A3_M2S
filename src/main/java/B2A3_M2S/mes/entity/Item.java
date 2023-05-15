@@ -36,7 +36,7 @@ public class Item extends BaseTimeEntity{
 
     private String itemType;    //품목 타입
 
-    private String unit;       //재고 단위
+    private String itemUnit;       //재고 단위
 
     private String sUnit;   //규격 단위
     //공통코드

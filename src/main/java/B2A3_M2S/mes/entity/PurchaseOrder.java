@@ -36,6 +36,6 @@ public class PurchaseOrder {
     private Item item;    //자재 기본키
 
     //공통코드
-    private String state;   //발주 상태
+    private String pState;   //발주 상태
 
 }

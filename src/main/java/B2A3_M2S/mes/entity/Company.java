@@ -22,9 +22,7 @@ public class Company extends BaseTimeEntity{
 
     private String companyNm;   //업체 이름
 
-
-
-    private String number;      //연락처
+    private String phoneNumber;      //연락처
 
     private String address;     //주소
 

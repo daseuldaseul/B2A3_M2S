@@ -16,13 +16,13 @@ import javax.persistence.Table;
 public class CommonCode extends BaseTimeEntity{
 
     @Id
-    private String code;    //코드
+    private String cd;    //코드
 
     private String codeGroup;   //코드 그룹
 
     private String displayValue;    //코드명
 
-    private Long sort;   //정렬 순서
+    private Long codeSort;   //정렬 순서
 
     private Character useYn;    // 사용유무
 

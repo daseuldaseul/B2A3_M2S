@@ -23,15 +23,15 @@ public class WarehouseLog extends BaseTimeEntity{
 
     private Long qty;   //수량
 
-    private LocalDateTime date;     //입출고 일시
+    private LocalDateTime logDate;     //입출고 일시
 
     private String remark;  //비고
 
 
 
     //외래키
-//
-//    @ManyToOne
-//    @JoinColumn(name = "item_cd")
-//    private Item item;    //품목 코드
+
+    @ManyToOne
+    @JoinColumn(name = "item_cd")
+    private Item item;    //품목 코드
 }

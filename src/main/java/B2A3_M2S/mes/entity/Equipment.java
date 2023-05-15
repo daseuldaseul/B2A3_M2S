@@ -30,9 +30,9 @@ public class Equipment extends BaseTimeEntity{
 
     //외래키
 
-//    @ManyToOne
-//    @JoinColumn(name = "proc_cd")
-//    private Processes processes;      //공정 코드
+    @ManyToOne
+    @JoinColumn(name = "proc_cd")
+    private Processes processes;      //공정 코드
 
     //공통코드
     private String readyUnit;   //준비시간 단위

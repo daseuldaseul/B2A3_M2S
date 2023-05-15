@@ -16,8 +16,7 @@ public class Item extends BaseTimeEntity{
 
     @Id
     @Column(name="item_cd")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long itemCd;        //품목 코드
+    private String itemCd;        //품목 코드
 
     private String itemNm;      //품목명
 
@@ -42,8 +41,8 @@ public class Item extends BaseTimeEntity{
     private String sUnit;   //규격 단위
     //공통코드
 
-//    @ManyToOne
-//    @JoinColumn(name = "company_cd")
-//    private Company company;   // 업체코드
+    @ManyToOne
+    @JoinColumn(name = "company_cd")
+    private Company company;   // 업체코드
 
 }

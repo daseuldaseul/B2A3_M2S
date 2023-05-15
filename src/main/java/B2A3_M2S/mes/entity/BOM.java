@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "bom")
 @Table(name = "bom")
 public class BOM extends BaseTimeEntity{
 
@@ -26,13 +26,13 @@ public class BOM extends BaseTimeEntity{
 
 
     /**외래키 설정**/
+//
+//    @ManyToOne
+//    @JoinColumn(name = "product_cd", referencedColumnName = "item_cd")
+//    private Item productCd;     //제품 코드
 
-    @ManyToOne
-    @JoinColumn(name = "product_cd", referencedColumnName = "item_cd")
-    private Item productCd;     //제품 코드
-
-    @ManyToOne
-    @JoinColumn(name = "material_cd", referencedColumnName = "item_cd")
-    private Item materialCd;    //자재 코드
+//    @ManyToOne
+//    @JoinColumn(name = "material_cd", referencedColumnName = "item_cd")
+//    private Item materialCd;    //자재 코드
 
 }

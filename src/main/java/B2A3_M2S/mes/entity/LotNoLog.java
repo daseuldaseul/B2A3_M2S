@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "lot_no_log")
 @Table(name = "lot_no_log")
 public class LotNoLog extends BaseTimeEntity{
 
@@ -26,15 +26,15 @@ public class LotNoLog extends BaseTimeEntity{
 
     private Long fStockNo;  //최종 재고 번호
 
-    @ManyToOne
-    @JoinColumn(name = "item_cd")
-    private Item item;    //품목 코드
-
-    private String lotNo;   //
-
-    @ManyToOne
-    @JoinColumn(name = "proc_cd")
-    private Processes processes; //공정 코드
+//    @ManyToOne
+//    @JoinColumn(name = "item_cd")
+//    private Item item;    //품목 코드
+//
+//    private String lotNo;   //
+//
+//    @ManyToOne
+//    @JoinColumn(name = "proc_cd")
+//    private Processes processes; //공정 코드
 
     //외래키설정
 

@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "stock")
 @Table(name = "stock")
 public class Stock extends BaseTimeEntity{
 

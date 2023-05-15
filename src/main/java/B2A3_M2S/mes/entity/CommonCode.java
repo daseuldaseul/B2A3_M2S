@@ -11,18 +11,18 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "common_code")
 @Table(name = "common_code")
 public class CommonCode extends BaseTimeEntity{
 
     @Id
     private String code;    //코드
 
-    private String group;   //코드 그룹
+    private String codeGroup;   //코드 그룹
 
     private String displayValue;    //코드명
 
-    private Integer sort;   //정렬 순서
+    private Long sort;   //정렬 순서
 
     private Character useYn;    // 사용유무
 

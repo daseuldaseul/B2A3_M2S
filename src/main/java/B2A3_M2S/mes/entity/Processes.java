@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "processes")
 @Table(name = "processes")
 public class Processes extends BaseTimeEntity {
 
@@ -23,7 +23,7 @@ public class Processes extends BaseTimeEntity {
 
     private String workTime;    //작업 시간
 
-    private Integer capacity;   //생산 능력
+    private Long capacity;   //생산 능력
 
     private String remark;      //비고
 

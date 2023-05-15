@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "obtain_order")
 @Table(name = "obtain_order")
 public class ObtainOrder extends BaseTimeEntity{
 
@@ -35,13 +35,13 @@ public class ObtainOrder extends BaseTimeEntity{
 
     /**외래키**/
 
-    @ManyToOne
-    @JoinColumn(name = "company_cd")
-    private Company company; //업체 코드
-
-    @ManyToOne
-    @JoinColumn(name = "item_cd")
-    private Item item;    //품목 코드
+//    @ManyToOne
+//    @JoinColumn(name = "company_cd")
+//    private Company company; //업체 코드
+//
+//    @ManyToOne
+//    @JoinColumn(name = "item_cd")
+//    private Item item;    //품목 코드
 
     //공통 코드
     private String state;   //수주 상태

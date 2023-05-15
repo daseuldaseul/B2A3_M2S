@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "purchase_order")
 @Table(name = "purchase_order")
 public class PurchaseOrder {
 
@@ -27,13 +27,13 @@ public class PurchaseOrder {
 
     //외래키
 
-    @ManyToOne
-    @JoinColumn(name = "company_cd")
-    private Company companyCd;  //업체 코드
-
-    @ManyToOne
-    @JoinColumn(name = "item_cd")
-    private Item materialCd;    //자재 기본키
+//    @ManyToOne
+//    @JoinColumn(name = "company_cd")
+//    private Company companyCd;  //업체 코드
+//
+//    @ManyToOne
+//    @JoinColumn(name = "material_cd", referencedColumnName = "item_id")
+//    private Item materialCd;    //자재 기본키
 
     //공통코드
     private String state;   //발주 상태

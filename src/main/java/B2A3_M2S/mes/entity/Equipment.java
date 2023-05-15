@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "equipment")
 @Table(name = "equipment")
 public class Equipment extends BaseTimeEntity{
 
@@ -18,9 +18,9 @@ public class Equipment extends BaseTimeEntity{
 
     private String equipNm;     //설비명
 
-    private Integer readyTime;  //준비 시간
+    private Long readyTime;  //준비 시간
 
-    private Integer capacity;   //생산 능력
+    private Long capacity;   //생산 능력
 
     private String workTime;    //생산 소요시간
 
@@ -30,9 +30,9 @@ public class Equipment extends BaseTimeEntity{
 
     //외래키
 
-    @ManyToOne
-    @JoinColumn(name = "proc_cd")
-    private Processes processes;      //공정 코드
+//    @ManyToOne
+//    @JoinColumn(name = "proc_cd")
+//    private Processes processes;      //공정 코드
 
     //공통코드
     private String readyUnit;   //준비시간 단위

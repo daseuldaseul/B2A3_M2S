@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity
+@Entity(name = "warehouse_log")
 @Table(name = "warehouse_log")
 public class WarehouseLog extends BaseTimeEntity{
 
@@ -30,8 +30,8 @@ public class WarehouseLog extends BaseTimeEntity{
 
 
     //외래키
-
-    @ManyToOne
-    @JoinColumn(name = "item_cd")
-    private Item item;    //품목 코드
+//
+//    @ManyToOne
+//    @JoinColumn(name = "item_cd")
+//    private Item item;    //품목 코드
 }

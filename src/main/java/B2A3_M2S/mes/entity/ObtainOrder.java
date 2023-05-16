@@ -1,9 +1,7 @@
 package B2A3_M2S.mes.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +12,8 @@ import java.time.LocalDateTime;
 @ToString
 @Entity(name = "obtain_order")
 @Table(name = "obtain_order")
+@AllArgsConstructor
+@NoArgsConstructor
 public class ObtainOrder extends BaseTimeEntity{
 
     @Id

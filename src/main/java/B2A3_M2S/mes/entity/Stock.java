@@ -1,8 +1,6 @@
 package B2A3_M2S.mes.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +9,8 @@ import javax.persistence.*;
 @ToString
 @Entity(name = "stock")
 @Table(name = "stock")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Stock extends BaseTimeEntity{
 
     @Id

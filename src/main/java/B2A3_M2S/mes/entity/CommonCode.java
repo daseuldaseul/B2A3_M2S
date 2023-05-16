@@ -1,8 +1,6 @@
 package B2A3_M2S.mes.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +11,8 @@ import javax.persistence.Table;
 @ToString
 @Entity(name = "common_code")
 @Table(name = "common_code")
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommonCode extends BaseTimeEntity{
 
     @Id

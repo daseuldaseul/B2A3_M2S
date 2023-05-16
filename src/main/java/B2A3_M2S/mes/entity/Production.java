@@ -1,8 +1,6 @@
 package B2A3_M2S.mes.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +10,8 @@ import java.time.LocalDateTime;
 @ToString
 @Entity(name = "production")
 @Table(name = "production")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Production extends BaseTimeEntity{
 
     @Id

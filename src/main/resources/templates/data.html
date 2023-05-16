@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,8 +20,8 @@
 <div class="wrapper">
   <!-- Navbar -->
   <!-- /.navbar -->
-
   <!-- Main Sidebar Container -->
+  <th:block th:include="sidebar.html"></th:block>
   <!-- /Main Sidebar Container -->
 
   <!-- Content Wrapper. Contains page content -->
@@ -59,8 +59,13 @@
                       
                     </div>
                     <div class="col-auto">
-                      <button type="button" class="btn btn-block btn-info ">등록</button>
+                      <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-xl">
+                        등록
+                      </button>
+
                     </div>
+
+
 
                     <div class="col-auto">
                       <button type="button" class="btn btn-block btn-warning">수정</button>
@@ -271,6 +276,127 @@
           </div>
           <!-- /.col -->
         </div>
+
+        <div class="modal fade" id="modal-xl">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">품목등록</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                      <button type="button" class="btn btn-default">품목명</button>
+                    </div>
+
+                    <input type="text" class="form-control">
+
+                  </div>
+
+                  <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                      <button type="button" class="btn btn-default">공정명</button>
+                    </div>
+
+                    <input type="text" class="form-control">
+
+                  </div>
+
+                  <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                      <button type="button" class="btn btn-default">설비명</button>
+                    </div>
+
+                    <input type="text" class="form-control">
+
+
+
+                  </div>
+
+                  <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                      <button type="text" class="btn btn-default">기타</button>
+                    </div>
+
+                    <input type="text" class="form-control">
+
+                  </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                      <button type="button" class="btn btn-default">품목명</button>
+                    </div>
+
+                    <input type="text" class="form-control">
+
+                  </div>
+
+                  <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                      <button type="button" class="btn btn-default">공정명</button>
+                    </div>
+
+                    <input type="text" class="form-control">
+
+                  </div>
+
+                  <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                      <button type="button" class="btn btn-default">설비명</button>
+                    </div>
+
+                    <input type="text" class="form-control">
+
+
+
+                  </div>
+
+                  <div class="input-group col-3">
+                    <div class="input-group-prepend">
+                      <button type="text" class="btn btn-default">기타</button>
+                    </div>
+
+                    <input type="text" class="form-control">
+
+                  </div>
+
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="input-group col-12">
+                    <div class="input-group-prepend">
+                      <button type="button" class="btn btn-default">비고</button>
+                    </div>
+
+                    <textarea name="" id="" cols="135" rows="3"></textarea>
+
+
+                  </div>
+
+
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                <div class="">
+                <button type="button" class="btn btn-danger">삭제</button>
+                <button type="button" class="btn btn-primary">저장</button>
+                </div>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
         <!-- /.row -->
       </div>
       <!-- /.container-fluid -->
@@ -311,16 +437,27 @@
 <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<<<<<<< HEAD
 <!-- AdminLTE App -->
 <script src="/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/js/demo.js"></script>
+=======
+<script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="/plugins/toastr/toastr.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/dist/js/demo.js"></script>
+>>>>>>> main
 <!-- Page specific script -->
 <script>
   $(function () {
     $("#example1").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["excel"],
+      "info": false,
       "searching": false  
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
@@ -334,5 +471,6 @@
     });
   });
 </script>
+
 </body>
 </html>

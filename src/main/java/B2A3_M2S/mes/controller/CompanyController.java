@@ -1,6 +1,9 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.CompanyFormDto;
+import B2A3_M2S.mes.dto.ProcessesFormDto;
 import B2A3_M2S.mes.entity.Company;
+import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.repository.CompanyRepository;
 import B2A3_M2S.mes.service.CompanyService;
 import com.google.gson.Gson;
@@ -9,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -81,4 +85,17 @@ public class CompanyController {
         return json;
 
     }
+
+    @PostMapping("/company")
+    public String companyWrite(CompanyFormDto companyFormDto, Model model){
+        Company company = new Company();
+        company = companyFormDto.createCompany();
+        System.out.println(company.toString());
+        companyRepository.save(company);
+        List<Company> companyList =  companyRepository.findAll();
+        model.addAttribute("companyList", companyList);
+        return "companyPage";
+
+    }
+
 }

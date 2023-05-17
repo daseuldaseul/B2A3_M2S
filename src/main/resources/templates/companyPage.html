@@ -223,12 +223,12 @@
 
           <!-- modal -->
 
-          <form method="post" action="/process" th:object="${processesFormDto}">
+          <form method="post" action="/company" th:object="${companyFormDto}">
           <div class="modal fade" id="modal-xl">
             <div class="modal-dialog modal-xl">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h4 class="modal-title">공정 등록</h4>
+                  <h4 class="modal-title">업체 등록</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -237,37 +237,37 @@
                   <div class="row">
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">공정</button>
+                        <button type="button" class="btn btn-default">업체</button>
                       </div>
 
-                      <input type="text" class="form-control" name="procCd" placeholder="공정코드">
+                      <input type="text" class="form-control" name="companyCd" placeholder="업체코드">
                       &nbsp;&nbsp;&nbsp;
-                      <input type="text" class="form-control" name="procNm" placeholder="공정명">
+                      <input type="text" class="form-control" name="companyNm" placeholder="업체명">
                     </div>
 
 
 
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">생산능력</button>
+                        <button type="button" class="btn btn-default">업체 구분</button>
                       </div>
-
-                      <input type="text" class="form-control" name="capacity" placeholder="생산능력">
-
-
-
-                    </div>
-
-                    <div class="input-group col-3">
-                      <div class="input-group-prepend">
-                        <button type="text" class="btn btn-default">공정상태</button>
-                      </div>
-                      <select class="form-control" name="procState">
-                        <option selected value="work">작업진행</option>
-                        <option value="hold">작업대기</option>
-                        <option value="finish">작업완료</option>
+                      <select class="form-control" name="companyGb">
+                        <!-- 공통코드로 바꿔야함 -->
+                        <option selected value="발주처">발주처</option>
+                        <option value="수주처">수주처</option>
                       </select>
 
+
+
+
+
+                    </div>
+
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="text" class="btn btn-default">업체 주소</button>
+                      </div>
+                      <input type="text" class="form-control" name="address" placeholder="주소">
                     </div>
 
 
@@ -275,10 +275,10 @@
 
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">공정시간</button>
+                        <button type="button" class="btn btn-default">연락처</button>
                       </div>
 
-                      <input type="text" class="form-control" placeholder="공정시간">
+                      <input type="text" class="form-control" name="phoneNumber" placeholder="연락처">
 
                     </div>
                   </div>
@@ -322,7 +322,7 @@
                         <button type="button" class="btn btn-default">비고</button>
                       </div>
 
-                      <textarea name="" id="" cols="135" rows="3"></textarea>
+                      <textarea id="" cols="135" rows="3" name="remark"></textarea>
 
 
                     </div>
@@ -418,7 +418,6 @@
 var company = $(element); // 선택한 요소의 값을 가져옵니다.
 $('tr').css('background-color', '');
 <!--element.parentNode.style.backgroundColor = 'white';-->
-console.log(element.parentNode);
 element.style.backgroundColor = '#80808061';
 var companyCd = company.find('td:first').text();
 

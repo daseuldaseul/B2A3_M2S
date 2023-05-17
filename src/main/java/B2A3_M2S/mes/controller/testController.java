@@ -27,8 +27,7 @@ public class testController {
     }
 
     @GetMapping("/test")
-    public String test(Model model, @RequestParam("product") String product
-                                    , @RequestParam("item") String item){
+    public String test(Model model){
         List<BOMDTO> BOM = service.selectAllBOM();
         model.addAttribute( "BOM" ,  BOM) ;
 

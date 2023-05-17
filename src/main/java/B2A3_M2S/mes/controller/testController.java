@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/bom")
 public class testController {
 
     @Autowired
@@ -24,7 +27,8 @@ public class testController {
     }
 
     @GetMapping("/test")
-    public String test(Model model){
+    public String test(Model model, @RequestParam("product") String product
+                                    , @RequestParam("item") String item){
         List<BOMDTO> BOM = service.selectAllBOM();
         model.addAttribute( "BOM" ,  BOM) ;
 

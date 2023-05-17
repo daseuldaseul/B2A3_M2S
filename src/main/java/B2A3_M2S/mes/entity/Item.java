@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

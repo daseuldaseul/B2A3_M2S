@@ -1,15 +1,15 @@
 package B2A3_M2S.mes.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "bom")
 @Table(name = "bom")
 public class BOM extends BaseTimeEntity{

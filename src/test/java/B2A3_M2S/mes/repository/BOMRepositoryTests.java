@@ -34,63 +34,56 @@ public class BOMRepositoryTests {
 
     @Test
     public void testInsertDummies(){
-//
-//        Item material = new Item();
-//        material.setItemCd("양배추");
-//
-//        Item item = new Item();
-//        item.setItemCd("양배추 추출액");
-//
-//        BOM bom = BOM.builder()
-//
-//                .consumption(625L)
-//                .materialCd(material)
-//                .productCd(item)
-//                    .build();
-//
-//        itemRepository.save(material);
-//        itemRepository.save(item);
-//        bomRepository.save(bom);
-//
-//
-//        List<BOMDTO> allBOMs  = service.selectAllBOM();
-//
-////        for (BOMDTO bom : allBOMs) {
-////            System.out.println("BOM ID: " + bom.getBomNo());
-////            System.out.println("Consumption: " + bom.getConsumption());
-////            System.out.println("Material: " + bom.getMaterialCd());
-////            System.out.println("Product: " + bom.getProductCd());
-////            System.out.println("-------------------------");
-////        }
-//
-//    }
-//
-//    @Test
-//    public void testInsertDummies1(){
-//
-//        QBOM qbom = QBOM.bOM;
-//
-//        double cus = 60;
-//
-//        BooleanBuilder builder = new BooleanBuilder();
-//
-//
-//        /*if(null != cus){
-//            builder.and(qbom.consumption.eq(cus));
-//        }*/
-//
-//        Iterable<BOM> allBOMs = bomRepository.findAll(builder);
-//
-//
-//
-//        for (BOM bom : allBOMs) {
-//            System.out.println("BOM ID: " + bom.getBomNo());
-//            System.out.println("Consumption: " + bom.getConsumption());
-//            System.out.println("Material: " + bom.getMaterialCd());
-//            System.out.println("Product: " + bom.getProductCd());
-//            System.out.println("-------------------------");
-//        }
-//
+
+        Item material = new Item();
+        material.setItemCd("양배추");
+
+        Item item = new Item();
+        item.setItemCd("양배추 추출액");
+
+        BOM bom = BOM.builder()
+
+                .consumption(625L)
+                .mItem(material)
+                .pItem(item)
+                    .build();
+
+        itemRepository.save(material);
+        itemRepository.save(item);
+        bomRepository.save(bom);
+
+
+        List<BOMDTO> allBOMs  = service.selectAllBOM();
+
+
+    }
+
+    @Test
+    public void testInsertDummies1(){
+
+        QBOM qbom = QBOM.bOM;
+
+        double cus = 60;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+
+        /*if(null != cus){
+            builder.and(qbom.consumption.eq(cus));
+        }*/
+
+        Iterable<BOM> allBOMs = bomRepository.findAll(builder);
+
+
+
+        for (BOM bom : allBOMs) {
+            System.out.println("BOM ID: " + bom.getBomNo());
+            System.out.println("Consumption: " + bom.getConsumption());
+            System.out.println("Material: " + bom.getMItem().getItemCd());
+            System.out.println("Product: " + bom.getPItem().getItemCd());
+            System.out.println("-------------------------");
+        }
+
     }
 }
 

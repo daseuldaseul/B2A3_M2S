@@ -126,7 +126,7 @@
                     <th></th>
 
                     <th colspan="2">제품</th>
-                    <th colspan="2">자재</th>
+                    <th colspan="3">자재</th>
                     <th colspan="3"></th>
 
                   </tr>
@@ -136,6 +136,7 @@
                     <th>제품명</th>
                     <th>자재코드</th>
                     <th>자재명</th>
+                    <th>소요량</th>
                     <th>등록일</th>
                     <th>수정일</th>
                     <th>비고</th>
@@ -145,13 +146,20 @@
                   <tbody>
                   <tr th:each="BOM : ${BOM}">
                     <td th:text="${BOM.bomNo}"></td>
+                    <td th:text="${BOM.productCd}"></td>
+                    <td th:text="${BOM.productCd}"></td>
+
+                    <td th:text="${BOM.materialCd}"></td>
+                    <td th:text="${BOM.materialCd}"></td>
+
                     <td th:text="${BOM.consumption}"></td>
+
+
+
                     <td th:text="${BOM.remark}"></td>
                     <td th:text="${BOM.useYn}"></td>
-                    <td th:text="${BOM.productCd}"></td>
-                    <td th:text="${BOM.materialCd}"></td>
-                    <td th:text="${BOM.materialCd}"></td>
-                    <td th:text="${BOM.materialCd}"></td>
+
+
                   </tr>
                   </tbody>
                 </table>

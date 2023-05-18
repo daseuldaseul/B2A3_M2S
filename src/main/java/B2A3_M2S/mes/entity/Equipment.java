@@ -39,5 +39,5 @@ public class Equipment extends BaseTimeEntity{
 
     private String capaUnit;    //생산 단위
 
-    private String state;       //설비 상태
+    private String equipState;       //설비 상태
 }

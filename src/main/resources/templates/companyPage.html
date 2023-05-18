@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/css/adminlte.min.css">
+  <link rel="stylesheet" href="/css/reset.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -90,12 +91,16 @@
                       <div class="input-group-prepend">
                         <button type="button" class="btn btn-default">업체구분</button>
                       </div>
-                      <select class="form-control" name="companyGb">
-                        <option selected value="">미선택</option>
-                        <option value="발주처">발주처</option>
-                        <option value="수주처">수주처</option>
-                      </select>
+<!--                      <select class="form-control" name="companyGb">-->
+<!--                        <option selected value="">미선택</option>-->
+<!--                        <option value="발주처">발주처</option>-->
+<!--                        <option value="수주처">수주처</option>-->
+<!--                      </select>-->
 
+                      <select class="form-control" name="companyGb" >
+                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+
+                      </select>
                     </div>
 
 
@@ -127,23 +132,21 @@
                 <table id="example1" class="table table-bordered table-hover">
                   <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
                   <tr>
-                    <th>번호</th>
+                    <th>업체 코드</th>
                     <th>업체 그룹</th>
                     <th>업체명</th>
                     <th>연락처</th>
                     <th>등록일자</th>
-                    <th>비고</th>
 
                   </tr>
                   </thead>
                   <tbody>
                   <tr th:each="companyList, status : ${companyList}" onclick="getCompanyValue(this)">
                     <td th:text="${companyList.companyCd}"></td>
-                    <td th:text="${companyList.companyGb}"></td>
+                    <td th:text="${companyList.companyGbNm}"></td>
                     <td th:text="${companyList.companyNm}"></td>
                     <td th:text="${companyList.phoneNumber}"></td>
                     <td th:text="${companyList.regdate}"></td>
-                    <td th:text="${companyList.remark}"></td>
                   </tr>
 
                   </tbody>
@@ -170,10 +173,11 @@
                 <table class="table table-bordered table-hover">
                   <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
                   <tr>
-                    <th>번호</th>
                     <th>업체 코드</th>
-                    <th>업체명</th>
-                    <th>업체 주소</th>
+                    <th>업체 이름</th>
+                    <th>주소</th>
+                    <th>연락처</th>
+                    <th>비고</th>
 
                   </tr>
                   </thead>
@@ -183,6 +187,7 @@
                       <td id="companyNm"></td>
                       <td id="companyAddress"></td>
                       <td id="companyNumber"></td>
+                      <td id="companyRemark"></td>
                     </tr>
 
                   </tbody>
@@ -254,7 +259,7 @@
                       <select class="form-control" name="companyGb" >
                         <!-- 공통코드로 바꿔야함 -->
 <!--                        <option th:each="${codeList}"></option>-->
-                        <option th:each="codeList : ${codeList}" th:value="${codeList}" th:text="${codeList.displayValue}"></option>
+                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
 <!--                        <option selected value="발주처">발주처</option>-->
 <!--                        <option value="수주처">수주처</option>-->
                       </select>
@@ -350,7 +355,6 @@
           </form>
         </div>
         <!-- /.row -->
-      </div>
       <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
@@ -434,6 +438,7 @@ document.getElementById('companyCd').innerText = parsedResponse.companyCd;
 document.getElementById('companyNm').innerText = parsedResponse.companyNm;
 document.getElementById('companyAddress').innerText = parsedResponse.address;
 document.getElementById('companyNumber').innerText = parsedResponse.phoneNumber;
+document.getElementById('companyRemark').innerText = parsedResponse.remark;
 
 
 },

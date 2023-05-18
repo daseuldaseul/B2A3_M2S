@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.ProcessesDto;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.entity.QProcesses;
 import B2A3_M2S.mes.repository.ProcessesRepository;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProcessesService {
@@ -37,5 +39,7 @@ public class ProcessesService {
         }
         return (List<Processes>) processesRepository.findAll(builder);
     }
+
+
 
 }

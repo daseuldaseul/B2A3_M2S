@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="/css/reset.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/css/adminlte.min.css">
 </head>
@@ -113,11 +114,9 @@
                         <button type="button" class="btn btn-default">공정 상태</button>
                       </div>
 
-                      <select class="form-control" name="procState">
-                        <option selected value="">미선택</option>
-                        <option value="hold">작업대기</option>
-                        <option value="work">작업진행</option>
-                        <option value="finish">작업완료</option>
+                      <select class="form-control" name="procState" >
+                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+
                       </select>
 
                     </div>
@@ -160,7 +159,7 @@
                     <td th:text="${processList.capacity}"></td>
                     <td th:text="${processList.regdate}"></td>
                     <td th:text="${processList.remark}"></td>
-                    <td th:text="${processList.procState}"></td>
+                    <td th:text="${processList.procStateNm}"></td>
 
                   </tr>
 
@@ -228,10 +227,9 @@
                       <div class="input-group-prepend">
                         <button type="text" class="btn btn-default">공정상태</button>
                       </div>
-                      <select class="form-control" name="procState">
-                        <option selected value="work">작업진행</option>
-                        <option value="hold">작업대기</option>
-                        <option value="finish">작업완료</option>
+                      <select class="form-control" name="procState" >
+                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+
                       </select>
 
                     </div>

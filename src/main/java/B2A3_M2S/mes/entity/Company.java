@@ -1,8 +1,10 @@
 package B2A3_M2S.mes.entity;
 
+import B2A3_M2S.mes.dto.CompanyDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,9 @@ import javax.persistence.Table;
 @Entity(name = "company")
 @Table(name = "company")
 public class Company extends BaseTimeEntity{
+
+
+    public static ModelMapper modelMapper;
 
     @Id
     @Column(name = "company_cd")
@@ -30,6 +35,10 @@ public class Company extends BaseTimeEntity{
 
     //공통코드
     private String companyGb;   //업체 구분
+
+    public static CompanyDto of(Company company){
+        return modelMapper.map(company, CompanyDto.class);
+    }
 
 }
 

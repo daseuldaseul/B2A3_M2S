@@ -1,6 +1,7 @@
 package B2A3_M2S.mes.controller;
 
 import B2A3_M2S.mes.dto.CommonCodeDTO;
+import B2A3_M2S.mes.dto.CompanyDto;
 import B2A3_M2S.mes.dto.CompanyFormDto;
 import B2A3_M2S.mes.dto.ProcessesFormDto;
 import B2A3_M2S.mes.entity.CommonCode;
@@ -36,8 +37,6 @@ public class CompanyController {
     @Autowired
     CompanyService companyService;
 
-    @Autowired
-    CodeServiceImpl codeService;
 
     @GetMapping("/company")
     public String ex1(Model model) {
@@ -55,12 +54,15 @@ public class CompanyController {
 //            companyRepository.save(company);
 //        }
 
-        List<Company> companyList = companyRepository.findAll();
+        List<CompanyDto> companyList = CompanyDto.of(companyRepository.findAll());
+
+        for(CompanyDto companys : companyList){
+            companys.setCompanyGbNm(CodeServiceImpl.getCodeNm("CUST_TYPE", companys.getCompanyGb()));
+        }
 
         model.addAttribute("companyList", companyList);
 
-        List<CommonCodeDTO> codeList = codeService.getCodeList("CUST_TYPE");
-        model.addAttribute("codeList", codeList);
+        model.addAttribute("codeList", CodeServiceImpl.getCodeList("CUST_TYPE"));
         return "companyPage";
     }
 
@@ -78,8 +80,12 @@ public class CompanyController {
             endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
         }
 
-        List<Company> companyList = companyService.searchCompany(companyCd, companyNm, companyGb, startDateTime, endDateTime);
+        List<CompanyDto> companyList = CompanyDto.of(companyService.searchCompany(companyCd, companyNm, companyGb, startDateTime, endDateTime));
+        for(CompanyDto companys : companyList){
+            companys.setCompanyGbNm(CodeServiceImpl.getCodeNm("CUST_TYPE", companys.getCompanyGb()));
+        }
         model.addAttribute("companyList", companyList);
+        model.addAttribute("codeList", CodeServiceImpl.getCodeList("CUST_TYPE"));
         return "companyPage";
     }
     @GetMapping("/company/detail")
@@ -89,7 +95,8 @@ public class CompanyController {
         Gson gson = new Gson();
 
         Company company = companyRepository.findByCompanyCd(companyCd);
-        String json = gson.toJson(company);
+        CompanyDto companyDto = CompanyDto.of(company);
+        String json = gson.toJson(companyDto);
         System.out.println(json);
         return json;
 
@@ -101,8 +108,14 @@ public class CompanyController {
         company = companyFormDto.createCompany();
         System.out.println(company.toString());
         companyRepository.save(company);
-        List<Company> companyList =  companyRepository.findAll();
+
+        List<CompanyDto> companyList = CompanyDto.of(companyRepository.findAll());
+        for(CompanyDto companys : companyList){
+            companys.setCompanyGbNm(CodeServiceImpl.getCodeNm("CUST_TYPE", companys.getCompanyGb()));
+        }
         model.addAttribute("companyList", companyList);
+
+        model.addAttribute("codeList", CodeServiceImpl.getCodeList("CUST_TYPE"));
         return "companyPage";
 
     }

@@ -1,8 +1,11 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.CompanyDto;
+import B2A3_M2S.mes.dto.ProcessesDto;
 import B2A3_M2S.mes.dto.ProcessesFormDto;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.repository.ProcessesRepository;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ProcessesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,7 +46,11 @@ public class ProcessesController {
 //            processesRepository.save(processes);
 //
 //        }
-        List<Processes> processList =  processesRepository.findAll();
+        List<ProcessesDto> processList =  ProcessesDto.of(processesRepository.findAll());
+        for(ProcessesDto process : processList){
+            process.setProcStateNm(CodeServiceImpl.getCodeNm("PROCESS_STATE", process.getProcState()));
+        }
+        model.addAttribute("codeList", CodeServiceImpl.getCodeList("PROCESS_STATE"));
         model.addAttribute("processList", processList);
         return "processPage";
     }
@@ -61,8 +68,11 @@ public class ProcessesController {
             endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
         }
 
-        List<Processes> processList = processesService.searchProcesses(procNm, procCd, procState, startDateTime, endDateTime);
-
+        List<ProcessesDto> processList =  ProcessesDto.of(processesService.searchProcesses(procNm, procCd, procState, startDateTime, endDateTime));
+        for(ProcessesDto process : processList){
+            process.setProcStateNm(CodeServiceImpl.getCodeNm("PROCESS_STATE", process.getProcState()));
+        }
+        model.addAttribute("codeList", CodeServiceImpl.getCodeList("PROCESS_STATE"));
         model.addAttribute("processList", processList);
 
         return "processPage";
@@ -74,7 +84,11 @@ public class ProcessesController {
         processes = processesFormDto.createProcesses();
 
         processesRepository.save(processes);
-        List<Processes> processList =  processesRepository.findAll();
+        List<ProcessesDto> processList =  ProcessesDto.of(processesRepository.findAll());
+        for(ProcessesDto process : processList){
+            process.setProcStateNm(CodeServiceImpl.getCodeNm("PROCESS_STATE", process.getProcState()));
+        }
+        model.addAttribute("codeList", CodeServiceImpl.getCodeList("PROCESS_STATE"));
         model.addAttribute("processList", processList);
         return "processPage";
     }

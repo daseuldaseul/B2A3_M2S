@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.CompanyDto;
 import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.entity.QCompany;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
@@ -41,5 +43,7 @@ public class CompanyService {
 
 
     }
+
+
 
 }

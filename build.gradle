@@ -97,11 +97,16 @@ dependencies {
 
 
 	implementation 'net.coobird:thumbnailator:0.4.16'
+
+
+	implementation 'com.google.code.gson:gson:2.9.0'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
 
 
 test {
@@ -114,4 +119,8 @@ sourceSets {
 			srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
 		}
 	}
+
 }
+
+
+

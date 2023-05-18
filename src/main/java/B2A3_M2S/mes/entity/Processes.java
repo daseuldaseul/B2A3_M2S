@@ -19,9 +19,9 @@ public class Processes extends BaseTimeEntity {
 
     private String procNm;      //공정 이름
 
-    private String readyTime;   //준비 시간
+    private Long readyTime;   //준비 시간
 
-    private String workTime;    //작업 시간
+    private Long workTime;    //작업 시간
 
     private Long capacity;   //생산 능력
 

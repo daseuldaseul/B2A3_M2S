@@ -36,14 +36,14 @@ public class BOMRepositoryTests {
     public void testInsertDummies(){
 
         Item material = new Item();
-        material.setItemCd("정제수");
+        material.setItemCd("양배추");
 
         Item item = new Item();
-        item.setItemCd("흑마늘즙");
+        item.setItemCd("양배추 추출액");
 
         BOM bom = BOM.builder()
 
-                .consumption(60L)
+                .consumption(625L)
                 .materialCd(material)
                 .productCd(item)
                     .build();
@@ -70,14 +70,14 @@ public class BOMRepositoryTests {
 
         QBOM qbom = QBOM.bOM;
 
-        Long cus = 60L;
+        double cus = 60;
 
         BooleanBuilder builder = new BooleanBuilder();
 
 
-        if(cus != null){
+        /*if(null != cus){
             builder.and(qbom.consumption.eq(cus));
-        }
+        }*/
 
         Iterable<BOM> allBOMs = bomRepository.findAll(builder);
 

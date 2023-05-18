@@ -20,6 +20,7 @@ public class CommonCode extends BaseTimeEntity {
 <<<<<<< HEAD
     private String testestestestestremark;  //비고
 =======
+    private String remerearkrer;  //비고
 >>>>>>> aef55ec85cf1655bc9e852f9d7ea47a1f794b72b
 
     /*

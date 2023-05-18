@@ -97,7 +97,7 @@
                       <button type="button" class="btn btn-default">자재</button>
                       </div>
 
-                      <input type="text" class="form-control" name="item" >
+                      <input type="text" class="form-control" name="material" >
 
                     </div>
 
@@ -108,7 +108,7 @@
 
                       <input type="date" class="form-control" name="startRegDate">
 
-                      <input type="date" class="form-control" name="EndRegDate">
+                      <input type="date" class="form-control" name="endRegDate">
 
                     </div>
 
@@ -116,7 +116,7 @@
                   <hr>
 
               </form>
-                
+
               <!-- /.card-header -->
               <div class="card-body">
 
@@ -146,11 +146,11 @@
                   <tbody>
                   <tr th:each="BOM : ${BOM}">
                     <td th:text="${BOM.bomNo}"></td>
-                    <td th:text="${BOM.productCd}"></td>
-                    <td th:text="${BOM.productCd}"></td>
+                    <td th:text="${BOM.productCd.itemCd}"></td>
+                    <td th:text="${BOM.productCd.itemNm}"></td>
 
-                    <td th:text="${BOM.materialCd}"></td>
-                    <td th:text="${BOM.materialCd}"></td>
+                    <td th:text="${BOM.materialCd.itemCd}"></td>
+                    <td th:text="${BOM.materialCd.itemNm}"></td>
 
                     <td th:text="${BOM.consumption}"></td>
 
@@ -295,6 +295,7 @@
         <!-- /.row -->
       </div>
       <!-- /.container-fluid -->
+      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -336,7 +337,7 @@
 <!-- Toastr -->
 <script src="/plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/dist/js/adminlte.min.js"></script>
+<script src="/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/dist/js/demo.js"></script>
 <!-- Page specific script -->

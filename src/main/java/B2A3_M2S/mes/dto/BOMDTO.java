@@ -1,6 +1,11 @@
 package B2A3_M2S.mes.dto;
 
+import B2A3_M2S.mes.entity.Item;
 import lombok.*;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -10,9 +15,23 @@ import lombok.*;
 @AllArgsConstructor
 public class BOMDTO {
     private Long bomNo;         // BOM 번호
-    private Long consumption;   // 소모량
     private String remark;      // 비고
-    private char useYn;    // 사용유무
-    private String productCd;  // 제품 코드
-    private String materialCd; // 자재 코드
+
+
+    private Double consumption;   //소모량
+
+
+
+    private Character useYn;    //사용유무
+
+
+
+    private Item productCd;     //제품 코드
+
+
+    private Item materialCd;    //자재 코드
+
+    private LocalDateTime regdate;
+
+    private LocalDateTime moddate;
 }

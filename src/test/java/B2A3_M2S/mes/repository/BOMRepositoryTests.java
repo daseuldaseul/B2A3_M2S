@@ -36,16 +36,21 @@ public class BOMRepositoryTests {
     public void testInsertDummies(){
 
         Item material = new Item();
-        material.setItemCd("양배추");
+
+        material.setItemCd("MA003");
+        material.setItemNm("정제수");
+        material.setItemUnit("ml");
 
         Item item = new Item();
-        item.setItemCd("양배추 추출액");
+        item.setItemCd("MA002");
+        item.setItemNm("흑마늘 추출액 600");
+        item.setItemUnit("ml");
 
         BOM bom = BOM.builder()
 
-                .consumption(625L)
-                .materialCd(material)
-                .productCd(item)
+                .consumption(750.0)
+                .mItem(material)
+                .pItem(item)
                     .build();
 
         itemRepository.save(material);
@@ -55,13 +60,13 @@ public class BOMRepositoryTests {
 
         List<BOMDTO> allBOMs  = service.selectAllBOM();
 
-//        for (BOMDTO bom : allBOMs) {
-//            System.out.println("BOM ID: " + bom.getBomNo());
-//            System.out.println("Consumption: " + bom.getConsumption());
-//            System.out.println("Material: " + bom.getMaterialCd());
-//            System.out.println("Product: " + bom.getProductCd());
-//            System.out.println("-------------------------");
-//        }
+        for (BOMDTO bom1 : allBOMs) {
+            System.out.println("BOM ID: " + bom1.getBomNo());
+            System.out.println("Consumption: " + bom1.getConsumption());
+            System.out.println("Material: " + bom1.getMaterialCd());
+            System.out.println("Product: " + bom1.getProductCd());
+            System.out.println("-------------------------");
+        }
 
     }
 
@@ -86,10 +91,12 @@ public class BOMRepositoryTests {
         for (BOM bom : allBOMs) {
             System.out.println("BOM ID: " + bom.getBomNo());
             System.out.println("Consumption: " + bom.getConsumption());
-            System.out.println("Material: " + bom.getMaterialCd());
-            System.out.println("Product: " + bom.getProductCd());
+            System.out.println("Material: " + bom.getMItem());
+            System.out.println("Product: " + bom.getPItem());
             System.out.println("-------------------------");
         }
 
     }
+
+
 }

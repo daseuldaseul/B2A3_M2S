@@ -19,7 +19,7 @@ public class BOM extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bomNo;         //BOM 번호
 
-    private Long consumption;   //소모량
+    private Double consumption;   //소모량
 
     private String remark;      //비고
 
@@ -30,11 +30,11 @@ public class BOM extends BaseTimeEntity{
 
     @ManyToOne
     @JoinColumn(name = "product_cd", referencedColumnName = "item_cd")
-    private Item productCd;     //제품 코드
+    private Item pItem;     //제품 코드
 
     @ManyToOne
     @JoinColumn(name = "material_cd", referencedColumnName = "item_cd")
-    private Item materialCd;    //자재 코드
+    private Item mItem;    //자재 코드
 
 
 }

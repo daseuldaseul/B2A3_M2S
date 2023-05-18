@@ -23,6 +23,8 @@ public interface EquipRepository extends JpaRepository<Equipment, String>, Query
     // 검색 시 specification 사용할 때 사용
     List<Equipment> findAll(@Nullable Specification<Equipment> equip);
 
+    Equipment findByEquipCd(String equipCd);
+
 
 
 }

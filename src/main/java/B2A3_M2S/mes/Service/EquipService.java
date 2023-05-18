@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.entity.QEquipment;
 import B2A3_M2S.mes.repository.EquipRepository;
 import B2A3_M2S.mes.repository.specification.EquipSpecification;
 import B2A3_M2S.mes.entity.Equipment;
@@ -9,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-
-import static B2A3_M2S.mes.entity.QEquipment.equipment;
 
 @Service
 public class EquipService {
@@ -31,11 +30,13 @@ public class EquipService {
     public List<Equipment> findEquipList(String equipNm, String equipState) {
         BooleanBuilder builder = new BooleanBuilder();
 
+        QEquipment qEquipment = QEquipment.equipment;
+
         if(StringUtils.hasText(equipNm)) {
-            builder.and(equipment.equipNm.like("%" + equipNm + "%"));
+            builder.and(qEquipment.equipNm.like("%" + equipNm + "%"));
         }
         if(!equipState.equals("미선택")) {
-            builder.and(equipment.equipState.eq(equipState));
+            builder.and(qEquipment.equipState.eq(equipState));
         }
         
         // BooleanBuilder가 Predicate를 구현함. querydsl 자체애 내장된 findAll(Predicate predicate) 메서드 사용

@@ -1,11 +1,8 @@
 package B2A3_M2S.mes.entity;
 
 import B2A3_M2S.mes.dto.CompanyDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.modelmapper.ModelMapper;
-
+import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,9 +13,9 @@ import javax.persistence.Table;
 @ToString
 @Entity(name = "company")
 @Table(name = "company")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Company extends BaseTimeEntity{
-
-
     public static ModelMapper modelMapper;
 
     @Id

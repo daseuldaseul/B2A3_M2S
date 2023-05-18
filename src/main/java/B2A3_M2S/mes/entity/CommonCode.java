@@ -17,7 +17,10 @@ public class CommonCode extends BaseTimeEntity {
     private String displayValue;    //코드명
     private int codeSort;   //정렬 순서
     private Character useYn;    // 사용유무
+<<<<<<< HEAD
     private String testestestestestremark;  //비고
+=======
+>>>>>>> aef55ec85cf1655bc9e852f9d7ea47a1f794b72b
 
     /*
     public String getCodeGroup() {

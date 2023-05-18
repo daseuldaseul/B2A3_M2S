@@ -251,10 +251,12 @@
                       <div class="input-group-prepend">
                         <button type="button" class="btn btn-default">업체 구분</button>
                       </div>
-                      <select class="form-control" name="companyGb">
+                      <select class="form-control" name="companyGb" >
                         <!-- 공통코드로 바꿔야함 -->
-                        <option selected value="발주처">발주처</option>
-                        <option value="수주처">수주처</option>
+<!--                        <option th:each="${codeList}"></option>-->
+                        <option th:each="codeList : ${codeList}" th:value="${codeList}" th:text="${codeList.displayValue}"></option>
+<!--                        <option selected value="발주처">발주처</option>-->
+<!--                        <option value="수주처">수주처</option>-->
                       </select>
 
 

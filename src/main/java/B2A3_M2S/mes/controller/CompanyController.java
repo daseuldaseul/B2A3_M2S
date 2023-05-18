@@ -1,10 +1,13 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.CommonCodeDTO;
 import B2A3_M2S.mes.dto.CompanyFormDto;
 import B2A3_M2S.mes.dto.ProcessesFormDto;
+import B2A3_M2S.mes.entity.CommonCode;
 import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.repository.CompanyRepository;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.CompanyService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CompanyController {
@@ -31,6 +35,9 @@ public class CompanyController {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    CodeServiceImpl codeService;
 
     @GetMapping("/company")
     public String ex1(Model model) {
@@ -52,6 +59,8 @@ public class CompanyController {
 
         model.addAttribute("companyList", companyList);
 
+        List<CommonCodeDTO> codeList = codeService.getCodeList("CUST_TYPE");
+        model.addAttribute("codeList", codeList);
         return "companyPage";
     }
 

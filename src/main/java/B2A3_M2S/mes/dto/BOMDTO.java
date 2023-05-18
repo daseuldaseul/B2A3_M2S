@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.dto;
 
+import B2A3_M2S.mes.entity.Item;
 import lombok.*;
 
 @Getter
@@ -13,6 +14,7 @@ public class BOMDTO {
     private Long consumption;   // 소모량
     private String remark;      // 비고
     private char useYn;    // 사용유무
-    private String productCd;  // 제품 코드
-    private String materialCd; // 자재 코드
+
+    private Item pItem;  // 제품 코드
+    private Item mItem; // 자재 코드
 }

@@ -1,9 +1,10 @@
 package B2A3_M2S.mes.entity;
 
 import lombok.*;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Data
 @EqualsAndHashCode(callSuper=false)

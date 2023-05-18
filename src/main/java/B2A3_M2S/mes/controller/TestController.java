@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 
 @RequestMapping("/bom")
-public class testController {
+public class TestController {
 
     @Autowired
     BOMService service;

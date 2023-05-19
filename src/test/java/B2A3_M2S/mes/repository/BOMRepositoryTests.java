@@ -61,29 +61,29 @@ public class BOMRepositoryTests {
     @Test
     public void testInsertDummies1(){
 
-        QBOM qbom = QBOM.bOM;
-
-        double cus = 60;
-
-        BooleanBuilder builder = new BooleanBuilder();
-
-
-        /*if(null != cus){
-            builder.and(qbom.consumption.eq(cus));
-        }*/
-
-        Iterable<BOM> allBOMs = bomRepository.findAll(builder);
-
-
-
-        for (BOM bom : allBOMs) {
-            System.out.println("BOM ID: " + bom.getBomNo());
-            System.out.println("Consumption: " + bom.getConsumption());
-            System.out.println("Material: " + bom.getMItem().getItemCd());
-            System.out.println("Product: " + bom.getPItem().getItemCd());
-            System.out.println("-------------------------");
-        }
-
+//        QBOM qbom = QBOM.bOM;
+//
+//        double cus = 60;
+//
+//        BooleanBuilder builder = new BooleanBuilder();
+//
+//
+//        /*if(null != cus){
+//            builder.and(qbom.consumption.eq(cus));
+//        }*/
+//
+//        Iterable<BOM> allBOMs = bomRepository.findAll(builder);
+//
+//
+//
+//        for (BOM bom : allBOMs) {
+//            System.out.println("BOM ID: " + bom.getBomNo());
+//            System.out.println("Consumption: " + bom.getConsumption());
+//            System.out.println("Material: " + bom.getMItem().getItemCd());
+//            System.out.println("Product: " + bom.getPItem().getItemCd());
+//            System.out.println("-------------------------");
+//        }
+//
     }
 }
 

@@ -30,7 +30,7 @@ public class EquipController {
     @GetMapping(value = "/equipment")
     public String equipment(Model model) {
         Processes processes = processesRepository.findByProcCd("abc123");
-        Equipment equipment = equipRepository.findByEquipCd("A4");
+        Equipment equipment = equipRepository.findByEquipCd("A3");
         equipment.setProcesses(processes);
         equipRepository.save(equipment);
 

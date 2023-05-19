@@ -5,6 +5,7 @@ import B2A3_M2S.mes.entity.CommonCodePK;
 import lombok.*;
 
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -19,7 +20,7 @@ public class CommonCodeDTO {
     private int codeSort;   //정렬 순서
     private Character useYn;    // 사용유무
     private String remark;  //비고
-    private LocalDateTime regDate, modDate;
+    private LocalDate regDate, modDate;
     //private String code;
 
     public String getCodeGroup() {

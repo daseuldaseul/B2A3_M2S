@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class CompanyDto {
     private String companyGb;   //업체 구분
     private String companyGbNm;
 
-    private LocalDateTime regdate;
+    private LocalDate regdate;
+
 
 
     public static List<CompanyDto> of(List<Company> companyList){

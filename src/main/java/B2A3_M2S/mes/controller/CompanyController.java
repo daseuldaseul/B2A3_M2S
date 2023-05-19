@@ -73,14 +73,8 @@ public class CompanyController {
                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                          @RequestParam String companyGb){
 
-        LocalDateTime startDateTime = null;
-        LocalDateTime endDateTime = null;
-        if(startDate != null && endDate != null){
-            startDateTime =  LocalDateTime.of(startDate, LocalTime.MIN);
-            endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
-        }
 
-        List<CompanyDto> companyList = CompanyDto.of(companyService.searchCompany(companyCd, companyNm, companyGb, startDateTime, endDateTime));
+        List<CompanyDto> companyList = CompanyDto.of(companyService.searchCompany(companyCd, companyNm, companyGb, startDate, endDate));
         for(CompanyDto companys : companyList){
             companys.setCompanyGbNm(CodeServiceImpl.getCodeNm("CUST_TYPE", companys.getCompanyGb()));
         }
@@ -106,7 +100,7 @@ public class CompanyController {
     public String companyWrite(CompanyFormDto companyFormDto, Model model){
         Company company = new Company();
         company = companyFormDto.createCompany();
-        System.out.println(company.toString());
+        company.setRegdate(LocalDate.now());
         companyRepository.save(company);
 
         List<CompanyDto> companyList = CompanyDto.of(companyRepository.findAll());

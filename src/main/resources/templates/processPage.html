@@ -200,7 +200,7 @@
                 </div>
                 <div class="modal-body">
                   <div class="row">
-                    <div class="input-group col-3">
+                    <div class="input-group col-6">
                       <div class="input-group-prepend">
                         <button type="button" class="btn btn-default">공정</button>
                       </div>
@@ -222,7 +222,9 @@
 
 
                     </div>
-
+                  </div>
+                  <hr>
+                  <div class="row">
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
                         <button type="text" class="btn btn-default">공정상태</button>
@@ -242,7 +244,15 @@
                         <button type="button" class="btn btn-default">공정시간</button>
                       </div>
 
-                      <input type="text" class="form-control" placeholder="공정시간">
+                      <input type="text" class="form-control" name="workTime" placeholder="공정시간">
+
+                    </div>
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">준비시간</button>
+                      </div>
+
+                      <input type="text" class="form-control" name="readyTime" placeholder="준비시간">
 
                     </div>
                   </div>
@@ -286,7 +296,7 @@
                         <button type="button" class="btn btn-default">비고</button>
                       </div>
 
-                      <textarea name="" id="" cols="135" rows="3"></textarea>
+                      <textarea cols="120" rows="3" name="remark"></textarea>
 
 
                     </div>

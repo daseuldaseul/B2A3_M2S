@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class RoutingService {
     ItemRepository itemRepository;
 
     @Transactional
-    public List<Item> searchItem(String itemNm, String itemCd, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Item> searchItem(String itemNm, String itemCd, LocalDate startDate, LocalDate endDate) {
 
 
         QItem qItem = QItem.item;

@@ -11,6 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,9 +32,9 @@ public class RoutingDto {
 
     private Processes processes; //공정 코드
 
-    private LocalDateTime regdate;
+    private LocalDate regdate;
 
-    private LocalDateTime moddate;
+    private LocalDate moddate;
 
     public static ModelMapper modelMapper = new ModelMapper();
 

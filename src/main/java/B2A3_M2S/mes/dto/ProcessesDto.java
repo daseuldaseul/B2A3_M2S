@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,9 +39,9 @@ public class ProcessesDto {
 
     private String procStateNm;
 
-    private LocalDateTime regdate;
+    private LocalDate regdate;
 
-    private LocalDateTime moddate;
+    private LocalDate moddate;
 
     public static List<ProcessesDto> of(List<Processes> processesList){
         return modelMapper.map(processesList, new TypeToken<List<ProcessesDto>>(){}.getType());

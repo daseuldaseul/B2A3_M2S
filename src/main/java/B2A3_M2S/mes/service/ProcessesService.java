@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class ProcessesService {
     ProcessesRepository processesRepository;
 
     @Transactional
-    public List<Processes> searchProcesses(String procNm, String procCd, String procState, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Processes> searchProcesses(String procNm, String procCd, String procState, LocalDate startDate, LocalDate endDate) {
         QProcesses qProcesses = QProcesses.processes;
         BooleanBuilder builder = new BooleanBuilder();
 

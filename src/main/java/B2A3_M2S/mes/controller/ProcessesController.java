@@ -56,19 +56,15 @@ public class ProcessesController {
     }
 
     @GetMapping("/process/search")
-    public String search(Model model, @RequestParam String procNm, @RequestParam String procCd, @RequestParam(required = false)  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+    public String search(Model model, @RequestParam String procNm, @RequestParam String procCd,
+                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate, String procState){
 
 
 
-        LocalDateTime startDateTime = null;
-        LocalDateTime endDateTime = null;
-        if(startDate != null && endDate != null){
-            startDateTime =  LocalDateTime.of(startDate, LocalTime.MIN);
-            endDateTime =  LocalDateTime.of(endDate, LocalTime.MAX);
-        }
 
-        List<ProcessesDto> processList =  ProcessesDto.of(processesService.searchProcesses(procNm, procCd, procState, startDateTime, endDateTime));
+
+        List<ProcessesDto> processList =  ProcessesDto.of(processesService.searchProcesses(procNm, procCd, procState, startDate, endDate));
         for(ProcessesDto process : processList){
             process.setProcStateNm(CodeServiceImpl.getCodeNm("PROCESS_STATE", process.getProcState()));
         }

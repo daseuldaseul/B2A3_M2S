@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,9 +41,9 @@ public class ItemDto {
 
     private Company company;   // 업체코드
 
-    private LocalDateTime regdate;
+    private LocalDate regdate;
 
-    private LocalDateTime moddate;
+    private LocalDate moddate;
 
     public static ModelMapper modelMapper = new ModelMapper();
 

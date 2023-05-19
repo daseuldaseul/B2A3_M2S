@@ -62,16 +62,9 @@ public class RoutingController {
                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                                 Model model) {
-        LocalDateTime startDateTime = null;
-        LocalDateTime endDateTime = null;
-
-        if(startDate != null && endDate != null) {
-            startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
-            endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
-        }
 
 
-        List<Item> itemList = routingService.searchItem(itemNm, itemCd, startDateTime, endDateTime);
+        List<Item> itemList = routingService.searchItem(itemNm, itemCd, startDate, endDate);
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
 
 

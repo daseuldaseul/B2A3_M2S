@@ -28,7 +28,10 @@ public class BOMRepositoryTests {
 
     @Test
     public void test(){
-        System.out.println(bomRepository.getClass().getName());
+        List<Item> a = itemRepository.findAllByItemNmContains("마늘");
+        System.out.println(a);
+        
+        
 
     }
 
@@ -48,7 +51,9 @@ public class BOMRepositoryTests {
 
         BOM bom = BOM.builder()
 
-                .consumption(750.0)
+
+
+                .consumption(625.0)
                 .mItem(material)
                 .pItem(item)
                     .build();
@@ -58,15 +63,15 @@ public class BOMRepositoryTests {
         bomRepository.save(bom);
 
 
-        List<BOMDTO> allBOMs  = service.selectAllBOM();
 
-        for (BOMDTO bom1 : allBOMs) {
-            System.out.println("BOM ID: " + bom1.getBomNo());
-            System.out.println("Consumption: " + bom1.getConsumption());
-            System.out.println("Material: " + bom1.getMaterialCd());
-            System.out.println("Product: " + bom1.getProductCd());
-            System.out.println("-------------------------");
-        }
+//
+//        for (BOMDTO bom1 : allBOMs) {
+//            System.out.println("BOM ID: " + bom1.getBomNo());
+//            System.out.println("Consumption: " + bom1.getConsumption());
+//            System.out.println("Material: " + bom1.getMItem());
+//            System.out.println("Product: " + bom1.getPItem());
+//            System.out.println("-------------------------");
+//        }
 
     }
 
@@ -91,8 +96,12 @@ public class BOMRepositoryTests {
         for (BOM bom : allBOMs) {
             System.out.println("BOM ID: " + bom.getBomNo());
             System.out.println("Consumption: " + bom.getConsumption());
+
             System.out.println("Material: " + bom.getMItem());
-            System.out.println("Product: " + bom.getPItem());
+
+            System.out.println("Material: " + bom.getMItem().getItemCd());
+            System.out.println("Product: " + bom.getPItem().getItemCd());
+
             System.out.println("-------------------------");
         }
 

@@ -26,12 +26,13 @@ public class BOMDTO {
 
 
 
-    private Item productCd;     //제품 코드
+    private Item pItem;     //제품 코드
 
 
-    private Item materialCd;    //자재 코드
+    private Item mItem;    //자재 코드
 
-    private LocalDateTime regdate;
+    private LocalDateTime regDate;
+    private LocalDateTime endDate;
 
-    private LocalDateTime moddate;
+    private LocalDateTime modDate;
 }

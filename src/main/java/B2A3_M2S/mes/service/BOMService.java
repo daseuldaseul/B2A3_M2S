@@ -10,5 +10,4 @@ public interface BOMService {
 
     List<BOMDTO>  selectAllBOM(BOMDTO dto);
 
-    List<BOMDTO> selectAllBOM();
 }

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | DataTables</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/css/adminlte.min.css">
+  <link rel="stylesheet" href="/css/reset.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <!-- /Main Sidebar Container -->
+
+  <!-- Content Wrapper. Contains page content -->
+
+  <th:block th:include="sidebar.html"></th:block>
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>업체 관리</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">DataTables</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <form action="/company/search" method="GET">
+                  <div class="row">
+                    <div class="input-group col-12 justify-content-end">
+
+                      <div class="col-auto">
+                        <button type="submit" class="btn btn-block btn-primary ">조회 <i class="nav-icon fas fa-search"></i></button>
+
+                      </div>
+                      <div class="col-auto">
+                        <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-xl">등록</button>
+                      </div>
+
+<!--                      <div class="col-auto">-->
+<!--                        <button type="button" class="btn btn-block btn-warning">수정</button>-->
+<!--                      </div>-->
+                    </div>
+
+
+
+
+
+                  </div>
+
+                  <hr>
+                  <div class="row">
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">업체</button>
+                      </div>
+
+                      <input type="text" name="companyCd" class="form-control" placeholder="업체코드">
+                      <input type="text" name="companyNm" class="form-control" placeholder="업체명">
+                    </div>
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">업체구분</button>
+                      </div>
+<!--                      <select class="form-control" name="companyGb">-->
+<!--                        <option selected value="">미선택</option>-->
+<!--                        <option value="발주처">발주처</option>-->
+<!--                        <option value="수주처">수주처</option>-->
+<!--                      </select>-->
+
+                      <select class="form-control" name="companyGb" >
+                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+
+                      </select>
+                    </div>
+
+
+
+                    <div class="input-group col-4">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">등록일</button>
+                      </div>
+
+                      <input type="date" class="form-control" name="startDate">
+
+                      <input type="date" class="form-control" name="endDate">
+
+                    </div>
+
+
+                  </div>
+
+
+                  <hr>
+
+                </form>
+              </div>
+
+
+              <!-- /.card-header -->
+              <div class="card-body">
+
+                <table id="example1" class="table table-bordered table-hover">
+                  <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
+                  <tr>
+                    <th>업체 코드</th>
+                    <th>업체 그룹</th>
+                    <th>업체명</th>
+                    <th>연락처</th>
+                    <th>등록일자</th>
+
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="companyList, status : ${companyList}" onclick="getCompanyValue(this)">
+                    <td th:text="${companyList.companyCd}"></td>
+                    <td th:text="${companyList.companyGbNm}"></td>
+                    <td th:text="${companyList.companyNm}"></td>
+                    <td th:text="${companyList.phoneNumber}"></td>
+                    <td th:text="${companyList.regdate}"></td>
+                  </tr>
+
+                  </tbody>
+
+
+                  <!-- <tfoot>
+                  <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                  </tr>
+                  </tfoot> -->
+                </table>
+              </div>
+
+              <!-- /.card-body -->
+
+
+              <!-- 밑부분 표 -->
+              <div class="card-body">
+
+                <table class="table table-bordered table-hover">
+                  <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
+                  <tr>
+                    <th>업체 코드</th>
+                    <th>업체 이름</th>
+                    <th>주소</th>
+                    <th>연락처</th>
+                    <th>비고</th>
+
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td id="companyCd"></td>
+                      <td id="companyNm"></td>
+                      <td id="companyAddress"></td>
+                      <td id="companyNumber"></td>
+                      <td id="companyRemark"></td>
+                    </tr>
+
+                  </tbody>
+
+                  <!-- <tfoot>
+                  <tr>
+                    <th>Rendering engine</th>
+                    <th>Browser</th>
+                    <th>Platform(s)</th>
+                    <th>Engine version</th>
+                    <th>CSS grade</th>
+                  </tr>
+                  </tfoot> -->
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- 밑부분 표 -->
+
+
+            </div>
+            <!-- /.card -->
+
+
+
+
+
+
+
+          </div>
+          <!-- /.col -->
+
+
+
+
+
+
+
+          <!-- modal -->
+
+          <form method="post" action="/company" th:object="${companyFormDto}">
+          <div class="modal fade" id="modal-xl">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">업체 등록</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">업체</button>
+                      </div>
+
+                      <input type="text" class="form-control" name="companyCd" placeholder="업체코드">
+                      &nbsp;&nbsp;&nbsp;
+                      <input type="text" class="form-control" name="companyNm" placeholder="업체명">
+                    </div>
+
+
+
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">업체 구분</button>
+                      </div>
+                      <select class="form-control" name="companyGb" >
+                        <!-- 공통코드로 바꿔야함 -->
+<!--                        <option th:each="${codeList}"></option>-->
+                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+<!--                        <option selected value="발주처">발주처</option>-->
+<!--                        <option value="수주처">수주처</option>-->
+                      </select>
+
+
+
+
+
+                    </div>
+
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="text" class="btn btn-default">업체 주소</button>
+                      </div>
+                      <input type="text" class="form-control" name="address" placeholder="주소">
+                    </div>
+
+
+
+
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">연락처</button>
+                      </div>
+
+                      <input type="text" class="form-control" name="phoneNumber" placeholder="연락처">
+
+                    </div>
+                  </div>
+
+                    <hr>
+
+<!--                    <div class="input-group col-3">-->
+<!--                      <div class="input-group-prepend">-->
+<!--                        <button type="button" class="btn btn-default">공정명</button>-->
+<!--                      </div>-->
+
+<!--                      <input type="text" class="form-control">-->
+
+<!--                    </div>-->
+
+<!--                    <div class="input-group col-3">-->
+<!--                      <div class="input-group-prepend">-->
+<!--                        <button type="button" class="btn btn-default">설비명</button>-->
+<!--                      </div>-->
+
+<!--                      <input type="text" class="form-control">-->
+
+
+
+<!--                    </div>-->
+
+<!--                    <div class="input-group col-3">-->
+<!--                      <div class="input-group-prepend">-->
+<!--                        <button type="text" class="btn btn-default">기타</button>-->
+<!--                      </div>-->
+
+<!--                      <input type="text" class="form-control">-->
+
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                  <hr>-->
+                  <div class="row">
+                    <div class="input-group col-12">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">비고</button>
+                      </div>
+
+                      <textarea id="" cols="135" rows="3" name="remark"></textarea>
+
+
+                    </div>
+
+
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                  <div class="">
+                    <button type="reset" class="btn btn-danger">삭제</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                  </div>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+
+            </div>
+
+            <!-- /.modal-dialog -->
+          </div>
+
+          </form>
+        </div>
+        <!-- /.row -->
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 3.2.0
+    </div>
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  </footer> -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/plugins/jszip/jszip.min.js"></script>
+<script src="/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/js/demo.js"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["excel"],
+      "searching": false,
+      "info": false
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+
+<script>
+  function getCompanyValue(element) {
+var company = $(element); // 선택한 요소의 값을 가져옵니다.
+$('tr').css('background-color', '');
+<!--element.parentNode.style.backgroundColor = 'white';-->
+element.style.backgroundColor = '#80808061';
+var companyCd = company.find('td:first').text();
+
+$.ajax({
+url: '/company/detail',
+type: 'GET',
+data: { companyCd: companyCd },
+success: function(response) {
+console.log(response);
+var parsedResponse = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+document.getElementById('companyCd').innerText = parsedResponse.companyCd;
+document.getElementById('companyNm').innerText = parsedResponse.companyNm;
+document.getElementById('companyAddress').innerText = parsedResponse.address;
+document.getElementById('companyNumber').innerText = parsedResponse.phoneNumber;
+document.getElementById('companyRemark').innerText = parsedResponse.remark;
+
+
+},
+error: function(xhr) {
+// 에러 처리를 수행합니다.
+console.log(xhr.responseText);
+}
+});
+}
+
+</script>
+
+
+</body>
+</html>

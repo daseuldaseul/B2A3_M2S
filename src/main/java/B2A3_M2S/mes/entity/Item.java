@@ -1,10 +1,6 @@
 package B2A3_M2S.mes.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -13,8 +9,9 @@ import java.time.LocalDateTime;
 @ToString
 @Entity(name = "item")
 @Table(name = "item")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Item extends BaseTimeEntity{
-
     @Id
     @Column(name="item_cd")
     private String itemCd;        //품목 코드

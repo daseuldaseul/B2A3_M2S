@@ -1,9 +1,7 @@
 package B2A3_M2S.mes.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +10,8 @@ import javax.persistence.*;
 @ToString
 @Entity(name = "processes")
 @Table(name = "processes")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Processes extends BaseTimeEntity {
 
     @Id
@@ -19,9 +19,9 @@ public class Processes extends BaseTimeEntity {
 
     private String procNm;      //공정 이름
 
-    private String readyTime;   //준비 시간
+    private Long readyTime;   //준비 시간
 
-    private String workTime;    //작업 시간
+    private Long workTime;    //작업 시간
 
     private Long capacity;   //생산 능력
 

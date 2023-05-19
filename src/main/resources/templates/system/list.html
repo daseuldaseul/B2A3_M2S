@@ -14,7 +14,12 @@
     <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
+<<<<<<< HEAD
     <link rel="stylesheet" href="/css/adminlte.min.css">
+=======
+    <link rel="stylesheet" th:href="@{/css/adminlte.min.css}">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+>>>>>>> a2fbb7de8c39f30f8fa977685a322b17f7ce9e58
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -357,10 +362,16 @@
 <!-- Toastr -->
 <script src="/plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
+<<<<<<< HEAD
 <script src="/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/dist/js/demo.js"></script>
 <!-- Page specific script -->
+=======
+<script th:src="@{/js/adminlte.min.js}"></script>
+<!-- AdminLTE for demo purposes -->
+<script th:src="@{/js/demo.js}"></script>
+>>>>>>> a2fbb7de8c39f30f8fa977685a322b17f7ce9e58
 
 
 <!-- Page specific script -->
@@ -385,6 +396,5 @@
       });
 
 </script>
-
 </body>
 </html>

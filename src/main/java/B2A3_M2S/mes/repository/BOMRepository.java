@@ -12,9 +12,6 @@ import java.util.List;
 @Repository
 public interface BOMRepository extends JpaRepository<BOM, Long> , QuerydslPredicateExecutor<BOM> {
 
-    List<BOM> findAll(BOMDTO dto);
-
-    List<BOM> searchBOM();
 
 
 }

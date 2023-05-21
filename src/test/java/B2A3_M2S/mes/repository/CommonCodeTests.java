@@ -2,9 +2,16 @@ package B2A3_M2S.mes.repository;
 
 import B2A3_M2S.mes.entity.CommonCode;
 import B2A3_M2S.mes.entity.CommonCodePK;
+import B2A3_M2S.mes.entity.QCommonCode;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.awt.print.Pageable;
 
 @SpringBootTest
 public class CommonCodeTests {
@@ -32,6 +39,21 @@ public class CommonCodeTests {
                 .remark("테스트로 넣음")
                 .build();
         repository.save(commonCode);
+    }
+
+    @Test
+    public void testQuery2() {
+        QCommonCode qCommonCode = QCommonCode.commonCode;
+        String keyword = "1";
+
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression exGroup = qCommonCode.codeId.codeGroup.contains(keyword);
+        BooleanExpression exCode = qCommonCode.codeId.cd.contains(keyword);
+        BooleanExpression exAll = exGroup.or(exCode);
+        builder.and(exAll);
+        builder.and(qCommonCode.codeId.codeGroup.eq("0"));
+
+
     }
 
 /*    @Test

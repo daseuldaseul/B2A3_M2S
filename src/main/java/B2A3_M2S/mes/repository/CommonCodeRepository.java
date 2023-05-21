@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CommonCodeRepository extends JpaRepository<CommonCode, CommonCodePK> {
+public interface CommonCodeRepository extends JpaRepository<CommonCode, CommonCodePK>, QuerydslPredicateExecutor<CommonCode> {
     /*    @Query("SELECT c FROM CommonCode c WHERE c.codeId.codeGroup = :codeGroup AND c.useYn = :useYn")
     List<CommonCode> getByCodeGroupAndUseYn(@Param("codeGroup") String codeGroup, @Param("useYn") String useYn);*/
 

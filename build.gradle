@@ -31,15 +31,15 @@ tasks.named('test') {
 
 // 스프링 2.6.0 이상에 dsl 사용시 버전 확인 (5.0.0)
 buildscript {
-	ext {
-		queryDslVersion = "5.0.0"
-	}
+    ext {
+        queryDslVersion = "5.0.0"
+    }
 }
 
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.11'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id 'org.springframework.boot' version '2.7.11'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'B2A3_M2S'
@@ -48,81 +48,74 @@ sourceCompatibility = '11'
 
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	implementation 'org.modelmapper:modelmapper:3.1.0'
+    implementation 'org.modelmapper:modelmapper:3.1.0'
 
-	testImplementation 'junit:junit:4.13.1'
-	testImplementation 'org.projectlombok:lombok:1.18.26'
-
-
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
-
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-
-	annotationProcessor(
-
-			"javax.persistence:javax.persistence-api",
-
-			"javax.annotation:javax.annotation-api",
-
-			"com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.projectlombok:lombok:1.18.26'
 
 
-	implementation 'org.modelmapper:modelmapper:3.1.0'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.0.33'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
 
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    annotationProcessor(
+
+            "javax.persistence:javax.persistence-api",
+
+            "javax.annotation:javax.annotation-api",
+
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
 
-	implementation 'net.coobird:thumbnailator:0.4.16'
+    implementation 'org.modelmapper:modelmapper:3.1.0'
+
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 
-	implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'net.coobird:thumbnailator:0.4.16'
+
+
+    implementation 'com.google.code.gson:gson:2.9.0'
 
 
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
-
-
-
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
-
 
 sourceSets {
-	main {
-		java {
-			srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
-		}
-	}
-
+    main {
+        java {
+            srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+        }
+    }
 }
-
-

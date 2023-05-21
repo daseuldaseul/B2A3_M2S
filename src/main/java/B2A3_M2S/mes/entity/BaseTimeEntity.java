@@ -20,8 +20,8 @@ public abstract class BaseTimeEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime regdate;
+    private LocalDateTime regDate;
 
     @LastModifiedDate
-    private LocalDateTime moddate;
+    private LocalDateTime modDate;
 }

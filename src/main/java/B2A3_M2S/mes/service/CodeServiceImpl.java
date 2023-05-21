@@ -4,12 +4,17 @@ import B2A3_M2S.mes.dto.CodeSetDTO;
 import B2A3_M2S.mes.dto.CommonCodeDTO;
 import B2A3_M2S.mes.entity.CommonCode;
 import B2A3_M2S.mes.entity.CommonCodePK;
+import B2A3_M2S.mes.entity.QCommonCode;
 import B2A3_M2S.mes.repository.CommonCodeRepository;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -142,15 +147,50 @@ public class CodeServiceImpl implements CodeService {
     }
 
     @Override
-    public List<CommonCode> getGroupList(String useYn) {
-        if(useYn == null)
-            useYn = "";
+    public List<CommonCodeDTO> getGroupList(CommonCodeDTO dto) {
+        BooleanBuilder builder = getSearch(dto);
+        Iterable<CommonCode> temp = repository.findAll(builder);
+        List<CommonCodeDTO> result = new ArrayList<>();
 
-        return repository.getByCodeGroupAndUseYn("0", useYn);
+        for (CommonCode entity : temp)
+            result.add(entityToDto(entity));
+
+        return result;
     }
 
     @Override
-    public List<CommonCode> getCodeList(String codeGroup, String useYn) {
-        return repository.getByCodeGroupAndUseYn(codeGroup, useYn);
+    public List<CommonCodeDTO> getCodeList(String codeGroup, String useYn) {
+        if (useYn == null)
+            useYn = "";
+
+        List<CommonCodeDTO> result = repository.getByCodeGroupAndUseYn(codeGroup, useYn).stream().map(a -> entityToDto(a)).collect(Collectors.toList());
+        return result;
+    }
+
+    private BooleanBuilder getSearch(CommonCodeDTO dto) {
+        QCommonCode qCommonCode = QCommonCode.commonCode;
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression expression = qCommonCode.codeId.codeGroup.eq("0");
+        builder.and(expression);
+
+        // 검색 조건을 작성하기
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        conditionBuilder.and(qCommonCode.codeId.cd.contains(dto.getCd()));
+
+        if (dto.getDisplayValue() != null)
+            conditionBuilder.and(qCommonCode.displayValue.contains(dto.getDisplayValue()));
+
+        if (dto.getUseYn() != null && dto.getUseYn() != 'A' && String.valueOf(dto.getUseYn()).trim().length() != 0) {
+        /*if (dto.getUseYn() != null && String.valueOf(dto.getUseYn()).trim().length() != 0) {*/
+            conditionBuilder.and(qCommonCode.useYn.eq(dto.getUseYn()));
+        }
+        if (dto.getRegDate() != null && dto.getRegDateEnd() != null)
+            conditionBuilder.and(qCommonCode.regDate.between(dto.getRegDate().atStartOfDay(), dto.getRegDateEnd().atTime(LocalTime.MAX)));
+
+        if (dto.getModDate() != null && dto.getModDateEnd() != null)
+            conditionBuilder.and(qCommonCode.regDate.between(dto.getModDate().atStartOfDay(), dto.getModDateEnd().atTime(LocalTime.MAX)));
+        //모든 조건 통합
+        builder.and(conditionBuilder);
+        return builder;
     }
 }

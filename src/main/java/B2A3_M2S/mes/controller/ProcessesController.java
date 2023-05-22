@@ -3,10 +3,12 @@ package B2A3_M2S.mes.controller;
 import B2A3_M2S.mes.dto.CompanyDto;
 import B2A3_M2S.mes.dto.ProcessesDto;
 import B2A3_M2S.mes.dto.ProcessesFormDto;
+import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.repository.ProcessesRepository;
 import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ProcessesService;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,6 +53,8 @@ public class ProcessesController {
         for(ProcessesDto process : processList){
             process.setProcStateNm(CodeServiceImpl.getCodeNm("PROCESS_STATE", process.getProcState()));
         }
+
+
         model.addAttribute("codeList", CodeServiceImpl.getCodeList("PROCESS_STATE"));
         model.addAttribute("processList", processList);
         return "processPage";
@@ -78,6 +83,7 @@ public class ProcessesController {
     public String processWrite(ProcessesFormDto processesFormDto, Model model){
         Processes processes = new Processes();
         processes = processesFormDto.createProcesses();
+        processes.setRegdate(LocalDate.now());
 
         processesRepository.save(processes);
         List<ProcessesDto> processList =  ProcessesDto.of(processesRepository.findAll());
@@ -89,4 +95,14 @@ public class ProcessesController {
         return "processPage";
     }
 
+    @GetMapping("/process/searchWord")
+    @ResponseBody
+    public String autoComplete(@RequestParam String text){
+        Gson gson = new Gson();
+
+        List<Processes> processList = processesRepository.findByProcNmContaining(text);
+        List<ProcessesDto> processesDtoList = ProcessesDto.of(processList);
+        String json = gson.toJson(processesDtoList);
+        return json;
+    }
 }

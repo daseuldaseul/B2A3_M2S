@@ -13,4 +13,8 @@ public interface CompanyRepository extends JpaRepository<Company, String>, Query
     List<Company> findAll();
 
     Company findByCompanyCd(String code);
+
+    Company findByCompanyNm(String name);
+
+    List<Company> findByCompanyNmContaining(String name);
 }

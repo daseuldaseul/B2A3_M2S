@@ -87,6 +87,11 @@ public class ObtainOrderController {
         ObtainOrder obtainOrder = new ObtainOrder();
         obtainOrder = result.createObtainOrder();
         obtainOrderRepository.save(obtainOrder);
+
+        List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
+        List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
+
+        model.addAttribute("obtainOrderList", obtainOrderDtoList);
         return "obtainOrderPage";
     }
 

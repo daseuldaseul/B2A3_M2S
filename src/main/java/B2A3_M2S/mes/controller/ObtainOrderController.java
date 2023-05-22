@@ -12,6 +12,7 @@ import B2A3_M2S.mes.entity.Routing;
 import B2A3_M2S.mes.repository.CompanyRepository;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ObtainOrderService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class ObtainOrderController {
 //        //3060 + 6.1 * 박스수
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
-
+        model.addAttribute("codeList", CodeServiceImpl.getCodeList("OBTAIN_STATE"));
         model.addAttribute("obtainOrderList", obtainOrderDtoList);
         return "obtainOrderPage";
     }

@@ -22,4 +22,6 @@ public interface ItemRepository extends JpaRepository<Item, String>, QuerydslPre
     List<Item> findByItemCdContaining(String itemCd);
 
     List<Item> findAll();
+
+    List<Item> findByItemNmContaining(String itemNm);
 }

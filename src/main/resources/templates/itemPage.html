@@ -63,7 +63,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>업체 관리</h1>
+            <h1>품목 조회</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -109,19 +109,18 @@
                   <div class="row">
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">업체</button>
+                        <button type="button" class="btn btn-default">품목</button>
                       </div>
                       <div id="autocomplete-results" class="autocomplete-results">
 
                       </div>
-
-<!--                      <input type="text" name="companyCd" class="form-control" placeholder="업체코드">-->
-                      <input type="hidden" id="companyCode" name="companyCd">
-                      <input type="text" id="companyName" name="companyNm" class="form-control" placeholder="업체명">
+                      <input type="hidden" id="itemCode" name="itemCd">
+                      <input type="text" id="itemName" name="itemNm" class="form-control" placeholder="품목명" onkeyup="autoComplete(this.value)">
                     </div>
+
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">업체구분</button>
+                        <button type="button" class="btn btn-default">품목구분</button>
                       </div>
 <!--                      <select class="form-control" name="companyGb">-->
 <!--                        <option selected value="">미선택</option>-->
@@ -134,17 +133,36 @@
 
 <!--                      </select>-->
                     </div>
-
-
-
-                    <div class="input-group col-4">
+                    <div class="input-group col-3">
                       <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">등록일</button>
+                        <button type="button" class="btn btn-default">품목타입</button>
                       </div>
+                      <!--                      <select class="form-control" name="companyGb">-->
+                      <!--                        <option selected value="">미선택</option>-->
+                      <!--                        <option value="발주처">발주처</option>-->
+                      <!--                        <option value="수주처">수주처</option>-->
+                      <!--                      </select>-->
 
-                      <input type="date" class="form-control" name="startDate">
+                      <!--                      <select class="form-control" name="companyGb" >-->
+                      <!--                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>-->
 
-                      <input type="date" class="form-control" name="endDate">
+                      <!--                      </select>-->
+                    </div>
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">단위</button>
+                      </div>
+                      <!--                      <select class="form-control" name="companyGb">-->
+                      <!--                        <option selected value="">미선택</option>-->
+                      <!--                        <option value="발주처">발주처</option>-->
+                      <!--                        <option value="수주처">수주처</option>-->
+                      <!--                      </select>-->
+
+                      <!--                      <select class="form-control" name="companyGb" >-->
+                      <!--                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>-->
+
+                      <!--                      </select>-->
+
 
                     </div>
 
@@ -153,6 +171,30 @@
 
 
                   <hr>
+
+                  <div class="row">
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">업체</button>
+                      </div>
+                      <div id="autocomplete-results2" class="autocomplete-results">
+
+                      </div>
+
+                      <!--                      <input type="text" name="companyCd" class="form-control" placeholder="업체코드">-->
+                      <input type="hidden" id="companyCode" name="companyCd">
+                      <input type="text" id="companyName" name="companyNm" class="form-control" placeholder="업체명" onkeyup="autoComplete2(this.value)">
+                    </div>
+
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">등록일</button>
+                      </div>
+                      <input type="date" class="form-control" name="startDate">
+                      <input type="date" class="form-control" name="endDate">
+                    </div>
+                  </div>
+                  </hr>
 
                 </form>
               </div>
@@ -166,93 +208,30 @@
                   <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
                   <tr>
                     <th>번호</th>
-                    <th>작업번호</th>
-                    <th>계획일자</th>
-                    <th>업체명</th>
                     <th>품목코드</th>
                     <th>품목명</th>
-                    <th>공정명</th>
-                    <th>설비명</th>
-                    <th>계획수량</th>
-                    <th>상태</th>
+                    <th>품목구분</th>
+                    <th>품목타입</th>
+                    <th>품목단위</th>
+                    <th>업체명</th>
+                    <th>등록일</th>
                     <th>비고</th>
-                    <th>비고</th>
-                    <th>비고</th>
-
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>00000001</td>
-                    <td>2023/05/15</td>
-                    <td>(주)원식푸드</td>
-                    <td>A00000001</td>
-                    <td>양배추즙</td>
-                    <td>추출</td>
-                    <td>추출기</td>
-                    <td>10000</td>
-                    <td>작업대기</td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>00000001</td>
-                    <td>2023/05/15</td>
-                    <td>(주)원식푸드</td>
-                    <td>A00000001</td>
-                    <td>양배추즙</td>
-                    <td>추출</td>
-                    <td>추출기</td>
-                    <td>10000</td>
-                    <td>작업대기</td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>00000001</td>
-                    <td>2023/05/15</td>
-                    <td>(주)원식푸드</td>
-                    <td>A00000001</td>
-                    <td>양배추즙</td>
-                    <td>추출</td>
-                    <td>추출기</td>
-                    <td>10000</td>
-                    <td>작업대기</td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>00000001</td>
-                    <td>2023/05/15</td>
-                    <td>(주)원식푸드</td>
-                    <td>A00000001</td>
-                    <td>양배추즙</td>
-                    <td>추출</td>
-                    <td>추출기</td>
-                    <td>10000</td>
-                    <td>작업대기</td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                  </tr>
+                  <tr th:each="itemDto, status: ${itemList}" onclick="getItemValue(this)">
+                    <td th:text="${status.index}+1"></td>
+                    <td th:text="${itemDto.itemCd}"></td>
+                    <td th:text="${itemDto.itemNm}"></td>
+                    <td th:text="${itemDto.itemGb}"></td>
+                    <td th:text="${itemDto.itemType}"></td>
+                    <td th:text="${itemDto.itemUnit}"></td>
+                    <td th:text="${itemDto.company.companyNm}"></td>
+                    <td th:text="${#temporals.format(itemDto.regDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${itemDto.remark}"></td>
 
-
-                  <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
                   </tr>
-                  </tfoot> -->
+                  </tbody>
                 </table>
               </div>
               <!-- /.card-body -->
@@ -448,7 +427,100 @@
 </script>
 
 
+<script>
+  function autoComplete(text) {
+    console.log(text);
 
+            $.ajax({
+        url: '/item/autoComplete',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var itemList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('itemCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < itemList.length; i++){
+            var list = document.createElement("li");
+            list.innerText ='[' + itemList[i].itemCd + ']' + itemList[i].itemNm;
+            list.setAttribute("data-item-nm", itemList[i].itemNm); // 데이터 속성 추가
+            list.setAttribute("data-item-cd", itemList[i].itemCd);
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('itemName');
+            var itemNm = this.getAttribute("data-item-nm"); // 데이터 속성 값 가져오기
+            var itemCd = this.getAttribute("data-item-cd");
+            result.value = itemNm;
+            code.value = itemCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
+
+
+function autoComplete2(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/item/autoComplete2',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var companyList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results2'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('companyCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < companyList.length; i++){
+            var list = document.createElement("li");
+            list.innerText ='[' + companyList[i].companyCd + ']' + companyList[i].companyNm;
+            list.setAttribute("data-company-nm", companyList[i].companyNm); // 데이터 속성 추가
+            list.setAttribute("data-company-cd", companyList[i].companyCd);
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('companyName');
+            var companyNm = this.getAttribute("data-company-nm"); // 데이터 속성 값 가져오기
+            var companyCd = this.getAttribute("data-company-cd");
+            result.value = companyNm;
+            code.value = companyCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
+</script>
 
 
 

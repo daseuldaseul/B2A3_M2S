@@ -64,13 +64,14 @@ public class ObtainOrderController {
     @ResponseBody
     @GetMapping("/obtainOrder/detail")
     public String obtainOrderDetail(@RequestParam String orderCd, Model model) {
-
         Gson gson = new Gson();
         System.out.println("-------------------------------------------");
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findByOrderCd(orderCd);
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
 
-        return "obtainOrderPage";
+
+        String json = gson.toJson(obtainOrderDtoList);
+        return json;
     }
 
     @PostMapping("/obtainOrder")
@@ -87,7 +88,7 @@ public class ObtainOrderController {
         ObtainOrder obtainOrder = new ObtainOrder();
         obtainOrder = result.createObtainOrder();
         obtainOrderRepository.save(obtainOrder);
-        return "obtainOrderPage";
+        return "redirect:/obtainOrder";
     }
 
     @GetMapping("/obtainOrder/search")

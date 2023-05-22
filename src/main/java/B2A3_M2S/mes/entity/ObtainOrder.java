@@ -10,14 +10,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity(name = "obtain_order")
-@Table(name = "obtain_order")
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class ObtainOrder extends BaseTimeEntity{
 
     @Id
-    @Column(name = "order_cd")
     private String orderCd;    //수주코드
 
     private Long qty;   //수주량

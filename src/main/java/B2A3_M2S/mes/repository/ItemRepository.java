@@ -10,5 +10,7 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, String>, QuerydslPredicateExecutor<Item> {
     Item findByItemNm(String itemNm);
 
-    List<Item> findByItemGb(String itemGb);
+    List<Item> findByItemNmContainingAndItemCdContaining(String itemNm, String itemCd);
+
+    List<Item> findByItemCdContaining(String itemCd);
 }

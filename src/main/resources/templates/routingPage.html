@@ -16,6 +16,35 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="/css/adminlte.min.css">
     <link rel="stylesheet" href="/css/reset.css">
+
+    <style>
+        .autocomplete-results {
+            position: absolute;
+            top: 40px;
+            width: 85.5%;
+            z-index: 999;
+            background-color: #fff;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            margin-left: 60px;
+        }
+
+        .autocomplete-results ul {
+            list-style-type: none;
+            margin: 20px;
+            padding: 0;
+        }
+
+        .autocomplete-results li {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .autocomplete-results li:hover {
+            background-color: #f5f5f5;
+        }
+
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -80,8 +109,11 @@
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">품목</button>
                                             </div>
-                                            <input type="text" name="itemCd" class="form-control" placeholder="품목코드">
-                                            <input type="text" name="itemNm" class="form-control" placeholder="품목명">
+                                            <div id="autocomplete-results" class="autocomplete-results">
+
+                                            </div>
+                                            <input type="text" id="routingName" name="itemNm" class="form-control" placeholder="품목명" onkeyup="autoComplete(this.value)">
+                                            <input type="hidden" id="routingCode" name="itemCd">
                                         </div>
 
 
@@ -187,7 +219,7 @@
 
                 <!-- modal -->
 
-                <form method="post" action="/process" th:object="${processesFormDto}">
+                <form method="post" action="/routing">
                     <div class="modal fade" id="modal-xl">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
@@ -199,100 +231,35 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="input-group col-3">
+                                        <div class="input-group col-4">
                                             <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">공정</button>
+                                                <button type="button" class="btn btn-default">품목</button>
                                             </div>
 
-                                            <input type="text" class="form-control" name="procCd" placeholder="공정코드">
+                                            <input type="text" class="form-control" name="itemCd" placeholder="품목코드">
                                             &nbsp;&nbsp;&nbsp;
-                                            <input type="text" class="form-control" name="procNm" placeholder="공정명">
+                                            <input type="text" class="form-control" name="itemNm" placeholder="품목명">
                                         </div>
 
+                                        <table class="table table-bordered table-hover">
+                                            <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
+                                            <tr>
+                                                <th>공정 순서</th>
+                                                <th>공정</th>
+                                                <th>비고</th>
+                                            </tr>
 
 
-                                        <div class="input-group col-3">
-                                            <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">생산능력</button>
-                                            </div>
-
-                                            <input type="text" class="form-control" name="capacity" placeholder="생산능력">
+                                            </thead>
 
 
+                                        </table>
 
-                                        </div>
-
-                                        <div class="input-group col-3">
-                                            <div class="input-group-prepend">
-                                                <button type="text" class="btn btn-default">공정상태</button>
-                                            </div>
-                                            <select class="form-control" name="procState">
-                                                <option selected value="work">작업진행</option>
-                                                <option value="hold">작업대기</option>
-                                                <option value="finish">작업완료</option>
-                                            </select>
-
-                                        </div>
-
-
-
-
-                                        <div class="input-group col-3">
-                                            <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">공정시간</button>
-                                            </div>
-
-                                            <input type="text" class="form-control" placeholder="공정시간">
-
-                                        </div>
                                     </div>
 
                                     <hr>
 
-                                    <!--                    <div class="input-group col-3">-->
-                                    <!--                      <div class="input-group-prepend">-->
-                                    <!--                        <button type="button" class="btn btn-default">공정명</button>-->
-                                    <!--                      </div>-->
 
-                                    <!--                      <input type="text" class="form-control">-->
-
-                                    <!--                    </div>-->
-
-                                    <!--                    <div class="input-group col-3">-->
-                                    <!--                      <div class="input-group-prepend">-->
-                                    <!--                        <button type="button" class="btn btn-default">설비명</button>-->
-                                    <!--                      </div>-->
-
-                                    <!--                      <input type="text" class="form-control">-->
-
-
-
-                                    <!--                    </div>-->
-
-                                    <!--                    <div class="input-group col-3">-->
-                                    <!--                      <div class="input-group-prepend">-->
-                                    <!--                        <button type="text" class="btn btn-default">기타</button>-->
-                                    <!--                      </div>-->
-
-                                    <!--                      <input type="text" class="form-control">-->
-
-                                    <!--                    </div>-->
-
-                                    <!--                  </div>-->
-                                    <!--                  <hr>-->
-                                    <div class="row">
-                                        <div class="input-group col-12">
-                                            <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">비고</button>
-                                            </div>
-
-                                            <textarea name="" id="" cols="135" rows="3"></textarea>
-
-
-                                        </div>
-
-
-                                    </div>
                                 </div>
                                 <div class="modal-footer justify-content-between">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
@@ -378,6 +345,67 @@
 </script>
 
 <script>
+  function autoComplete(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/routing/autoComplete',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var routingList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('routingCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < routingList.length; i++){
+            var list = document.createElement("li");
+            list.innerText ='[' + routingList[i].itemCd + ']' + routingList[i].itemNm;
+            list.setAttribute("data-routing-nm", routingList[i].itemNm); // 데이터 속성 추가
+            list.setAttribute("data-routing-cd", routingList[i].itemCd);
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('routingName');
+            var itemNm = this.getAttribute("data-routing-nm"); // 데이터 속성 값 가져오기
+            var itemCd = this.getAttribute("data-routing-cd");
+            result.value = itemNm;
+            code.value = itemCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+              var tableRow = '';
+              routings.forEach(function(routing) {
+                tableRow += '<tr>';
+                tableRow += '<td th:text="${routing.pOrder}">' + routing.pOrder + '</td>';
+                tableRow+6 += '<td th:text="${routing.processes.procNm}">' + routing.processes.procNm + '</td>';
+                tableRow += '<td th:text="${routing.pTime}">' + routing.pTime + '</td>';
+                tableRow += '<td th:text="${routing.processes.readyTime}">' + routing.processes.readyTime + '</td>';
+                tableRow += '<td th:text="${routing.remark}">' + routing.remark + '</td>';
+                tableRow += '</tr>';
+              });
+
+              document.getElementById('routing').innerHTML = tableRow;
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
+
+
+
   function getRoutingValue(element) {
 var item = $(element); // 선택한 요소의 값을 가져옵니다.
 $('tr').css('background-color', '');

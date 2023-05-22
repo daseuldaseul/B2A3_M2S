@@ -25,6 +25,6 @@ public interface EquipRepository extends JpaRepository<Equipment, String>, Query
 
     Equipment findByEquipCd(String equipCd);
 
-
+    List<Equipment> findByEquipNmContaining(String EquipNm);
 
 }

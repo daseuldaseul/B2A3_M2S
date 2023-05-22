@@ -132,6 +132,13 @@
 <!--                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>-->
 
 <!--                      </select>-->
+                      <select class="form-control" name="itemGb" >
+                        <!-- 공통코드로 바꿔야함 -->
+                        <option value="미선택">미선택</option>
+                        <option th:each="codeList1 : ${codeList1}" th:value="${codeList1.codeId.cd}" th:text="${codeList1.displayValue}"></option>
+
+                      </select>
+
                     </div>
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
@@ -147,6 +154,12 @@
                       <!--                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>-->
 
                       <!--                      </select>-->
+                      <select class="form-control" name="itemType" >
+                        <!-- 공통코드로 바꿔야함 -->
+                        <option value="미선택">미선택</option>
+                        <option th:each="codeList2 : ${codeList2}" th:value="${codeList2.codeId.cd}" th:text="${codeList2.displayValue}"></option>
+
+                      </select>
                     </div>
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
@@ -162,6 +175,11 @@
                       <!--                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>-->
 
                       <!--                      </select>-->
+                      <select class="form-control" name="itemUnit" >
+                        <option value="미선택">미선택</option>
+                        <option th:each="codeList3 : ${codeList3}" th:value="${codeList3.codeId.cd}" th:text="${codeList3.displayValue}"></option>
+
+                      </select>
 
 
                     </div>
@@ -223,9 +241,9 @@
                     <td th:text="${status.index}+1"></td>
                     <td th:text="${itemDto.itemCd}"></td>
                     <td th:text="${itemDto.itemNm}"></td>
-                    <td th:text="${itemDto.itemGb}"></td>
-                    <td th:text="${itemDto.itemType}"></td>
-                    <td th:text="${itemDto.itemUnit}"></td>
+                    <td th:text="${itemDto.itemGbNm}"></td>
+                    <td th:text="${itemDto.itemTypeNm}"></td>
+                    <td th:text="${itemDto.itemUnitNm}"></td>
                     <td th:text="${itemDto.company.companyNm}"></td>
                     <td th:text="${#temporals.format(itemDto.regDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${itemDto.remark}"></td>

@@ -29,7 +29,7 @@ public class ProcessesFormDto {
 
     private String readyUnit;   //준비시간 단위
 
-    private String procState;       //
+    private String procState;       // 공정 상태
 
 
 

@@ -21,7 +21,7 @@ public class Processes extends BaseTimeEntity {
     private Long workTime;    //작업 시간
     private Long capacity;   //생산 능력
     private Character useYn;    //사용유무
-    private String seatingCapacity;     // 수용능력
+    private Long seatingCapacity;     // 수용능력
     private Character fixYn;            // 고정여부
     /**
      * 외래키 설정해야 함
@@ -34,5 +34,6 @@ public class Processes extends BaseTimeEntity {
     //
 
 
-    private String remark;      //비고
+    private String remark;              // 비고
+    private String work_time_unit;      // 작업시간단위
 }

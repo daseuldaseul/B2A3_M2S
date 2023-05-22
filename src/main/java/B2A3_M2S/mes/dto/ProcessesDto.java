@@ -32,6 +32,7 @@ public class ProcessesDto {
     private LocalDate modDate;
     private String seatingCapacity;     // 수용능력
     private Character fixYn;            // 고정여부
+    private String work_time_unit;      // 작업시간단위
 
     public static List<ProcessesDto> of(List<Processes> processesList) {
         return modelMapper.map(processesList, new TypeToken<List<ProcessesDto>>() {

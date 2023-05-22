@@ -8,6 +8,8 @@ import B2A3_M2S.mes.repository.ItemRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,4 +34,18 @@ public class ItemService {
         }
         return itemDtoList;
     }
+
+    @Transactional
+    public List<ItemDto> ItemList(Model model){
+        List<Item> itemList = repository.findAll();
+        List<ItemDto> itemDtoList = ItemDto.of(itemList);
+        model.addAttribute("codeList1", CodeServiceImpl.getCodeList("ITEM_GB"));
+        System.out.println(CodeServiceImpl.getCodeList("ITEM_GB") + "=============");
+        model.addAttribute("codeList2", CodeServiceImpl.getCodeList("ITEM_TYPE"));
+        model.addAttribute("codeList3", CodeServiceImpl.getCodeList("UNIT_TYPE"));
+        model.addAttribute("itemList", itemDtoList);
+        return itemDtoList;
+    }
+
+
 }

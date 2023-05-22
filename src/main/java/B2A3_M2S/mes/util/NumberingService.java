@@ -47,7 +47,7 @@ public class NumberingService<T> implements NumberingRepository<T> {
                     break;
                 tempStr = "0" + tempStr;
             }
-            numbering = suffix + tempStr;
+            numbering += suffix + tempStr;
         }
         return numbering;
     }

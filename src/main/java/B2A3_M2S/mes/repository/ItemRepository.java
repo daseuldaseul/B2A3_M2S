@@ -20,4 +20,6 @@ public interface ItemRepository extends JpaRepository<Item, String>, QuerydslPre
     List<Item> findByItemNmContainingAndItemCdContaining(String itemNm, String itemCd);
 
     List<Item> findByItemCdContaining(String itemCd);
+
+    List<Item> findAll();
 }

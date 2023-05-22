@@ -36,8 +36,8 @@ public interface CodeService {
                 .codeSort(entity.getCodeSort())
                 .useYn(entity.getUseYn())
                 .remark(entity.getRemark())
-                .regDate(entity.getRegDate().toLocalDate())
-                .modDate(entity.getModDate().toLocalDate())
+                //.regDate(entity.getRegDate().toLocalDate())
+                //.modDate(entity.getModDate().toLocalDate())
                 .build();
         return dto;
     }

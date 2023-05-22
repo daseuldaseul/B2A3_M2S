@@ -37,7 +37,7 @@ public class CompanyService {
             builder.and(qCompany.companyGb.eq(companyGb));
         }
         if (startDate != null && endDate != null) {
-            builder.and(qCompany.regdate.between(startDate, endDate));
+            builder.and(qCompany.regDate.between(startDate, endDate));
         }
         return (List<Company>) companyRepository.findAll(builder);
 

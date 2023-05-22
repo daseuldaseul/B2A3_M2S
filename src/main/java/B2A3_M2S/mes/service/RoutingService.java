@@ -33,7 +33,7 @@ public class RoutingService {
         }
 
         if(startDate != null && endDate != null) {
-            builder.and(qItem.regdate.between(startDate, endDate));
+            builder.and(qItem.regDate.between(startDate, endDate));
         }
 
         builder.and(qItem.itemGb.eq("완제품"));

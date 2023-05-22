@@ -1,17 +1,16 @@
 package B2A3_M2S.mes.repository;
 
-import B2A3_M2S.mes.entity.CommonCode;
-import B2A3_M2S.mes.entity.CommonCodePK;
-import B2A3_M2S.mes.entity.QCommonCode;
+import B2A3_M2S.mes.entity.*;
+import B2A3_M2S.mes.util.NumPrefix;
+import B2A3_M2S.mes.util.NumberingService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
-import java.awt.print.Pageable;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @SpringBootTest
 public class CommonCodeTests {
@@ -55,9 +54,20 @@ public class CommonCodeTests {
 
 
     }
-
-/*    @Test
+    @PersistenceContext
+    private EntityManager entityManager;
+    @Test
     public void selectListTest() {
-        System.out.println( repository.getGroupList(""));
-    }*/
+        System.out.println("여기 테스트 시작함");
+
+        NumberingService<CommonCode> service = new NumberingService<>(entityManager, CommonCode.class);
+        System.out.println(service.getNumbering("codeId.cd", NumPrefix.OBTAIN_ORDER));
+
+        //NumberingService<CommonCode> service = new NumberingService<>(CommonCode.class);
+
+        //NumberingRepository<CommonCode> repository = new NumberingRepositoryImpl<>(entityManager ,CommonCode.class);
+        //repository.findByNumbering("codeId.codeGroup", "test");
+        //repository.findByNumbering("codeId.cd", "0");
+        //repository.findByNumbering("test", "test");
+    }
 }

@@ -41,9 +41,9 @@ public class ItemDto {
 
     private Company company;   // 업체코드
 
-    private LocalDate regdate;
+    private LocalDate regDate;
 
-    private LocalDate moddate;
+    private LocalDate modDate;
 
     public static ModelMapper modelMapper = new ModelMapper();
 

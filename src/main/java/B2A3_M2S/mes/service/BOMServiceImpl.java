@@ -51,9 +51,9 @@ public class BOMServiceImpl implements BOMService {
             predicate.and(qbom.mItem.itemNm.contains(dto.getMItem().getItemNm()));
         }
         if (dto.getRegDate() != null && dto != null) {
-            predicate.and(qbom.regdate.between(dto.getRegDate(), dto.getEndDate()));
+            predicate.and(qbom.regDate.between(dto.getRegDate(), dto.getEndDate()));
         } else if (dto.getRegDate() != null) {
-            predicate.and(qbom.regdate.after(dto.getRegDate()));
+            predicate.and(qbom.regDate.after(dto.getRegDate()));
         }
         Iterable<BOM> bomList = repository.findAll(predicate);
 

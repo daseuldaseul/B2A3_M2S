@@ -12,6 +12,7 @@ import javax.persistence.Access;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.entity.QObtainOrder;
@@ -35,7 +36,7 @@ public class ObtainOrderService {
     @Autowired
     ItemRepository itemRepository;
 
-    public ObtainOrderFormDto writeObtainOrder(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm){
+    public ObtainOrderFormDto writeObtainOrder(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm) {
         obtainOrderFormDto.setCompany(companyRepository.findByCompanyNm(companyNm));
         obtainOrderFormDto.setItem(itemRepository.findByItemNm(itemNm));
         obtainOrderFormDto.setOrderCd("code_" + itemNm + obtainOrderRepository.count());
@@ -43,19 +44,19 @@ public class ObtainOrderService {
         min = Math.ceil(min);
         LocalDateTime orderDate = LocalDateTime.now();
 
-        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(12,0));
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 0));
         LocalDateTime dueTime = orderDate;
         obtainOrderFormDto.setOrderDate(orderDate);
 
-        if(orderDate.compareTo(dateTime) <= 0){
+        if (orderDate.compareTo(dateTime) <= 0) {
             dueTime.plusDays(2);
-        }else{
+        } else {
             dueTime.plusDays(3);
         }
 
-        obtainOrderFormDto.setDueDate(dueTime.plusMinutes((int)min));
+        obtainOrderFormDto.setDueDate(dueTime.plusMinutes((int) min));
         return obtainOrderFormDto;
-    ObtainOrderRepository obtainOrderRepository;
+    }
 
     @Transactional
     public List<ObtainOrder> searchObtainOrder(String companyCd, String companyNm, LocalDateTime startDateTime, LocalDateTime endDateTime,
@@ -63,36 +64,35 @@ public class ObtainOrderService {
         QObtainOrder qObtainOrder = QObtainOrder.obtainOrder;
         BooleanBuilder builder = new BooleanBuilder();
 
-        if(companyCd != null) {
+        if (companyCd != null) {
             builder.and(qObtainOrder.company.companyCd.contains(companyCd));
         }
 
-        if(companyNm != null) {
+        if (companyNm != null) {
             builder.and(qObtainOrder.company.companyNm.contains(companyNm));
         }
 
-        if(startDateTime != null && endDateTime != null) {
+        if (startDateTime != null && endDateTime != null) {
             builder.and(qObtainOrder.orderDate.between(startDateTime, endDateTime));
         }
 
-        if(!orderState.equals("미선택")) {
+        if (!orderState.equals("미선택")) {
             builder.and(qObtainOrder.orderState.eq(orderState));
         }
 
-        if(itemCd != null) {
+        if (itemCd != null) {
             builder.and(qObtainOrder.item.itemCd.contains(itemCd));
         }
 
-        if(itemNm != null) {
+        if (itemNm != null) {
             builder.and(qObtainOrder.item.itemNm.contains(itemNm));
         }
 
-        if(orderCd != null) {
+        if (orderCd != null) {
             builder.and(qObtainOrder.orderCd.contains(orderCd));
         }
 
         return (List<ObtainOrder>) obtainOrderRepository.findAll(builder);
 
     }
-}
 }

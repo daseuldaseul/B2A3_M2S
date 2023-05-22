@@ -20,7 +20,6 @@ public class CommonCodeDTO {
     private int codeSort;   //정렬 순서
     private Character useYn;    // 사용유무
     private String remark;  //비고
-    private LocalDate regDate, modDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate regDate, modDate, regDateEnd, modDateEnd;
@@ -30,7 +29,6 @@ public class CommonCodeDTO {
     }
 
     public String getCd() {
-        System.out.println("123: " + codeId);
         return this.codeId != null ? this.codeId.getCd() : "";
     }
 }

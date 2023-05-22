@@ -19,6 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,18 +41,6 @@ public class ObtainOrderController {
 
     @Autowired
     ItemRepository itemRepository;
-
-    @Autowired
-    CompanyRepository companyRepository;
-
-    @Autowired
-    ObtainOrderRepository obtainOrderRepository;
-
-    @Autowired
-    ItemRepository itemRepository;
-
-    @Autowired
-    ObtainOrderService obtainOrderService;
 
     @GetMapping("/obtainOrder")
     public String ObtainOrder(Model model) {
@@ -82,7 +71,6 @@ public class ObtainOrderController {
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
 
         return "obtainOrderPage";
-
     }
 
     @PostMapping("/obtainOrder")
@@ -94,14 +82,17 @@ public class ObtainOrderController {
 //        min = Math.ceil(min);
 //        obtainOrderFormDto.setOrderDate(LocalDateTime.now());
 //        obtainOrderFormDto.setDueDate(obtainOrderFormDto.getOrderDate().plusMinutes((int)min));
+
+
+        // 오류로 인해 주석처리 하였습니다.
+        // gson, obtainOrderDtoList 없음
         ObtainOrderFormDto result = obtainOrderService.writeObtainOrder(obtainOrderFormDto, companyNm, itemNm);
         ObtainOrder obtainOrder = new ObtainOrder();
 
         obtainOrder = result.createObtainOrder();
 
         obtainOrderRepository.save(obtainOrder);
-        String json = gson.toJson(obtainOrderDtoList);
-        return json;
+        return "obtainOrderPage";
     }
 
     @GetMapping("/obtainOrder/search")

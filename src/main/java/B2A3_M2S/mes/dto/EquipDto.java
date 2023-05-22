@@ -20,28 +20,19 @@ import java.util.List;
 @Setter
 public class EquipDto {
     private String equipCd;     //설비 코드
-
     private String equipNm;     //설비명
-
     private Long readyTime;  //준비 시간
-
     private Long capacity;   //생산 능력
-
     private String workTime;    //생산 소요시간
-
     private String remark;      //비고
-
-
     private Processes processes;      //공정 코드
-
     private String readyUnit;   //준비시간 단위
-
     private String capaUnit;    //생산 단위
-
     private String equipState;       //설비 상태
+    private String seatingCapacity;     // 수용능력
+    private Character fixYn;            // 고정여부
 
     private List<EquipDto> equipDtos = new ArrayList<>();
-
     public static ModelMapper modelMapper = new ModelMapper();
 
     public Equipment createEquipment() {

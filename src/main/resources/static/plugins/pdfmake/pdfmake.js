@@ -21122,7 +21122,7 @@ var AttachmentsMixin = {
 
         if (!data) {
           throw new Error("Could not read contents of file at filepath ".concat(src));
-        } // update CreationDate and ModDate
+        } // update CreationDate and modDate
 
 
         var _fs$statSync = fs.statSync(src),
@@ -21130,7 +21130,7 @@ var AttachmentsMixin = {
             ctime = _fs$statSync.ctime;
 
         refBody.Params.CreationDate = birthtime;
-        refBody.Params.ModDate = ctime;
+        refBody.Params.modDate = ctime;
       }
     } // override creation date and modified date
 
@@ -21140,7 +21140,7 @@ var AttachmentsMixin = {
     }
 
     if (options.modifiedDate instanceof Date) {
-      refBody.Params.ModDate = options.modifiedDate;
+      refBody.Params.modDate = options.modifiedDate;
     } // add optional subtype
 
 
@@ -21196,7 +21196,7 @@ var AttachmentsMixin = {
 /** check two embedded file metadata objects for equality */
 
 function isEqual(a, b) {
-  return a.Subtype === b.Subtype && a.Params.CheckSum.toString() === b.Params.CheckSum.toString() && a.Params.Size === b.Params.Size && a.Params.CreationDate === b.Params.CreationDate && a.Params.ModDate === b.Params.ModDate;
+  return a.Subtype === b.Subtype && a.Params.CheckSum.toString() === b.Params.CheckSum.toString() && a.Params.Size === b.Params.Size && a.Params.CreationDate === b.Params.CreationDate && a.Params.modDate === b.Params.modDate;
 }
 
 var PDFDocument = /*#__PURE__*/function (_stream$Readable) {
@@ -76449,12 +76449,12 @@ PdfPrinter.prototype.createPdfKitDocument = function (docDefinition, options) {
 
 function createMetadata(docDefinition) {
 	// PDF standard has these properties reserved: Title, Author, Subject, Keywords,
-	// Creator, Producer, CreationDate, ModDate, Trapped.
+	// Creator, Producer, CreationDate, modDate, Trapped.
 	// To keep the pdfmake api consistent, the info field are defined lowercase.
 	// Custom properties don't contain a space.
 	function standardizePropertyKey(key) {
 		var standardProperties = ['Title', 'Author', 'Subject', 'Keywords',
-			'Creator', 'Producer', 'CreationDate', 'ModDate', 'Trapped'];
+			'Creator', 'Producer', 'CreationDate', 'modDate', 'Trapped'];
 		var standardizedKey = key.charAt(0).toUpperCase() + key.slice(1);
 		if (standardProperties.indexOf(standardizedKey) !== -1) {
 			return standardizedKey;

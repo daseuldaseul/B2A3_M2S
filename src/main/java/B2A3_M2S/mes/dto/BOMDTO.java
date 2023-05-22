@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -31,8 +32,7 @@ public class BOMDTO {
 
     private Item mItem;    //자재 코드
 
-    private LocalDateTime regDate;
-    private LocalDateTime endDate;
-
-    private LocalDateTime modDate;
+    private LocalDate regDate;
+    private LocalDate endDate;
+    private LocalDate modDate;
 }

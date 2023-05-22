@@ -100,7 +100,7 @@ public class CompanyController {
     public String companyWrite(CompanyFormDto companyFormDto, Model model){
         Company company = new Company();
         company = companyFormDto.createCompany();
-        company.setRegdate(LocalDate.now());
+        company.setRegDate(LocalDate.now());
         companyRepository.save(company);
 
         List<CompanyDto> companyList = CompanyDto.of(companyRepository.findAll());

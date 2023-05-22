@@ -35,7 +35,9 @@ public class ObtainOrderDto {
     private Character useYn; //사용유무
 
 
-    /**외래키**/
+    /**
+     * 외래키
+     **/
 
     private Company company; //업체 코드
 
@@ -47,9 +49,9 @@ public class ObtainOrderDto {
     private String orderUnit;    //단위
     //공통 코드
 
-    private LocalDate regdate;
+    private LocalDate regDate;
 
-    private LocalDate moddate;
+    private LocalDate modDate;
 
     public static ModelMapper modelMapper = new ModelMapper();
 
@@ -62,6 +64,7 @@ public class ObtainOrderDto {
     }
 
     public static List<ObtainOrderDto> of(List<ObtainOrder> obtainOrderList) {
-        return modelMapper.map(obtainOrderList, new TypeToken<List<ObtainOrderDto>>() {}.getType());
+        return modelMapper.map(obtainOrderList, new TypeToken<List<ObtainOrderDto>>() {
+        }.getType());
     }
 }

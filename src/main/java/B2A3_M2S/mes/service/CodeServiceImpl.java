@@ -181,14 +181,16 @@ public class CodeServiceImpl implements CodeService {
             conditionBuilder.and(qCommonCode.displayValue.contains(dto.getDisplayValue()));
 
         if (dto.getUseYn() != null && dto.getUseYn() != 'A' && String.valueOf(dto.getUseYn()).trim().length() != 0) {
-        /*if (dto.getUseYn() != null && String.valueOf(dto.getUseYn()).trim().length() != 0) {*/
+            /*if (dto.getUseYn() != null && String.valueOf(dto.getUseYn()).trim().length() != 0) {*/
             conditionBuilder.and(qCommonCode.useYn.eq(dto.getUseYn()));
         }
         if (dto.getRegDate() != null && dto.getRegDateEnd() != null)
-            conditionBuilder.and(qCommonCode.regDate.between(dto.getRegDate().atStartOfDay(), dto.getRegDateEnd().atTime(LocalTime.MAX)));
+            //conditionBuilder.and(qCommonCode.regDate.between(dto.getRegDate().atStartOfDay(), dto.getRegDateEnd().atTime(LocalTime.MAX)));
+            conditionBuilder.and(qCommonCode.regDate.between(dto.getRegDate(), dto.getRegDateEnd()));
 
         if (dto.getModDate() != null && dto.getModDateEnd() != null)
-            conditionBuilder.and(qCommonCode.regDate.between(dto.getModDate().atStartOfDay(), dto.getModDateEnd().atTime(LocalTime.MAX)));
+            //conditionBuilder.and(qCommonCode.regDate.between(dto.getModDate().atStartOfDay(), dto.getModDateEnd().atTime(LocalTime.MAX)));
+            conditionBuilder.and(qCommonCode.regDate.between(dto.getModDate(), dto.getModDateEnd()));
         //모든 조건 통합
         builder.and(conditionBuilder);
         return builder;

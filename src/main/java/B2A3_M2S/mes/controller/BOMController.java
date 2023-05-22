@@ -48,9 +48,9 @@ public class BOMController {
     /*public String test1(Model model
                     , @RequestParam("product")String product
                     , @RequestParam("material")String material
-                    , @RequestParam("startRegDate")String startRegDate
-                    , @RequestParam("endRegDate")String endRegDate){
-        List<BOMDTO> BOM = service.selectAllBOM(product, material , endRegDate , startRegDate);*/
+                    , @RequestParam("startregDate")String startregDate
+                    , @RequestParam("endregDate")String endregDate){
+        List<BOMDTO> BOM = service.selectAllBOM(product, material , endregDate , startregDate);*/
     public String test1(Model model, BOMDTO dto){
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+dto);
         List<BOMDTO> BOM = service.selectAllBOM(dto);

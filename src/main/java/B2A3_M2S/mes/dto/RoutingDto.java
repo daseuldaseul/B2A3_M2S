@@ -32,9 +32,9 @@ public class RoutingDto {
 
     private Processes processes; //공정 코드
 
-    private LocalDate regdate;
+    private LocalDate regDate;
 
-    private LocalDate moddate;
+    private LocalDate modDate;
 
     public static ModelMapper modelMapper = new ModelMapper();
 

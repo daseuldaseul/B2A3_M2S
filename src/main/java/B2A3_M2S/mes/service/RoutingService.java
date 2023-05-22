@@ -19,25 +19,25 @@ public class RoutingService {
     ItemRepository itemRepository;
 
     @Transactional
-    public List<Item> searchItem(String itemNm, String itemCd, LocalDate startDate, LocalDate endDate) {
+    public List<Item> searchItem(String itemCd, String itemNm, LocalDate startDate, LocalDate endDate) {
 
 
         QItem qItem = QItem.item;
         BooleanBuilder builder = new BooleanBuilder();
 
-        if(itemNm != null) {
-            builder.and(qItem.itemNm.contains(itemNm));
-        }
-
         if(itemCd != null) {
             builder.and(qItem.itemCd.contains(itemCd));
+        }
+
+        if(itemNm != null) {
+            builder.and(qItem.itemNm.contains(itemNm));
         }
 
         if(startDate != null && endDate != null) {
             builder.and(qItem.regDate.between(startDate, endDate));
         }
 
-        builder.and(qItem.itemGb.eq("완제품"));
+        builder.and(qItem.itemCd.contains("P"));
 
         return (List<Item>) itemRepository.findAll(builder);
 

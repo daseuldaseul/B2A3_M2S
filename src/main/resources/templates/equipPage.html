@@ -16,6 +16,34 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="/css/adminlte.min.css">
   <link rel="stylesheet" href="/css/reset.css">
+  <style>
+        .autocomplete-results {
+            position: absolute;
+            top: 40px;
+            width: 85.5%;
+            z-index: 999;
+            background-color: #fff;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            margin-left: 60px;
+        }
+
+        .autocomplete-results ul {
+            list-style-type: none;
+            margin: 20px;
+            padding: 0;
+        }
+
+        .autocomplete-results li {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .autocomplete-results li:hover {
+            background-color: #f5f5f5;
+        }
+
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -58,6 +86,9 @@
                     <div class="col-auto">
                       <button type="submit" class="btn btn-block btn-primary ">조회 <i class="nav-icon fas fa-search"></i></button>
                     </div>
+                    <div class="col-auto">
+                      <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-xl">등록</button>
+                    </div>
                   </div>
                 </div>
 
@@ -67,7 +98,12 @@
                     <div class="input-group-prepend">
                     <button type="button" class="btn btn-default">설비명</button>
                     </div>
-                    <input type="text" name="equipNm" class="form-control">
+                    <div id="autocomplete-results" class="autocomplete-results">
+
+                    </div>
+                    <input type="text" id="equipName" name="equipNm" class="form-control" placeholder="설비명" onkeyup="autoComplete(this.value)">
+                    <input type="hidden" id="equipCode" name="equipCd">
+
                   </div>
 
                   <div class="input-group col-3">
@@ -106,7 +142,7 @@
                     <tr th:each="equipDto, status: ${equipList}">
                       <td th:text="${equipDto.equipCd}"></td>
                       <td th:text="${equipDto.equipNm}"></td>
-                      <td th:text="${equipDto.processes != null } ? ${equipDto.processes.procCd} : 'Null입니다^^'"></td>
+                      <td th:text="${equipDto.processes != null } ? ${equipDto.processes.procNm} : 'Null입니다^^'"></td>
                       <td th:text="${equipDto.capacity}"></td>
                       <td th:text="${equipDto.workTime}"></td>
                       <td th:text="${equipDto.readyTime}"></td>
@@ -166,6 +202,147 @@
 
           </div>
           <!-- /.col -->
+
+          <!-- modal -->
+
+          <form method="post" action="/equipment" th:object="${equipFormDto}">
+            <div class="modal fade" id="modal-xl">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">설비 등록</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">설비</button>
+                        </div>
+
+                        <input type="text" class="form-control" name="equipCd" placeholder="설비코드">
+                        &nbsp;&nbsp;&nbsp;
+                        <input type="text" class="form-control" name="equipNm" placeholder="설비명">
+                      </div>
+
+
+
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">공정명</button>
+                        </div>
+
+                        <input type="text" class="form-control" name="procNm" placeholder="공정명">
+
+
+
+                      </div>
+
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">생산 능력</button>
+                        </div>
+                        <input type="text" class="form-control" name="capacity" placeholder="생산능력">
+                      </div>
+
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">생산 단위</button>
+                        </div>
+                        <input type="text" class="form-control" name="capaUnit" placeholder="생산능력">
+                      </div>
+
+
+
+
+
+                    </div>
+
+                    <hr>
+
+                    <!--                    <div class="input-group col-3">-->
+                    <!--                      <div class="input-group-prepend">-->
+                    <!--                        <button type="button" class="btn btn-default">공정명</button>-->
+                    <!--                      </div>-->
+
+                    <!--                      <input type="text" class="form-control">-->
+
+                    <!--                    </div>-->
+
+                    <!--                    <div class="input-group col-3">-->
+                    <!--                      <div class="input-group-prepend">-->
+                    <!--                        <button type="button" class="btn btn-default">설비명</button>-->
+                    <!--                      </div>-->
+
+                    <!--                      <input type="text" class="form-control">-->
+
+
+
+                    <!--                    </div>-->
+
+                    <!--                    <div class="input-group col-3">-->
+                    <!--                      <div class="input-group-prepend">-->
+                    <!--                        <button type="text" class="btn btn-default">기타</button>-->
+                    <!--                      </div>-->
+
+                    <!--                      <input type="text" class="form-control">-->
+
+                    <!--                    </div>-->
+
+                    <!--                  </div>-->
+                    <!--                  <hr>-->
+
+
+                    <div class="row">
+                      <div class="input-group col-4">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">준비시간</button>
+                        </div>
+                        <input type="text" class="form-control" name="readyTime" placeholder="준비시간">
+                      </div>
+                      <div class="input-group col-4">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">준비시간 단위</button>
+                        </div>
+                        <input type="text" class="form-control" name="readyTime" placeholder="준비시간">
+                      </div>
+                    </div>
+
+
+                    <hr>
+
+
+                    <div class="row">
+                      <div class="input-group col-12">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">비고</button>
+                        </div>
+
+                        <textarea name="" id="" cols="135" rows="3"></textarea>
+
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <div class="">
+                      <button type="reset" class="btn btn-danger">삭제</button>
+                      <button type="submit" class="btn btn-primary">저장</button>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+
+              </div>
+
+              <!-- /.modal-dialog -->
+            </div>
+          </form>
+
         </div>
         <!-- /.row -->
       </div>
@@ -229,6 +406,54 @@
       "responsive": true,
     });
   });
+</script>
+<script>
+  function autoComplete(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/equipment/autoComplete',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var equipList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('equipCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < equipList.length; i++){
+            var list = document.createElement("li");
+            list.innerText = '[' + equipList[i].equipCd + ']' + equipList[i].equipNm;
+            list.setAttribute("data-equip-nm", equipList[i].equipNm); // 데이터 속성 추가
+            list.setAttribute("data-equip-cd", equipList[i].equipCd); // 데이터 속성 추가
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('equipName');
+            var equipNm = this.getAttribute("data-equip-nm"); // 데이터 속성 값 가져오기
+            var equipCd = this.getAttribute("data-equip-cd");
+            result.value = equipNm;
+            code.value = equipCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
 </script>
 </body>
 </html>

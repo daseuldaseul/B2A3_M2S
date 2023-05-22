@@ -6,6 +6,7 @@ import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.RoutingRepository;
 import B2A3_M2S.mes.entity.Routing;
+import B2A3_M2S.mes.service.ObtainOrderService;
 import B2A3_M2S.mes.service.RoutingService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -33,12 +35,21 @@ public class RoutingController {
     @Autowired
     RoutingService routingService;
 
+
     @GetMapping("/routing")
     public String routing(Model model) {
-        List<Item> itemList = itemRepository.findByItemGb("완제품");
+        List<Item> itemList = itemRepository.findByItemCdContaining("P");
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
 
         model.addAttribute("itemList", itemDtoList);
+        return "routingPage";
+    }
+
+    @PostMapping("/routing")
+    public String routingRegister(Model model) {
+
+
+//        model.addAttribute("routingFormDto", routingFormDto);
         return "routingPage";
     }
 
@@ -58,18 +69,32 @@ public class RoutingController {
     }
 
     @GetMapping("/routing/search")
-    public String routingSearch(@RequestParam String itemCd, @RequestParam String itemNm,
+    public String routingSearch(@RequestParam String itemCd,
+                                @RequestParam String itemNm,
                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                                 Model model) {
 
 
-        List<Item> itemList = routingService.searchItem(itemNm, itemCd, startDate, endDate);
+        List<Item> itemList = routingService.searchItem(itemCd, itemNm, startDate, endDate);
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
-
 
         model.addAttribute("itemList", itemDtoList);
 
         return "routingPage";
+    }
+
+    @GetMapping("/routing/autoComplete")
+    @ResponseBody
+    public String routingAutoComplete(@RequestParam("text") String text) {
+
+        Gson gson = new Gson();
+        System.out.println(text);
+        System.out.println("-------------------------------------------");
+        List<Item> item = itemRepository.findByItemNmContainingAndItemCdContaining(text, "P");
+        System.out.println(item);
+
+        String json = gson.toJson(item);
+        return json;
     }
 }

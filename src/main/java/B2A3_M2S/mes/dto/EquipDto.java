@@ -31,6 +31,7 @@ public class EquipDto {
     private String equipState;       //설비 상태
     private String seatingCapacity;     // 수용능력
     private Character fixYn;            // 고정여부
+    private String work_time_unit;      // 작업시간단위
 
     private List<EquipDto> equipDtos = new ArrayList<>();
     public static ModelMapper modelMapper = new ModelMapper();

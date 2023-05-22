@@ -5,6 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | DataTables</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+     function getSubTable(obj) {
+        var p = obj.parentNode;
+
+        for(var i = 0; i < p.children.length; i++) {
+            p.children[i].style.backgroundColor = '';
+        };
+
+        obj.style.backgroundColor = '#80808061';
+        var key = obj.querySelector("th[name='key']").textContent;
+
+        let requestData = {
+            codeGroup : key,
+            useYn : 'Y'
+        };
+
+        $.ajax({
+            type: 'GET',
+            url: '/system/detail',
+            data:  requestData,
+            contentType : "application/json; charset=utf-8",
+            success: function(responseData) {
+                $('#example2').DataTable().destroy();
+                var table = $('#example2_body');
+                table.empty();
+                for(var i = 0; i< responseData.length; i++) {
+                    var tr = document.createElement('tr');
+                    var cd = document.createElement('th');
+                    var cd_value = document.createElement('td');
+                    var sort = document.createElement('td');
+                    var remark = document.createElement('td');
+                    var useYn = document.createElement('td');
+                    var regDate = document.createElement('td');
+                    var modDate = document.createElement('td');
+
+                    cd.textContent  = responseData[i].codeId.cd;
+                    cd_value.textContent  = responseData[i].displayValue;
+                    sort.textContent  = responseData[i].codeSort;
+                    useYn.textContent  = responseData[i].useYn;
+                    remark.textContent  = responseData[i].remark;
+                    regDate.textContent  = responseData[i].regDate ? responseData[i].regDate.substring(0, 10) : '';
+                    modDate.textContent  = responseData[i].modDate ? responseData[i].modDate.substring(0, 10) : '';
+                    tr.appendChild(cd);
+                    tr.appendChild(cd_value);
+                    tr.appendChild(sort);
+                    tr.appendChild(remark);
+                    tr.appendChild(useYn);
+                    tr.appendChild(regDate);
+                    tr.appendChild(modDate);
+                    table.append(tr);
+                }
+                setPaging_detail();
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+     }
+    </script>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -14,12 +74,8 @@
     <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
-<<<<<<< HEAD
-    <link rel="stylesheet" href="/css/adminlte.min.css">
-=======
     <link rel="stylesheet" th:href="@{/css/adminlte.min.css}">
     <link rel="stylesheet" th:href="@{/css/reset.css}">
->>>>>>> a2fbb7de8c39f30f8fa977685a322b17f7ce9e58
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -37,6 +93,15 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>코드관리</h1>
+                        [[${param}]]
+
+                        <ul>
+                            <li th:each="entry : ${param}">
+                                Parameter: <span th:text="${entry.key}"></span>
+                                Value: <span th:text="${entry.value[0]}"></span>
+                            </li>
+                        </ul>
+
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -55,85 +120,89 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-
-                                <div class="row">
-                                    <div class="input-group col-12 justify-content-end">
-
-                                        <div class="col-auto">
-                                            <button type="button" class="btn btn-block btn-primary ">조회 <i
-                                                    class="nav-icon fas fa-search"></i></button>
-
-                                        </div>
-                                        <div class="col-auto">
-                                            <button type="button" class="btn btn-block btn-info" data-toggle="modal"
-                                                    data-target="#modal-xl">
-                                                등록
-                                            </button>
-
-                                        </div>
+                                <form method="get" action="/system/list">
 
 
-                                        <div class="col-auto">
-                                            <button type="button" class="btn btn-block btn-warning">수정</button>
+                                    <div class="row">
+                                        <div class="input-group col-12 justify-content-end">
+
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-block btn-primary">조회 <i
+                                                        class="nav-icon fas fa-search"></i></button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-block btn-info" data-toggle="modal"
+                                                        data-target="#modal-xl">
+                                                    등록
+                                                </button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="button" class="btn btn-block btn-warning">수정</button>
+                                            </div>
                                         </div>
                                     </div>
 
+                                    <hr>
+                                    <div class="row">
+                                        <div class="input-group col-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-default">그룹코드</button>
+                                            </div>
+                                            <th:block th:if="${param.get('codeId.cd') != null}">
+                                                <input type="text" class="form-control" name="codeId.cd"
+                                                       th:value="${param.get('codeId.cd')}">
+                                            </th:block>
+                                            <th:block th:unless="${param.get('codeId.cd') != null}">
+                                                <input type="text" class="form-control" name="codeId.cd">
+                                            </th:block>
 
-                                </div>
 
-                                <hr>
-                                <div class="row">
-                                    <div class="input-group col-3">
-                                        <div class="input-group-prepend">
-                                            <button type="button" class="btn btn-default">코드그룹</button>
+                                        </div>
+                                        <div class="input-group col-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-default">코드값
+                                                </button>
+                                            </div>
+                                            <input type="text" class="form-control" name="displayValue"
+                                                   th:value="${param.displayValue}">
                                         </div>
 
-                                        <input type="text" class="form-control">
+                                        <div class="input-group col-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-default">사용여부</button>
+                                            </div>
+                                            <select class="form-control" name="useYn">
+                                                <option value="A" th:selected="${param.useYn == null or param.useYn.toString() == 'A'}">전체</option>
+                                                <option value="Y" th:selected="${param.useYn != null and param.useYn.toString() == 'Y'}">사용</option>
+                                                <option value="N" th:selected="${param.useYn != null and param.useYn.toString() == 'N'}">미사용</option>
+                                            </select>
 
+                                        </div>
                                     </div>
-
-                                    <div class="input-group col-3">
-                                        <div class="input-group-prepend">
-                                            <button type="button" class="btn btn-default">코드</button>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="input-group col-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-default">등록일</button>
+                                            </div>
+                                            <input type="date" class="form-control" name="regDate"
+                                                   th:value="${param.regDate}">
+                                            <input type="date" class="form-control" name="regDateEnd"
+                                                   th:value="${param.regDateEnd}">
                                         </div>
 
-                                        <input type="text" class="form-control">
-
-                                    </div>
-
-                                    <div class="input-group col-3">
-                                        <div class="input-group-prepend">
-                                            <button type="button" class="btn btn-default">사용여부</button>
+                                        <div class="input-group col-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-default">수정일</button>
+                                            </div>
+                                            <input type="date" class="form-control" name="modDate"
+                                                   th:value="${param.modDate}">
+                                            <input type="date" class="form-control" name="modDateEnd"
+                                                   th:value="${param.modDateEnd}">
                                         </div>
-
-                                        <select class="form-control">
-                                            <option selected>전체</option>
-                                            <option value="Y">사용</option>
-                                            <option value="N">미사용</option>
-                                        </select>
-
                                     </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="input-group col-3">
-                                        <div class="input-group-prepend">
-                                            <button type="button" class="btn btn-default">등록일</button>
-                                        </div>
-                                        <input type="date" class="form-control">
-                                        <input type="date" class="form-control">
-                                    </div>
-
-                                    <div class="input-group col-3">
-                                        <div class="input-group-prepend">
-                                            <button type="button" class="btn btn-default">수정일</button>
-                                        </div>
-                                        <input type="date" class="form-control">
-
-                                        <input type="date" class="form-control">
-                                    </div>
-                                </div>
-                                <hr>
+                                    <hr>
+                                </form>
                             </div>
 
                             <!-- /.card-header -->
@@ -150,12 +219,8 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="dto : ${group}">
-                                    <th scope="row">
-                                    <a>
-                                        [[${dto.cd}]]
-                                    </a>
-                                    </th>
+                                    <tr onclick="getSubTable(this)" th:each="dto : ${group}">
+                                        <th name="key" scope="row">[[${dto.cd}]]</th>
                                         <td>[[${dto.displayValue}]]</td>
                                         <td>[[${dto.remark}]]</td>
                                         <td>[[${dto.codeSort}]]</td>
@@ -170,25 +235,17 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead style="background-color: rgb(16, 23, 86); color: #ffffff;">
                                     <tr>
-                                        <th>그룹코드</th>
-                                        <th>그룹명</th>
-                                        <th>비고</th>
+                                        <th>코드</th>
+                                        <th>코드값</th>
                                         <th>정렬순서</th>
+                                        <th>비고</th>
                                         <th>사용유무</th>
+                                        <th>등록일시</th>
+                                        <th>수정일시</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr th:each="dto : ${group}">
-                                        <th scope="row">
-                                            <a>
-                                                [[${dto.cd}]]
-                                            </a>
-                                        </th>
-                                        <td>[[${dto.displayValue}]]</td>
-                                        <td>[[${dto.remark}]]</td>
-                                        <td>[[${dto.codeSort}]]</td>
-                                        <td>[[${dto.useYn}]]</td>
-                                    </tr>
+                                    <tbody id="example2_body">
+
                                     </tbody>
                                 </table>
                             </div>
@@ -362,38 +419,42 @@
 <!-- Toastr -->
 <script src="/plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
-<<<<<<< HEAD
-<script src="/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="/dist/js/demo.js"></script>
-<!-- Page specific script -->
-=======
 <script th:src="@{/js/adminlte.min.js}"></script>
 <!-- AdminLTE for demo purposes -->
 <script th:src="@{/js/demo.js}"></script>
->>>>>>> a2fbb7de8c39f30f8fa977685a322b17f7ce9e58
 
 
 <!-- Page specific script -->
+<script>
+  $(function () {
+    setPaging_master();
+  });
 
-      <script>
-      $(function () {
-          $("#example1").DataTable({
-              "responsive": true, "lengthChange": false, "autoWidth": false,
-              "buttons": ["excel"],
-              "info": false,
-              "searching": false
-          }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-          $('#example2').DataTable({
-              "paging": true,
-              "lengthChange": false,
-              "searching": false,
-              "ordering": true,
-              "info": true,
-              "autoWidth": false,
-              "responsive": true,
-          });
-      });
+function setPaging_master() {
+ $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["excel"],
+      "info": false,
+      "searching": false,
+      "paging": true, // 페이징 활성화
+      "destroy": true
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+};
+
+function setPaging_detail() {
+  $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "destroy": true
+    });
+}
 
 </script>
 </body>

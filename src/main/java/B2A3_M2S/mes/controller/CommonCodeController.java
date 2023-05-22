@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.CommonCodeDTO;
 import B2A3_M2S.mes.entity.CommonCode;
 import B2A3_M2S.mes.service.CodeService;
 import lombok.extern.log4j.Log4j2;
@@ -21,12 +22,12 @@ public class CommonCodeController {
     CodeService service;
 
     @GetMapping("/list")
-    public void list(Model model, String useYn) {
-        model.addAttribute("group", service.getGroupList(useYn));
+    public void list(Model model, CommonCodeDTO dto) {
+        model.addAttribute("group", service.getGroupList(dto));
     }
 
     @GetMapping("/detail")
-    public @ResponseBody ResponseEntity<List<CommonCode>> detail(String codeGroup, String useYn) throws Exception {
-        return  ResponseEntity.ok(service.getCodeList(codeGroup, useYn));
+    public @ResponseBody ResponseEntity<List<CommonCodeDTO>> detail(String codeGroup, String useYn) throws Exception {
+        return ResponseEntity.ok(service.getCodeList(codeGroup, useYn));
     }
 }

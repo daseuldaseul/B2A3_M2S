@@ -36,7 +36,7 @@ public class ProcessesService {
             builder.and(qProcesses.procState.eq(procState));
         }
         if (startDate != null && endDate != null) {
-            builder.and(qProcesses.regdate.between(startDate, endDate));
+            builder.and(qProcesses.regDate.between(startDate, endDate));
         }
         return (List<Processes>) processesRepository.findAll(builder);
     }

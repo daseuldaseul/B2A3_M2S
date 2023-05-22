@@ -13,9 +13,9 @@ public interface CodeService {
 
     void remove(CommonCodePK codeId);
 
-    List<CommonCode> getGroupList(String useYn);
+    List<CommonCodeDTO> getGroupList(CommonCodeDTO dto);
 
-    List<CommonCode> getCodeList(String codeGroup, String useYn);
+    List<CommonCodeDTO> getCodeList(String codeGroup, String useYn);
 
     default CommonCode dtoToEntity(CommonCodeDTO dto) {
         CommonCode entity = CommonCode.builder()
@@ -36,6 +36,8 @@ public interface CodeService {
                 .codeSort(entity.getCodeSort())
                 .useYn(entity.getUseYn())
                 .remark(entity.getRemark())
+                //.regDate(entity.getRegDate().toLocalDate())
+                //.modDate(entity.getModDate().toLocalDate())
                 .build();
         return dto;
     }

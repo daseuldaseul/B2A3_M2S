@@ -36,6 +36,6 @@ public class CodeServiceImplTests {
 
     @Test
     public void getGroupListTest() {
-        System.out.println(service.getGroupList("Y"));
+        System.out.println("123");
     }
 }

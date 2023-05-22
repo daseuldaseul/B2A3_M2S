@@ -35,7 +35,7 @@ public class ObtainOrderService {
     @Autowired
     ItemRepository itemRepository;
 
-    public ObtainOrderFormDto writeObtainOrder(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm){
+    public ObtainOrderFormDto writeObtainOrder(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm) {
         obtainOrderFormDto.setCompany(companyRepository.findByCompanyNm(companyNm));
         obtainOrderFormDto.setItem(itemRepository.findByItemNm(itemNm));
         obtainOrderFormDto.setOrderCd("code_" + itemNm + obtainOrderRepository.count());
@@ -43,20 +43,19 @@ public class ObtainOrderService {
         min = Math.ceil(min);
         LocalDateTime orderDate = LocalDateTime.now();
 
-        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(12,0));
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 0));
         LocalDateTime dueTime = orderDate;
         obtainOrderFormDto.setOrderDate(orderDate);
 
-        if(orderDate.compareTo(dateTime) <= 0){
+        if (orderDate.compareTo(dateTime) <= 0) {
             dueTime.plusDays(2);
-        }else{
+        } else {
             dueTime.plusDays(3);
         }
 
-        obtainOrderFormDto.setDueDate(dueTime.plusMinutes((int)min));
+        obtainOrderFormDto.setDueDate(dueTime.plusMinutes((int) min));
         return obtainOrderFormDto;
-    ObtainOrderRepository obtainOrderRepository;
-
+    }
     @Transactional
     public List<ObtainOrder> searchObtainOrder(String companyCd, String companyNm, LocalDateTime startDateTime, LocalDateTime endDateTime,
                                                String orderState, String itemCd, String itemNm, String orderCd) {
@@ -94,5 +93,4 @@ public class ObtainOrderService {
         return (List<ObtainOrder>) obtainOrderRepository.findAll(builder);
 
     }
-}
 }

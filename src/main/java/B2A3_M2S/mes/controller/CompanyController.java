@@ -114,4 +114,16 @@ public class CompanyController {
 
     }
 
+
+    @GetMapping("/company/searchWord")
+    @ResponseBody
+    public String autoComplete(@RequestParam String text){
+        Gson gson = new Gson();
+
+        List<Company> companyList = companyRepository.findByCompanyNmContaining(text);
+        List<CompanyDto> companyDtoList = CompanyDto.of(companyList);
+        String json = gson.toJson(companyDtoList);
+        System.out.println(json);
+        return json;
+    }
 }

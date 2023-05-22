@@ -16,6 +16,35 @@
   <link rel="stylesheet" href="/css/reset.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/css/adminlte.min.css">
+
+  <style>
+        .autocomplete-results {
+            position: absolute;
+            top: 40px;
+            width: 85.5%;
+            z-index: 999;
+            background-color: #fff;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            margin-left: 60px;
+        }
+
+        .autocomplete-results ul {
+            list-style-type: none;
+            margin: 20px;
+            padding: 0;
+        }
+
+        .autocomplete-results li {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .autocomplete-results li:hover {
+            background-color: #f5f5f5;
+        }
+
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -79,20 +108,24 @@
 
                   <hr>
                   <div class="row">
-                    <div class="input-group col-3">
-                      <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">공정코드</button>
-                      </div>
+<!--                    <div class="input-group col-3">-->
+<!--                      <div class="input-group-prepend">-->
+<!--                        <button type="button" class="btn btn-default">공정코드</button>-->
+<!--                      </div>-->
 
-                      <input type="text" name="procCd" class="form-control">
+<!--                      <input type="text" name="procCd" class="form-control">-->
 
-                    </div>
+<!--                    </div>-->
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
                         <button type="button" class="btn btn-default">공정명</button>
                       </div>
 
-                      <input type="text" name="procNm" class="form-control">
+                      <div id="autocomplete-results" class="autocomplete-results">
+
+                      </div>
+                      <input type="hidden" id="processCode" name="procCd">
+                      <input type="text" id="processName" name="procNm" class="form-control" onkeyup="autoComplete(this.value)">
 
                     </div>
 
@@ -383,6 +416,52 @@
       "responsive": true,
     });
   });
+</script>
+<script>
+
+   function autoComplete(text){
+
+$.ajax({
+  url: '/process/searchWord',
+  type: 'GET',
+  data: { text: text },
+  success: function(response) {
+  var processList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+  var div = document.getElementById('autocomplete-results');
+  div.innerHTML = "";
+  var code = document.getElementById('processCode');
+  code.value = "";
+  var ul = document.createElement("ul");
+
+  for (var i=0; i < processList.length; i++){
+    var list = document.createElement("li");
+    list.innerText ='[' + processList[i].procCd + ']' + processList[i].procNm;
+    list.setAttribute("data-process-nm", processList[i].procNm); // 데이터 속성 추가
+    list.setAttribute("data-process-cd", processList[i].procCd);
+
+
+    list.addEventListener("click", function() {
+    var result = document.getElementById('processName');
+    var procNm = this.getAttribute("data-process-nm"); // 데이터 속성 값 가져오기
+    var procCd = this.getAttribute("data-process-cd");
+    result.value = procNm;
+    code.value = procCd;
+    div.innerHTML = "";
+  });
+
+    ul.append(list);
+    div.append(ul);
+  }
+
+
+  },
+    error: function(xhr) {
+    // 에러 처리를 수행합니다.
+    console.log(xhr.responseText);
+    }
+  });
+
+}
 </script>
 </body>
 </html>

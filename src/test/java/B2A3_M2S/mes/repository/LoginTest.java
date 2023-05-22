@@ -16,6 +16,12 @@ public class LoginTest {
     @Test
     public void test() {
         //계량 -> 세척 -> 추출-> 가열 -> 충진 -> 검사 ->식힘 -> 포장
+        int pCnt = 8;
         pList = new ArrayList<>();
+
+        for(int i =0; i < pCnt; i++) {
+            ProcessesDto dto = new ProcessesDto();
+
+        }
     }
 }

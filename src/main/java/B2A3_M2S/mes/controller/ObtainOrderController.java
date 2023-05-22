@@ -83,14 +83,9 @@ public class ObtainOrderController {
 //        obtainOrderFormDto.setOrderDate(LocalDateTime.now());
 //        obtainOrderFormDto.setDueDate(obtainOrderFormDto.getOrderDate().plusMinutes((int)min));
 
-
-        // 오류로 인해 주석처리 하였습니다.
-        // gson, obtainOrderDtoList 없음
         ObtainOrderFormDto result = obtainOrderService.writeObtainOrder(obtainOrderFormDto, companyNm, itemNm);
         ObtainOrder obtainOrder = new ObtainOrder();
-
         obtainOrder = result.createObtainOrder();
-
         obtainOrderRepository.save(obtainOrder);
         return "obtainOrderPage";
     }
@@ -148,5 +143,4 @@ public class ObtainOrderController {
         String json = gson.toJson(obtainOrderList);
         return json;
     }
-
 }

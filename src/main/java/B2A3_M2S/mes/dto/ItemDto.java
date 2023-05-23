@@ -3,6 +3,7 @@ package B2A3_M2S.mes.dto;
 import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Equipment;
 import B2A3_M2S.mes.entity.Item;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -40,9 +41,7 @@ public class ItemDto {
     private String itemUnitNm;       //재고 단위 코드값 받아올 변수
 
     private String itemType;    //품목 타입
-
     private String itemUnit;       //재고 단위
-
     private String sUnit;   //규격 단위
 
     private CompanyDto company;   // 업체코드
@@ -50,6 +49,13 @@ public class ItemDto {
     private LocalDate regDate;
 
     private LocalDate modDate;
+
+    
+    // 코드값
+    private String sUnitValue;
+    private String itemGbValue;
+    private String itemTypeValue;
+    private String itemUnitValue;
 
     public static ModelMapper modelMapper = new ModelMapper();
 
@@ -62,6 +68,18 @@ public class ItemDto {
     }
 
     public static List<ItemDto> of(List<Item> itemList) {
-        return modelMapper.map(itemList, new TypeToken<List<ItemDto>>() {}.getType());
+        return modelMapper.map(itemList, new TypeToken<List<ItemDto>>() {
+        }.getType());
+    }
+
+    public void setCodeValue() {
+        if (this.getItemGb() != null)
+            setItemGbValue(CodeServiceImpl.getCodeNm("ITEM_GB", this.getItemGb()));
+        if (this.getItemType() != null)
+            setItemTypeValue(CodeServiceImpl.getCodeNm("ITEM_TYPE", this.getItemType()));
+        if (this.getSUnit() != null)
+            setSUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE", this.getSUnit()));
+        if (this.getItemUnit() != null)
+            setItemUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE", this.getItemUnit()));
     }
 }

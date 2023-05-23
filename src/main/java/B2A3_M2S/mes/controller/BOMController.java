@@ -44,7 +44,7 @@ public class BOMController {
 //    }
 
 
-    @GetMapping("/test")
+    @GetMapping("/list")
     /*public String test1(Model model
                     , @RequestParam("product")String product
                     , @RequestParam("material")String material
@@ -52,8 +52,13 @@ public class BOMController {
                     , @RequestParam("endregDate")String endregDate){
         List<BOMDTO> BOM = service.selectAllBOM(product, material , endregDate , startregDate);*/
     public String test1(Model model, BOMDTO dto){
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+dto);
         List<BOMDTO> BOM = service.selectAllBOM(dto);
+
+        for(BOMDTO bDto : BOM) {
+            bDto.getMItem().setCodeValue();
+            bDto.getPItem().setCodeValue();
+        }
+
         model.addAttribute( "BOM" ,  BOM) ;
         System.out.println(BOM);
 

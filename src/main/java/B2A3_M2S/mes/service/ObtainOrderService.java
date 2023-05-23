@@ -71,7 +71,6 @@ public class ObtainOrderService {
         obtainOrderFormDto.setDueDate(dueTime.plusMinutes((int) min));
         return obtainOrderFormDto;
     }
-
     @Transactional
     public List<ObtainOrder> searchObtainOrder(String companyCd, String companyNm, LocalDateTime startDateTime, LocalDateTime endDateTime,
                                                String orderState, String itemCd, String itemNm, String orderCd) {

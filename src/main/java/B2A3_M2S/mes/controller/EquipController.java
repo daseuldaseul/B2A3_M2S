@@ -55,10 +55,10 @@ public class EquipController {
 
 
     @PostMapping("/equipment")
-    public String equipmentRegister(EquipFormDto equipFormDto, Model model) {
+    public String equipmentRegister(EquipFormDto equipFormDto, String procNm, Model model) {
+        EquipFormDto result = equipService.writeEquip(equipFormDto, procNm);
         Equipment equipment = new Equipment();
-        equipment = equipFormDto.createEquipment(); // equipFormDto를 equipment로 변환
-        equipment.setRegDate(LocalDate.now());
+        equipment = result.createEquipment(); // equipFormDto를 equipment로 변환
         equipRepository.save(equipment);
 
 
@@ -80,6 +80,7 @@ public class EquipController {
         }
         model.addAttribute("equipList", equipDtoList);
         model.addAttribute("codeList1", CodeServiceImpl.getCodeList("EQUIP_STATE"));
+        model.addAttribute("codeList2", CodeServiceImpl.getCodeList("UNIT_TYPE"));
 
 
         return "equipPage";

@@ -17,4 +17,6 @@ public interface ProcessesRepository extends JpaRepository<Processes, String>, Q
     List<Processes> findAll();
 
     List<Processes> findByProcNmContaining(String procNm);
+
+    Processes findByProcNm(String ProcNm);
 }

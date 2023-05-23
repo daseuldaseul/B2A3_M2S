@@ -34,7 +34,7 @@ public class CompanyService {
         if (companyNm != null) {
             builder.and(qCompany.companyNm.contains(companyNm));
         }
-        if (companyGb != "" && companyGb != null){
+        if (!companyGb.equals("none")){
             builder.and(qCompany.companyGb.eq(companyGb));
         }
         if (startDate != null && endDate != null) {

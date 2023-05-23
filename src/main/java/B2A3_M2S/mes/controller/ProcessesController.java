@@ -36,24 +36,14 @@ public class ProcessesController {
     @GetMapping("/process")
     public String view(Model model){
 
-//        for(int i=1; i<99; i++){
-//            Processes processes = new Processes();
-//            processes.setProcCd("code" + i);
-//            processes.setProcNm("공정" + i);
-//            processes.setReadyTime(10L + i);
-//            processes.setWorkTime(100L + i);
-//            processes.setCapacity(50L+ i);
-//            processes.setProcState("finish");
-//            processes.setRegDate(LocalDateTime.now());
-//            processes.setModDate(LocalDateTime.now());
-//            processesRepository.save(processes);
-//
-//        }
+
         List<ProcessesDto> processList =  ProcessesDto.of(processesRepository.findAll());
         for(ProcessesDto process : processList){
             process.setProcStateNm(CodeServiceImpl.getCodeNm("PROCESS_STATE", process.getProcState()));
+            process.setProcUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", process.getProcUnit()));
+            process.setReadyUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", process.getReadyUnit()));
+            process.setWorkTimeUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", process.getWorkTimeUnit()));
         }
-
 
         model.addAttribute("codeList", CodeServiceImpl.getCodeList("PROCESS_STATE"));
         model.addAttribute("processList", processList);
@@ -72,6 +62,9 @@ public class ProcessesController {
         List<ProcessesDto> processList =  ProcessesDto.of(processesService.searchProcesses(procNm, procCd, procState, startDate, endDate));
         for(ProcessesDto process : processList){
             process.setProcStateNm(CodeServiceImpl.getCodeNm("PROCESS_STATE", process.getProcState()));
+            process.setProcUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", process.getProcUnit()));
+            process.setReadyUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", process.getReadyUnit()));
+            process.setWorkTimeUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", process.getWorkTimeUnit()));
         }
         model.addAttribute("codeList", CodeServiceImpl.getCodeList("PROCESS_STATE"));
         model.addAttribute("processList", processList);

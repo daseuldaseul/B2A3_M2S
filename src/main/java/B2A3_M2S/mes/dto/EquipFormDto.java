@@ -27,7 +27,7 @@ public class EquipFormDto {
     private String remark;      //비고
 
 
-    private Processes processes;      //공정 코드
+    private ProcessesDto processes;      //공정 코드
 
     private String readyUnit;   //준비시간 단위
 

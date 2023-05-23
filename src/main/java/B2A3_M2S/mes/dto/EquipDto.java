@@ -25,7 +25,7 @@ public class EquipDto {
     private Long capacity;   //생산 능력
     private String workTime;    //생산 소요시간
     private String remark;      //비고
-    private Processes processes;      //공정 코드
+    private ProcessesDto processes;      //공정 코드
     private String readyUnit;   //준비시간 단위
     private String readyUnitNm;   //준비시간 단위
     private String capaUnit;    //생산 단위

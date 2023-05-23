@@ -32,7 +32,7 @@ public class ProcessesService {
         if (procCd != null) {
             builder.and(qProcesses.procCd.contains(procCd));
         }
-        if (procState != "" && procState != null){
+        if (!procState.equals("none")){
             builder.and(qProcesses.procState.eq(procState));
         }
         if (startDate != null && endDate != null) {

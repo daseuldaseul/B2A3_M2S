@@ -95,9 +95,6 @@
                         <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-xl">등록</button>
                       </div>
 
-<!--                      <div class="col-auto">-->
-<!--                        <button type="button" class="btn btn-block btn-warning">수정</button>-->
-<!--                      </div>-->
                     </div>
 
 
@@ -108,14 +105,7 @@
 
                   <hr>
                   <div class="row">
-<!--                    <div class="input-group col-3">-->
-<!--                      <div class="input-group-prepend">-->
-<!--                        <button type="button" class="btn btn-default">공정코드</button>-->
-<!--                      </div>-->
 
-<!--                      <input type="text" name="procCd" class="form-control">-->
-
-<!--                    </div>-->
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
                         <button type="button" class="btn btn-default">공정명</button>
@@ -131,7 +121,21 @@
 
 
 
+
+
                     <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">공정 상태</button>
+                      </div>
+
+                      <select class="form-control" name="procState" >
+                        <option value="none">미선택</option>
+                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+
+                      </select>
+
+                    </div>
+                    <div class="input-group col-4">
                       <div class="input-group-prepend">
                         <button type="button" class="btn btn-default">등록일</button>
                       </div>
@@ -141,19 +145,6 @@
                       <input type="date" class="form-control" name="endDate">
 
                     </div>
-
-                    <div class="input-group col-3">
-                      <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">공정 상태</button>
-                      </div>
-
-                      <select class="form-control" name="procState" >
-                        <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
-
-                      </select>
-
-                    </div>
-
                   </div>
 
 

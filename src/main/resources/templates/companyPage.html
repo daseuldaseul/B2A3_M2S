@@ -130,6 +130,7 @@
 <!--                      </select>-->
 
                       <select class="form-control" name="companyGb" >
+                        <option value="none">미선택</option>
                         <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
 
                       </select>

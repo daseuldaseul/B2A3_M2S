@@ -43,6 +43,12 @@ public class ItemDto {
 
     private String itemUnit;       //재고 단위
 
+    private String itemGbNm;      //품목 구분 이름
+
+    private String itemTypeNm;    //품목 타입 이름
+
+    private String itemUnitNm;       //재고 단위 이름
+
     private String sUnit;   //규격 단위
 
     private Company company;   // 업체코드

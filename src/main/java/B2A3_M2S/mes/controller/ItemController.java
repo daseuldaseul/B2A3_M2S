@@ -47,20 +47,14 @@ public class ItemController {
 
         List<Item> itemList = itemRepository.findAll();
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
-
         for(ItemDto items : itemDtoList){
             items.setItemGbNm(CodeServiceImpl.getCodeNm("ITEM_GB", items.getItemGb()));
-        //itemDto의 itemGbNm 값 itemGb값으로 코드값 찾아와서 지정
             items.setItemTypeNm(CodeServiceImpl.getCodeNm("ITEM_TYPE", items.getItemType()));
-        //itemDto의 itemTypeNm 값 itemType값으로 코드값 찾아와서 지정
             items.setItemUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", items.getItemUnit()));
-        //itemDto의 itemUnitNm 값 itemUnit값으로 코드값 찾아와서 지정
         }
-
         model.addAttribute("codeList1", CodeServiceImpl.getCodeList("ITEM_GB"));
         model.addAttribute("codeList2", CodeServiceImpl.getCodeList("ITEM_TYPE"));
         model.addAttribute("codeList3", CodeServiceImpl.getCodeList("UNIT_TYPE"));
-
         model.addAttribute("itemList", itemDtoList);
         return "itemPage";
     }
@@ -126,4 +120,6 @@ public class ItemController {
         String json = gson.toJson(companyList);
         return json;
     }
+
+
 }

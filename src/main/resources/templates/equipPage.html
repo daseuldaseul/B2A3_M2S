@@ -112,8 +112,8 @@
                     </div>
                     <select class="form-control" name="equipState">
                       <option selected>미선택</option>
-                      <option>정상</option>
-                      <option>고장</option>
+                      <option th:each="codeList : ${codeList1}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+
                     </select>
                   </div>
 
@@ -133,6 +133,7 @@
                     <th>공정명</th>
                     <th>생산 능력</th>
                     <th>생산 소요 시간</th>
+                    <th>생산 시간 고정 여부</th>
                     <th>준비 시간</th>
                     <th>설비 상태</th>
                     <th>비고</th>
@@ -143,10 +144,11 @@
                       <td th:text="${equipDto.equipCd}"></td>
                       <td th:text="${equipDto.equipNm}"></td>
                       <td th:text="${equipDto.processes != null } ? ${equipDto.processes.procNm} : 'Null입니다^^'"></td>
-                      <td th:text="${equipDto.capacity}"></td>
-                      <td th:text="${equipDto.workTime}"></td>
-                      <td th:text="${equipDto.readyTime}"></td>
-                      <td th:text="${equipDto.equipState}"></td>
+                      <td th:text="${equipDto.capacity != null} ? ${equipDto.capacity}  + ' ' + ${equipDto.capaUnitNm} : ''"></td>
+                      <td th:text="${equipDto.workTime != null} ? ${equipDto.workTime}  + ' ' + ${equipDto.workTimeUnitNm} : ''"></td>
+                      <td th:text="${equipDto.fixYn}"></td>
+                      <td th:text="${equipDto.readyTime != null} ? ${equipDto.readyTime}  + ' ' + ${equipDto.readyUnitNm} : ''"></td>
+                      <td th:text="${equipDto.equipStateNm}"></td>
                       <td th:text="${equipDto.remark}"></td>
                     </tr>
                   </tbody>

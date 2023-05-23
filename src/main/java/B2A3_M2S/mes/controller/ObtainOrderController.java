@@ -12,6 +12,7 @@ import B2A3_M2S.mes.entity.Routing;
 import B2A3_M2S.mes.repository.CompanyRepository;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ObtainOrderService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,19 +45,12 @@ public class ObtainOrderController {
 
     @GetMapping("/obtainOrder")
     public String ObtainOrder(Model model) {
-//        LocalDateTime now = LocalDateTime.now();
-//        System.out.println(now);
-//        int x = 20;    //박스 수
-//        double min = 3060 + 6.1 * (double)x;
-//        min = Math.ceil(min);
-//        System.out.println("시간!!!!!!!!!!!!!!!!!!!!!!"+min);
-//        LocalDateTime result = now.plusMinutes((int)min);
-//
-//        System.out.println(result);
-//        //3060 + 6.1 * 박스수
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
-
+        for(ObtainOrderDto obtainOrderDto : obtainOrderDtoList){
+              obtainOrderDto.setOrderUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", obtainOrderDto.getOrderUnit()));
+        }
+        model.addAttribute("codeList", CodeServiceImpl.getCodeList("OBTAIN_STATE"));
         model.addAttribute("obtainOrderList", obtainOrderDtoList);
         return "obtainOrderPage";
     }
@@ -64,35 +58,26 @@ public class ObtainOrderController {
     @ResponseBody
     @GetMapping("/obtainOrder/detail")
     public String obtainOrderDetail(@RequestParam String orderCd, Model model) {
-
         Gson gson = new Gson();
         System.out.println("-------------------------------------------");
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findByOrderCd(orderCd);
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
+        for(ObtainOrderDto obtainOrderDto : obtainOrderDtoList){
+            obtainOrderDto.setOrderStateNm(CodeServiceImpl.getCodeNm("OBTAIN_STATE", obtainOrderDto.getOrderState()));
+    }
 
-        return "obtainOrderPage";
+        String json = gson.toJson(obtainOrderDtoList);
+        return json;
     }
 
     @PostMapping("/obtainOrder")
     public String obtainOrderWrite(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm, Model model){
-//        obtainOrderFormDto.setCompany(companyRepository.findByCompanyNm(companyNm));
-//        obtainOrderFormDto.setItem(itemRepository.findByItemNm(itemNm));
-//        obtainOrderFormDto.setOrderCd("code_" + itemNm + obtainOrderRepository.count());
-//        double min = 3060 + 6.1 * (double) obtainOrderFormDto.getQty();
-//        min = Math.ceil(min);
-//        obtainOrderFormDto.setOrderDate(LocalDateTime.now());
-//        obtainOrderFormDto.setDueDate(obtainOrderFormDto.getOrderDate().plusMinutes((int)min));
 
         ObtainOrderFormDto result = obtainOrderService.writeObtainOrder(obtainOrderFormDto, companyNm, itemNm);
         ObtainOrder obtainOrder = new ObtainOrder();
         obtainOrder = result.createObtainOrder();
         obtainOrderRepository.save(obtainOrder);
-
-        List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
-        List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
-
-        model.addAttribute("obtainOrderList", obtainOrderDtoList);
-        return "obtainOrderPage";
+        return "redirect:/obtainOrder";
     }
 
     @GetMapping("/obtainOrder/search")

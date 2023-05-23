@@ -24,9 +24,9 @@ public class RoutingFormDto {
 
     private Character useYn;    //사용유무
 
-    private Item item;    //품목 코드
+    private ItemDto item;    //품목 코드
 
-    private Processes processes; //공정 코드
+    private ProcessesDto processes; //공정 코드
 
     private LocalDate regDate;
 

@@ -130,9 +130,7 @@
                                             </div>
                                             <select class="form-control" name="orderState">
                                                 <option selected>미선택</option>
-                                                <option>확정</option>
-                                                <option>진행중</option>
-                                                <option>납품 완료</option>
+                                                <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -189,7 +187,7 @@
                                         <td th:text="${#temporals.format(obtainOrderDto.orderDate, 'yyyy-MM-dd')}" ></td>
                                         <td th:text="${#temporals.format(obtainOrderDto.dueDate, 'yyyy-MM-dd')}" ></td>
                                         <td th:text="${obtainOrderDto.qty}"></td>
-                                        <td th:text="${obtainOrderDto.orderUnit}"></td>
+                                        <td th:text="${obtainOrderDto.orderUnitNm}"></td>
                                         <td th:text="${obtainOrderDto.remark}"></td>
                                     </tr>
 
@@ -243,30 +241,26 @@
                 </div>
                 <!-- /.col -->
 
-
-
-
-
-
-
                 <form method="post" action="/obtainOrder" th:object="${obtainOrderFormDto}">
                     <div class="modal fade" id="modal-xl">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">공정 등록</h4>
+                                    <h4 class="modal-title">수주 등록</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="input-group col-6">
+                                        <div class="input-group col-3">
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">업체명</button>
                                             </div>
+                                            <div id="autocomplete-results3" class="autocomplete-results">
 
-                                            <input type="text" class="form-control" name="companyNm" placeholder="업체명">
+                                            </div>
+                                            <input type="text" class="form-control" name="companyNm" id="companySearch" placeholder="업체명" onkeyup="autoComplete3(this.value)">
 
                                         </div>
 
@@ -276,8 +270,10 @@
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">수주 상품명</button>
                                             </div>
+                                            <div id="autocomplete-results4" class="autocomplete-results">
 
-                                            <input type="text" class="form-control" name="itemNm" placeholder="상품명">
+                                            </div>
+                                            <input type="text" class="form-control" id="itemSearch" name="itemNm" placeholder="상품명" onkeyup="autoComplete4(this.value)">
 
 
 
@@ -294,8 +290,16 @@
                                         </div>
                                     </div>
                                     <hr>
+                                    <div class="row">
+                                    <div class="input-group col-9">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btn-default">배송지</button>
+                                        </div>
 
+                                        <input type="text" class="form-control" name="shipAdr" placeholder="배송지">
 
+                                    </div>
+                                    </div>
                                     <hr>
 
 
@@ -492,6 +496,97 @@ function autoComplete2(text) {
 
   }
 
+function autoComplete3(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/obtainOrder/autoComplete',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var companyList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results3'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('companyCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < companyList.length; i++){
+            var list = document.createElement("li");
+            list.innerText ='[' + companyList[i].companyCd + ']' + companyList[i].companyNm;
+            list.setAttribute("data-company-nm", companyList[i].companyNm); // 데이터 속성 추가
+            list.setAttribute("data-company-cd", companyList[i].companyCd);
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('companySearch');
+            var companyNm = this.getAttribute("data-company-nm"); // 데이터 속성 값 가져오기
+            var companyCd = this.getAttribute("data-company-cd");
+            result.value = companyNm;
+            code.value = companyCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
+
+function autoComplete4(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/obtainOrder/autoComplete2',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var itemList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results4'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('itemCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < itemList.length; i++){
+            var list = document.createElement("li");
+            list.innerText ='[' + itemList[i].itemCd + ']' + itemList[i].itemNm;
+            list.setAttribute("data-item-nm", itemList[i].itemNm); // 데이터 속성 추가
+            list.setAttribute("data-item-cd", itemList[i].itemCd);
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('itemSearch');
+            var itemNm = this.getAttribute("data-item-nm"); // 데이터 속성 값 가져오기
+            var itemCd = this.getAttribute("data-item-cd");
+            result.value = itemNm;
+            code.value = itemCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
 
 
   function getObtainOrderValue(element) {
@@ -514,7 +609,7 @@ var obtainOrders = JSON.parse(response); // JSON 문자열을 객체로 변환�
       obtainOrders.forEach(function(obtainOrder) {
         tableRow += '<tr>';
         tableRow += '<td th:text="${obtainOrder.orderCd}">' + obtainOrder.orderCd + '</td>';
-        tableRow += '<td th:text="${obtainOrder.orderState}">' + obtainOrder.orderState + '</td>';
+        tableRow += '<td th:text="${obtainOrder.orderStateNm}">' + obtainOrder.orderStateNm + '</td>';
         tableRow += '<td th:text="${obtainOrder.item.itemCd}">' + obtainOrder.item.itemCd + '</td>';
         tableRow += '<td th:text="${obtainOrder.item.itemNm}">' + obtainOrder.item.itemNm + '</td>';
         tableRow += '<td th:text="${obtainOrder.company.phoneNumber}">' + obtainOrder.company.phoneNumber + '</td>';

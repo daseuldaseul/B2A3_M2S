@@ -44,8 +44,8 @@ public class ProcessesController {
 //            processes.setWorkTime(100L + i);
 //            processes.setCapacity(50L+ i);
 //            processes.setProcState("finish");
-//            processes.setRegdate(LocalDateTime.now());
-//            processes.setModdate(LocalDateTime.now());
+//            processes.setRegDate(LocalDateTime.now());
+//            processes.setModDate(LocalDateTime.now());
 //            processesRepository.save(processes);
 //
 //        }
@@ -83,7 +83,7 @@ public class ProcessesController {
     public String processWrite(ProcessesFormDto processesFormDto, Model model){
         Processes processes = new Processes();
         processes = processesFormDto.createProcesses();
-        processes.setRegdate(LocalDate.now());
+        processes.setRegDate(LocalDate.now());
 
         processesRepository.save(processes);
         List<ProcessesDto> processList =  ProcessesDto.of(processesRepository.findAll());

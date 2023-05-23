@@ -29,7 +29,6 @@ public class CommonCodeDTO {
     }
 
     public String getCd() {
-        System.out.println("123: " + codeId);
         return this.codeId != null ? this.codeId.getCd() : "";
     }
 }

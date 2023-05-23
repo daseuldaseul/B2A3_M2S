@@ -30,7 +30,7 @@ public class CompanyDto {
     private String companyGb;   //업체 구분
     private String companyGbNm;
 
-    private LocalDate regdate;
+    private LocalDate regDate;
 
 
 

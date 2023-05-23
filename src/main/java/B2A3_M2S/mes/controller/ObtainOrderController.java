@@ -42,7 +42,6 @@ public class ObtainOrderController {
     @Autowired
     ItemRepository itemRepository;
 
-
     @GetMapping("/obtainOrder")
     public String ObtainOrder(Model model) {
 //        LocalDateTime now = LocalDateTime.now();
@@ -72,7 +71,6 @@ public class ObtainOrderController {
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
 
         return "obtainOrderPage";
-
     }
 
     @PostMapping("/obtainOrder")
@@ -84,14 +82,17 @@ public class ObtainOrderController {
 //        min = Math.ceil(min);
 //        obtainOrderFormDto.setOrderDate(LocalDateTime.now());
 //        obtainOrderFormDto.setDueDate(obtainOrderFormDto.getOrderDate().plusMinutes((int)min));
+
         ObtainOrderFormDto result = obtainOrderService.writeObtainOrder(obtainOrderFormDto, companyNm, itemNm);
         ObtainOrder obtainOrder = new ObtainOrder();
-
         obtainOrder = result.createObtainOrder();
-
         obtainOrderRepository.save(obtainOrder);
-        String json = gson.toJson(obtainOrderDtoList);
-        return json;
+
+        List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
+        List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
+
+        model.addAttribute("obtainOrderList", obtainOrderDtoList);
+        return "obtainOrderPage";
     }
 
     @GetMapping("/obtainOrder/search")
@@ -147,5 +148,4 @@ public class ObtainOrderController {
         String json = gson.toJson(obtainOrderList);
         return json;
     }
-
 }

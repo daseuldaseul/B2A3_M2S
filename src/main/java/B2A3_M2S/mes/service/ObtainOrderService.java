@@ -12,6 +12,7 @@ import javax.persistence.Access;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.entity.QObtainOrder;
@@ -62,31 +63,31 @@ public class ObtainOrderService {
         QObtainOrder qObtainOrder = QObtainOrder.obtainOrder;
         BooleanBuilder builder = new BooleanBuilder();
 
-        if(companyCd != null) {
+        if (companyCd != null) {
             builder.and(qObtainOrder.company.companyCd.contains(companyCd));
         }
 
-        if(companyNm != null) {
+        if (companyNm != null) {
             builder.and(qObtainOrder.company.companyNm.contains(companyNm));
         }
 
-        if(startDateTime != null && endDateTime != null) {
+        if (startDateTime != null && endDateTime != null) {
             builder.and(qObtainOrder.orderDate.between(startDateTime, endDateTime));
         }
 
-        if(!orderState.equals("미선택")) {
+        if (!orderState.equals("미선택")) {
             builder.and(qObtainOrder.orderState.eq(orderState));
         }
 
-        if(itemCd != null) {
+        if (itemCd != null) {
             builder.and(qObtainOrder.item.itemCd.contains(itemCd));
         }
 
-        if(itemNm != null) {
+        if (itemNm != null) {
             builder.and(qObtainOrder.item.itemNm.contains(itemNm));
         }
 
-        if(orderCd != null) {
+        if (orderCd != null) {
             builder.and(qObtainOrder.orderCd.contains(orderCd));
         }
 

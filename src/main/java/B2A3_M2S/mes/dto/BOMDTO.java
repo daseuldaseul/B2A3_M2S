@@ -34,6 +34,5 @@ public class BOMDTO {
 
     private LocalDate regDate;
     private LocalDate endDate;
-
     private LocalDate modDate;
 }

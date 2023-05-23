@@ -33,6 +33,12 @@ public class ItemDto {
 
     private String itemGb;      //품목 구분
 
+    private String itemGbNm;      //품목 구분 코드값 받아올 변수
+
+    private String itemTypeNm;    //품목 타입 코드값 받아올 변수
+
+    private String itemUnitNm;       //재고 단위 코드값 받아올 변수
+
     private String itemType;    //품목 타입
 
     private String itemUnit;       //재고 단위

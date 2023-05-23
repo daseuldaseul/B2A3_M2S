@@ -6,6 +6,7 @@ import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.repository.CompanyRepository;
 import B2A3_M2S.mes.repository.ItemRepository;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ItemService;
 import B2A3_M2S.mes.util.NumPrefix;
 import B2A3_M2S.mes.util.NumberingService;
@@ -47,6 +48,19 @@ public class ItemController {
         List<Item> itemList = itemRepository.findAll();
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
 
+        for(ItemDto items : itemDtoList){
+            items.setItemGbNm(CodeServiceImpl.getCodeNm("ITEM_GB", items.getItemGb()));
+        //itemDto의 itemGbNm 값 itemGb값으로 코드값 찾아와서 지정
+            items.setItemTypeNm(CodeServiceImpl.getCodeNm("ITEM_TYPE", items.getItemType()));
+        //itemDto의 itemTypeNm 값 itemType값으로 코드값 찾아와서 지정
+            items.setItemUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", items.getItemUnit()));
+        //itemDto의 itemUnitNm 값 itemUnit값으로 코드값 찾아와서 지정
+        }
+
+        model.addAttribute("codeList1", CodeServiceImpl.getCodeList("ITEM_GB"));
+        model.addAttribute("codeList2", CodeServiceImpl.getCodeList("ITEM_TYPE"));
+        model.addAttribute("codeList3", CodeServiceImpl.getCodeList("UNIT_TYPE"));
+
         model.addAttribute("itemList", itemDtoList);
         return "itemPage";
     }
@@ -73,11 +87,14 @@ public class ItemController {
                              @RequestParam String itemNm,
                              @RequestParam String companyCd,
                              @RequestParam String companyNm,
+                             @RequestParam String itemGb,
+                             @RequestParam String itemType,
+                             @RequestParam String itemUnit,
                              @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                              @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                              Model model) {
 
-        List<Item> itemList = itemService.searchItem(itemCd, itemNm, companyCd, companyNm, startDate, endDate);
+        List<Item> itemList = itemService.searchItem(itemCd, itemNm, companyCd, companyNm, itemGb, itemType, itemUnit, startDate, endDate);
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
 
         model.addAttribute("itemList", itemDtoList);

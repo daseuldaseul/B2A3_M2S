@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -51,7 +52,7 @@ public class ItemService {
 
     @Transactional
     public List<Item> searchItem(String itemCd, String itemNm, String companyCd, String companyNm,
-                                 LocalDate startDate, LocalDate endDate) {
+                                 String itemGb, String itemType, String itemUnit, LocalDate startDate, LocalDate endDate) {
         QItem qItem = QItem.item;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -63,17 +64,17 @@ public class ItemService {
             builder.and(qItem.itemNm.contains(itemNm));
         }
 
-//        if (!itemGb.equals("미선택")) {
-//            builder.and(qItem.itemGb.eq(itemGb));
-//        }
-//
-//        if (!itemType.equals("미선택")) {
-//            builder.and(qItem.itemType.eq(itemType));
-//        }
-//
-//        if (!itemUnit.equals("미선택")) {
-//            builder.and(qItem.itemUnit.eq(itemUnit));
-//        }
+        if (!itemGb.equals("미선택")) {
+            builder.and(qItem.itemGb.eq(itemGb));
+        }
+
+        if (!itemType.equals("미선택")) {
+            builder.and(qItem.itemType.eq(itemType));
+        }
+
+        if (!itemUnit.equals("미선택")) {
+            builder.and(qItem.itemUnit.eq(itemUnit));
+        }
 
         if (companyCd != null) {
             builder.and(qItem.company.companyCd.contains(companyCd));

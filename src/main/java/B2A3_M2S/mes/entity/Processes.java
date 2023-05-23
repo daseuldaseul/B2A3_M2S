@@ -35,4 +35,5 @@ public class Processes extends BaseTimeEntity {
 
 
     private String remark;              // 비고
-    private String workTimeUnit;      // 작업시간단위}
+    private String workTimeUnit;      // 작업시간단위
+     }

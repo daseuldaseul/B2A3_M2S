@@ -187,9 +187,9 @@
                     <td th:text="${status.index} + 1"></td>
                     <td th:text="${processList.procCd}"></td>
                     <td th:text="${processList.procNm}"></td>
-                    <td th:text="${processList.readyTime}"></td>
-                    <td th:text="${processList.workTime}"></td>
-                    <td th:text="${processList.capacity}"></td>
+                    <td th:text="${processList.readyTime != null} ? ${processList.readyTime}  + ' ' + ${processList.readyUnitNm} : ''"></td>
+                    <td th:text="${processList.workTime != null} ? ${processList.workTime}  + ' ' + ${processList.workTimeUnitNm} : ''"></td>
+                    <td th:text="${processList.capacity != null} ? ${processList.capacity}  + ' ' + ${processList.procUnitNm} : ''"></td>
                     <td th:text="${processList.regDate}"></td>
                     <td th:text="${processList.remark}"></td>
                     <td th:text="${processList.procStateNm}"></td>

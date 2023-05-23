@@ -27,12 +27,16 @@ public class ProcessesDto {
     private String procUnit;        //단위
     private String readyUnit;   //준비시간 단위
     private String procState;       //
-    private String procStateNm;
     private LocalDate regDate;
     private LocalDate modDate;
     private String seatingCapacity;     // 수용능력
     private Character fixYn;            // 고정여부
     private String workTimeUnit;      // 작업시간단위
+
+    private String procStateNm;
+    private String readyUnitNm;   //준비시간 단위
+    private String procUnitNm;        //단위
+    private String workTimeUnitNm;      // 작업시간단위
 
     public static List<ProcessesDto> of(List<Processes> processesList) {
         return modelMapper.map(processesList, new TypeToken<List<ProcessesDto>>() {

@@ -96,6 +96,8 @@ public class ItemController {
             items.setItemUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", items.getItemUnit()));
         }
 
+        model.addAttribute("codeList1", CodeServiceImpl.getCodeList("ITEM_GB"));
+        model.addAttribute("codeList2", CodeServiceImpl.getCodeList("ITEM_TYPE"));
         model.addAttribute("itemList", itemDtoList);
 
         return "itemPage";

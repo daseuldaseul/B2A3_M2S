@@ -73,6 +73,8 @@ public class EquipController {
             equipDto.setWorkTimeUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", equipDto.getWorkTimeUnit()));
         }
         model.addAttribute("equipList", equipDtoList);
+        model.addAttribute("codeList1", CodeServiceImpl.getCodeList("EQUIP_STATE"));
+
 
         return "equipPage";
     }

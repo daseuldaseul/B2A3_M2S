@@ -26,6 +26,9 @@ public class EquipFormDto {
 
     private String remark;      //비고
 
+    private String fixYn;
+
+    private String workTimeUnit;
 
     private ProcessesDto processes;      //공정 코드
 

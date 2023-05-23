@@ -185,7 +185,13 @@
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">공정명</button>
                         </div>
-                        <input type="text" class="form-control" name="procNm" placeholder="공정명">
+                        <div id="autocomplete-results2" class="autocomplete-results">
+
+                        </div>
+                        <input type="text" class="form-control" name="procNm" id="processesName" placeholder="공정명" onkeyup="autoComplete2(this.value)">
+
+
+
                       </div>
 
 
@@ -201,7 +207,10 @@
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">생산 단위</button>
                         </div>
-                        <input type="text" class="form-control" name="capaUnit" placeholder="생산능력">
+                        <select class="form-control" name="capaUnit" >
+                          <option th:each="codeList : ${codeList2}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+                        </select>
+
                       </div>
 
                     </div>
@@ -211,22 +220,59 @@
 
 
                     <div class="row">
-                      <div class="input-group col-4">
+                      <div class="input-group col-3">
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">준비시간</button>
                         </div>
                         <input type="text" class="form-control" name="readyTime" placeholder="준비시간">
                       </div>
-
-
-                      <div class="input-group col-4">
+                      <div class="input-group col-3">
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">준비시간 단위</button>
                         </div>
-                        <input type="text" class="form-control" name="readyTime" placeholder="준비시간">
+                        <select class="form-control" name="readyUnit">
+                          <option th:each="codeList : ${codeList2}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+                        </select>
+                      </div>
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">설비상태</button>
+                        </div>
+                        <select class="form-control" name="equipState">
+                          <option th:each="codeList : ${codeList1}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+                        </select>
                       </div>
                     </div>
 
+                    <hr>
+
+                    <div class="row">
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">생산 소요 시간</button>
+                        </div>
+                        <input type="text" class="form-control" name="workTime" placeholder="생산 시간">
+                      </div>
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">생산 시간 단위</button>
+                        </div>
+                        <select class="form-control" name="workTimeUnit">
+                        <option th:each="codeList : ${codeList2}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+                        </select>
+                      </div>
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">생산 시간 고정 여부</button>
+                        </div>
+                        <select class="form-control" name="fixYn" >
+                          <option selected value="Y">Y</option>
+                          <option value="N">N</option>
+                        </select>
+                      </div>
+
+
+                    </div>
 
                     <hr>
 
@@ -236,7 +282,9 @@
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">비고</button>
                         </div>
-                        <textarea name="" id="" cols="135" rows="3"></textarea>
+
+                        <textarea name="remark" id="" cols="135" rows="3"></textarea>
+
                       </div>
                     </div>
 

@@ -1,20 +1,33 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.EquipFormDto;
+import B2A3_M2S.mes.dto.ProcessesDto;
 import B2A3_M2S.mes.entity.QEquipment;
 import B2A3_M2S.mes.repository.EquipRepository;
+import B2A3_M2S.mes.repository.ProcessesRepository;
 import B2A3_M2S.mes.repository.specification.EquipSpecification;
 import B2A3_M2S.mes.entity.Equipment;
+import B2A3_M2S.mes.util.NumPrefix;
+import B2A3_M2S.mes.util.NumberingService;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
 public class EquipService {
     @Autowired
     EquipRepository equipRepository;
+
+    @Autowired
+    ProcessesRepository processesRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
       설비명으로 검색
@@ -41,6 +54,14 @@ public class EquipService {
         
         // BooleanBuilder가 Predicate를 구현함. querydsl 자체애 내장된 findAll(Predicate predicate) 메서드 사용
         return (List<Equipment>) equipRepository.findAll(builder);
+    }
+
+    public EquipFormDto writeEquip(EquipFormDto equipFormDto, String procNm) {
+        equipFormDto.setProcesses(ProcessesDto.of(processesRepository.findByProcNm(procNm)));
+
+        equipFormDto.setCapaUnit("UNIT01");
+
+        return equipFormDto;
     }
 
 }

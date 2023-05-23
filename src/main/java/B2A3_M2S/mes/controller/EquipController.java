@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.EquipFormDto;
 import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Processes;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -53,10 +55,14 @@ public class EquipController {
 
 
     @PostMapping("/equipment")
-    public String equipmentRegister(Model model) {
+    public String equipmentRegister(EquipFormDto equipFormDto, String procNm, Model model) {
+        EquipFormDto result = equipService.writeEquip(equipFormDto, procNm);
+        Equipment equipment = new Equipment();
+        equipment = result.createEquipment(); // equipFormDto를 equipment로 변환
+        equipRepository.save(equipment);
 
-//        model.addAttribute("equipList", equipDtoList);
-        return "equipPage";
+
+        return "redirect:/equipment";
     }
 
 
@@ -74,6 +80,7 @@ public class EquipController {
         }
         model.addAttribute("equipList", equipDtoList);
         model.addAttribute("codeList1", CodeServiceImpl.getCodeList("EQUIP_STATE"));
+        model.addAttribute("codeList2", CodeServiceImpl.getCodeList("UNIT_TYPE"));
 
 
         return "equipPage";

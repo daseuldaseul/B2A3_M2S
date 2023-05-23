@@ -248,7 +248,7 @@
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">공정 등록</h4>
+                                    <h4 class="modal-title">수주 등록</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -259,8 +259,10 @@
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">업체명</button>
                                             </div>
+                                            <div id="autocomplete-results3" class="autocomplete-results">
 
-                                            <input type="text" class="form-control" name="companyNm" placeholder="업체명">
+                                            </div>
+                                            <input type="text" class="form-control" name="companyNm" id="companySearch" placeholder="업체명" onkeyup="autoComplete3(this.value)">
 
                                         </div>
 
@@ -270,8 +272,10 @@
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">수주 상품명</button>
                                             </div>
+                                            <div id="autocomplete-results4" class="autocomplete-results">
 
-                                            <input type="text" class="form-control" name="itemNm" placeholder="상품명">
+                                            </div>
+                                            <input type="text" class="form-control" id="itemSearch" name="itemNm" placeholder="상품명" onkeyup="autoComplete4(this.value)">
 
 
 
@@ -486,6 +490,97 @@ function autoComplete2(text) {
 
   }
 
+function autoComplete3(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/obtainOrder/autoComplete',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var companyList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results3'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('companyCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < companyList.length; i++){
+            var list = document.createElement("li");
+            list.innerText ='[' + companyList[i].companyCd + ']' + companyList[i].companyNm;
+            list.setAttribute("data-company-nm", companyList[i].companyNm); // 데이터 속성 추가
+            list.setAttribute("data-company-cd", companyList[i].companyCd);
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('companySearch');
+            var companyNm = this.getAttribute("data-company-nm"); // 데이터 속성 값 가져오기
+            var companyCd = this.getAttribute("data-company-cd");
+            result.value = companyNm;
+            code.value = companyCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
+
+function autoComplete4(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/obtainOrder/autoComplete2',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var itemList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results4'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('itemCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < itemList.length; i++){
+            var list = document.createElement("li");
+            list.innerText ='[' + itemList[i].itemCd + ']' + itemList[i].itemNm;
+            list.setAttribute("data-item-nm", itemList[i].itemNm); // 데이터 속성 추가
+            list.setAttribute("data-item-cd", itemList[i].itemCd);
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('itemSearch');
+            var itemNm = this.getAttribute("data-item-nm"); // 데이터 속성 값 가져오기
+            var itemCd = this.getAttribute("data-item-cd");
+            result.value = itemNm;
+            code.value = itemCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
 
 
   function getObtainOrderValue(element) {

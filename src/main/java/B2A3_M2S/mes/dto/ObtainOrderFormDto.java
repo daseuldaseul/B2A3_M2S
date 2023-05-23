@@ -29,9 +29,9 @@ public class ObtainOrderFormDto {
 
     private Character useYn; //사용유무
 
-    private Company company; //업체 코드
+    private CompanyDto company; //업체 코드
 
-    private Item item;    //품목 코드
+    private ItemDto item;    //품목 코드
 
     private String orderState;   //수주 상태
 

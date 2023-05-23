@@ -16,21 +16,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BOMDTO {
     private Long bomNo;         // BOM 번호
-    private String remark;      // 비고
 
+    private String remark;      // 비고
 
     private Double consumption;   //소모량
 
-
-
     private Character useYn;    //사용유무
 
+    private ItemDto pItem;     //제품 코드
 
-
-    private Item pItem;     //제품 코드
-
-
-    private Item mItem;    //자재 코드
+    private ItemDto mItem;    //자재 코드
 
     private LocalDate regDate;
     private LocalDate endDate;

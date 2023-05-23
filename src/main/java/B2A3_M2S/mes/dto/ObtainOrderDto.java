@@ -41,7 +41,7 @@ public class ObtainOrderDto {
 
     private Company company; //업체 코드
 
-    private Item item;    //품목 코드
+    private ItemDto item;    //품목 코드
 
     //공통 코드
     private String orderState;   //수주 상태

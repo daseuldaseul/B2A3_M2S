@@ -1,5 +1,7 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.CompanyDto;
+import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.dto.ObtainOrderFormDto;
 import B2A3_M2S.mes.entity.CommonCode;
 import B2A3_M2S.mes.repository.CompanyRepository;
@@ -45,8 +47,8 @@ public class ObtainOrderService {
     private EntityManager entityManager;
 
     public ObtainOrderFormDto writeObtainOrder(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm) {
-        obtainOrderFormDto.setCompany(companyRepository.findByCompanyNm(companyNm));
-        obtainOrderFormDto.setItem(itemRepository.findByItemNm(itemNm));
+        obtainOrderFormDto.setCompany(CompanyDto.of(companyRepository.findByCompanyNm(companyNm)));
+        obtainOrderFormDto.setItem(ItemDto.of(itemRepository.findByItemNm(itemNm)));
 
         NumberingService<ObtainOrder> service = new NumberingService<>(entityManager, ObtainOrder.class);
         String ocd = service.getNumbering("orderCd", NumPrefix.OBTAIN_ORDER);

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDate;
+
 
 @Getter
 @Setter
@@ -32,7 +34,9 @@ public class ItemFormDto {
 
     private String sUnit;   //규격 단위
 
-    private Company company;   // 업체코드
+    private CompanyDto company;   // 업체코드
+
+    private LocalDate regDate;
     public Item createItem(){
         return modelMapper.map(this, Item.class);
     }

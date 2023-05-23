@@ -12,5 +12,5 @@ public class ProcessStockDTO {
     private String location;    //위치
     private Long qty;   //수량
     private String remark;  //비고
-    private Item item;
+    private ItemDto item;
 }

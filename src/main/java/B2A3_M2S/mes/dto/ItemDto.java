@@ -45,7 +45,7 @@ public class ItemDto {
 
     private String sUnit;   //규격 단위
 
-    private Company company;   // 업체코드
+    private CompanyDto company;   // 업체코드
 
     private LocalDate regDate;
 

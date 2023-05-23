@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.CompanyDto;
 import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.dto.ItemFormDto;
 import B2A3_M2S.mes.entity.Company;
@@ -61,10 +62,9 @@ public class ItemController {
 
     @PostMapping("/item")
     public String itemWrite(ItemFormDto itemFormDto, @RequestParam String companyNm, Model model){
-
-        itemFormDto.setCompany(companyRepository.findByCompanyNm(companyNm));
-        System.out.println(companyNm);
-        System.out.println(companyRepository.findByCompanyNm(companyNm));
+        CompanyDto companyDto = CompanyDto.of(companyRepository.findByCompanyNm(companyNm));
+        itemFormDto.setCompany(companyDto);
+        itemFormDto.setRegDate(LocalDate.now());
         Item item = itemFormDto.createItem();
 
         itemRepository.save(item);

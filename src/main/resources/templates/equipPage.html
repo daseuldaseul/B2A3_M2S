@@ -63,12 +63,7 @@
           <div class="col-sm-6">
             <h1>설비 조회</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables</li>
-            </ol>
-          </div>
+
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -152,50 +147,7 @@
                       <td th:text="${equipDto.remark}"></td>
                     </tr>
                   </tbody>
-<!--                  <tr>-->
-<!--                    <td>2</td>-->
-<!--                    <td>00000001</td>-->
-<!--                    <td>2023/05/15</td>-->
-<!--                    <td>(주)원식푸드</td>-->
-<!--                    <td>A00000001</td>-->
-<!--                    <td>양배추즙</td>-->
-<!--                    <td>추출</td>-->
-<!--                    <td>추출기</td>-->
-<!--                    <td>10000</td>-->
-<!--                  </tr>-->
-<!--                  <tr>-->
-<!--                    <td>3</td>-->
-<!--                    <td>00000001</td>-->
-<!--                    <td>2023/05/15</td>-->
-<!--                    <td>(주)원식푸드</td>-->
-<!--                    <td>A00000001</td>-->
-<!--                    <td>양배추즙</td>-->
-<!--                    <td>추출</td>-->
-<!--                    <td>추출기</td>-->
-<!--                    <td>10000</td>-->
-<!--                  </tr>-->
-<!--                  <tr>-->
-<!--                    <td>4</td>-->
-<!--                    <td>00000001</td>-->
-<!--                    <td>2023/05/15</td>-->
-<!--                    <td>(주)원식푸드</td>-->
-<!--                    <td>A00000001</td>-->
-<!--                    <td>양배추즙</td>-->
-<!--                    <td>추출</td>-->
-<!--                    <td>추출기</td>-->
-<!--                    <td>10000</td>-->
-<!--                  </tr>-->
-                  
-                  
-                  <!-- <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
-                  </tr>
-                  </tfoot> -->
+
                 </table>
               </div>
               <!-- /.card-body -->
@@ -223,24 +175,19 @@
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">설비</button>
                         </div>
-
                         <input type="text" class="form-control" name="equipCd" placeholder="설비코드">
                         &nbsp;&nbsp;&nbsp;
                         <input type="text" class="form-control" name="equipNm" placeholder="설비명">
                       </div>
 
 
-
                       <div class="input-group col-3">
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">공정명</button>
                         </div>
-
                         <input type="text" class="form-control" name="procNm" placeholder="공정명">
-
-
-
                       </div>
+
 
                       <div class="input-group col-3">
                         <div class="input-group-prepend">
@@ -249,6 +196,7 @@
                         <input type="text" class="form-control" name="capacity" placeholder="생산능력">
                       </div>
 
+
                       <div class="input-group col-3">
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">생산 단위</button>
@@ -256,45 +204,10 @@
                         <input type="text" class="form-control" name="capaUnit" placeholder="생산능력">
                       </div>
 
-
-
-
-
                     </div>
 
+
                     <hr>
-
-                    <!--                    <div class="input-group col-3">-->
-                    <!--                      <div class="input-group-prepend">-->
-                    <!--                        <button type="button" class="btn btn-default">공정명</button>-->
-                    <!--                      </div>-->
-
-                    <!--                      <input type="text" class="form-control">-->
-
-                    <!--                    </div>-->
-
-                    <!--                    <div class="input-group col-3">-->
-                    <!--                      <div class="input-group-prepend">-->
-                    <!--                        <button type="button" class="btn btn-default">설비명</button>-->
-                    <!--                      </div>-->
-
-                    <!--                      <input type="text" class="form-control">-->
-
-
-
-                    <!--                    </div>-->
-
-                    <!--                    <div class="input-group col-3">-->
-                    <!--                      <div class="input-group-prepend">-->
-                    <!--                        <button type="text" class="btn btn-default">기타</button>-->
-                    <!--                      </div>-->
-
-                    <!--                      <input type="text" class="form-control">-->
-
-                    <!--                    </div>-->
-
-                    <!--                  </div>-->
-                    <!--                  <hr>-->
 
 
                     <div class="row">
@@ -304,6 +217,8 @@
                         </div>
                         <input type="text" class="form-control" name="readyTime" placeholder="준비시간">
                       </div>
+
+
                       <div class="input-group col-4">
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">준비시간 단위</button>
@@ -321,14 +236,13 @@
                         <div class="input-group-prepend">
                           <button type="button" class="btn btn-default">비고</button>
                         </div>
-
                         <textarea name="" id="" cols="135" rows="3"></textarea>
-
                       </div>
-
-
                     </div>
+
                   </div>
+
+
                   <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                     <div class="">
@@ -352,14 +266,7 @@
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 
-  <!-- <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer> -->
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -395,6 +302,7 @@
   $(function () {
     $("#example1").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
+      "info": false,
       "buttons": ["excel"],
       "searching": false  
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');

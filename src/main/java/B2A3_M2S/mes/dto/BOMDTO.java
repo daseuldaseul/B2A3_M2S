@@ -27,10 +27,10 @@ public class BOMDTO {
 
 
 
-    private Item pItem;     //제품 코드
+    private ItemDto pItem;     //제품 코드
 
 
-    private Item mItem;    //자재 코드
+    private ItemDto mItem;    //자재 코드
 
     private LocalDate regDate;
     private LocalDate endDate;

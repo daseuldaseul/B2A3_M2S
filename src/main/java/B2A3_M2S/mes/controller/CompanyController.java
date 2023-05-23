@@ -103,14 +103,7 @@ public class CompanyController {
         company.setRegDate(LocalDate.now());
         companyRepository.save(company);
 
-        List<CompanyDto> companyList = CompanyDto.of(companyRepository.findAll());
-        for(CompanyDto companys : companyList){
-            companys.setCompanyGbNm(CodeServiceImpl.getCodeNm("CUST_TYPE", companys.getCompanyGb()));
-        }
-        model.addAttribute("companyList", companyList);
-
-        model.addAttribute("codeList", CodeServiceImpl.getCodeList("CUST_TYPE"));
-        return "companyPage";
+       return "redirect:/company";
 
     }
 

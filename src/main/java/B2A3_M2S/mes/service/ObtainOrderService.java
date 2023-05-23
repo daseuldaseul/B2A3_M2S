@@ -64,7 +64,8 @@ public class ObtainOrderService {
         } else {
             dueTime.plusDays(3);
         }
-
+        obtainOrderFormDto.setOrderState("ORDER01");
+        obtainOrderFormDto.setOrderUnit("UNIT01");
         obtainOrderFormDto.setDueDate(dueTime.plusMinutes((int) min));
         return obtainOrderFormDto;
     }

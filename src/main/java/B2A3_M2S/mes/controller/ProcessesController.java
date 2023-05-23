@@ -86,13 +86,8 @@ public class ProcessesController {
         processes.setRegDate(LocalDate.now());
 
         processesRepository.save(processes);
-        List<ProcessesDto> processList =  ProcessesDto.of(processesRepository.findAll());
-        for(ProcessesDto process : processList){
-            process.setProcStateNm(CodeServiceImpl.getCodeNm("PROCESS_STATE", process.getProcState()));
-        }
-        model.addAttribute("codeList", CodeServiceImpl.getCodeList("PROCESS_STATE"));
-        model.addAttribute("processList", processList);
-        return "processPage";
+
+        return "redirect:/process";
     }
 
     @GetMapping("/process/searchWord")

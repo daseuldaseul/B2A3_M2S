@@ -45,18 +45,11 @@ public class ObtainOrderController {
 
     @GetMapping("/obtainOrder")
     public String ObtainOrder(Model model) {
-//        LocalDateTime now = LocalDateTime.now();
-//        System.out.println(now);
-//        int x = 20;    //박스 수
-//        double min = 3060 + 6.1 * (double)x;
-//        min = Math.ceil(min);
-//        System.out.println("시간!!!!!!!!!!!!!!!!!!!!!!"+min);
-//        LocalDateTime result = now.plusMinutes((int)min);
-//
-//        System.out.println(result);
-//        //3060 + 6.1 * 박스수
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
+        for(ObtainOrderDto obtainOrderDto : obtainOrderDtoList){
+              obtainOrderDto.setOrderUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", obtainOrderDto.getOrderUnit()));
+        }
         model.addAttribute("codeList", CodeServiceImpl.getCodeList("OBTAIN_STATE"));
         model.addAttribute("obtainOrderList", obtainOrderDtoList);
         return "obtainOrderPage";
@@ -69,7 +62,9 @@ public class ObtainOrderController {
         System.out.println("-------------------------------------------");
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findByOrderCd(orderCd);
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
-
+        for(ObtainOrderDto obtainOrderDto : obtainOrderDtoList){
+            obtainOrderDto.setOrderStateNm(CodeServiceImpl.getCodeNm("OBTAIN_STATE", obtainOrderDto.getOrderState()));
+    }
 
         String json = gson.toJson(obtainOrderDtoList);
         return json;
@@ -77,13 +72,6 @@ public class ObtainOrderController {
 
     @PostMapping("/obtainOrder")
     public String obtainOrderWrite(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm, Model model){
-//        obtainOrderFormDto.setCompany(companyRepository.findByCompanyNm(companyNm));
-//        obtainOrderFormDto.setItem(itemRepository.findByItemNm(itemNm));
-//        obtainOrderFormDto.setOrderCd("code_" + itemNm + obtainOrderRepository.count());
-//        double min = 3060 + 6.1 * (double) obtainOrderFormDto.getQty();
-//        min = Math.ceil(min);
-//        obtainOrderFormDto.setOrderDate(LocalDateTime.now());
-//        obtainOrderFormDto.setDueDate(obtainOrderFormDto.getOrderDate().plusMinutes((int)min));
 
         ObtainOrderFormDto result = obtainOrderService.writeObtainOrder(obtainOrderFormDto, companyNm, itemNm);
         ObtainOrder obtainOrder = new ObtainOrder();

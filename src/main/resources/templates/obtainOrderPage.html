@@ -130,9 +130,7 @@
                                             </div>
                                             <select class="form-control" name="orderState">
                                                 <option selected>미선택</option>
-                                                <option>확정</option>
-                                                <option>진행중</option>
-                                                <option>납품 완료</option>
+                                                <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -189,7 +187,7 @@
                                         <td th:text="${#temporals.format(obtainOrderDto.orderDate, 'yyyy-MM-dd')}" ></td>
                                         <td th:text="${#temporals.format(obtainOrderDto.dueDate, 'yyyy-MM-dd')}" ></td>
                                         <td th:text="${obtainOrderDto.qty}"></td>
-                                        <td th:text="${obtainOrderDto.orderUnit}"></td>
+                                        <td th:text="${obtainOrderDto.orderUnitNm}"></td>
                                         <td th:text="${obtainOrderDto.remark}"></td>
                                     </tr>
 
@@ -255,7 +253,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="input-group col-6">
+                                        <div class="input-group col-3">
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">업체명</button>
                                             </div>
@@ -292,8 +290,16 @@
                                         </div>
                                     </div>
                                     <hr>
+                                    <div class="row">
+                                    <div class="input-group col-9">
+                                        <div class="input-group-prepend">
+                                            <button type="button" class="btn btn-default">배송지</button>
+                                        </div>
 
+                                        <input type="text" class="form-control" name="shipAdr" placeholder="배송지">
 
+                                    </div>
+                                    </div>
                                     <hr>
 
 
@@ -603,7 +609,7 @@ var obtainOrders = JSON.parse(response); // JSON 문자열을 객체로 변환�
       obtainOrders.forEach(function(obtainOrder) {
         tableRow += '<tr>';
         tableRow += '<td th:text="${obtainOrder.orderCd}">' + obtainOrder.orderCd + '</td>';
-        tableRow += '<td th:text="${obtainOrder.orderState}">' + obtainOrder.orderState + '</td>';
+        tableRow += '<td th:text="${obtainOrder.orderStateNm}">' + obtainOrder.orderStateNm + '</td>';
         tableRow += '<td th:text="${obtainOrder.item.itemCd}">' + obtainOrder.item.itemCd + '</td>';
         tableRow += '<td th:text="${obtainOrder.item.itemNm}">' + obtainOrder.item.itemNm + '</td>';
         tableRow += '<td th:text="${obtainOrder.company.phoneNumber}">' + obtainOrder.company.phoneNumber + '</td>';

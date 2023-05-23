@@ -90,6 +90,11 @@ public class ItemController {
 
         List<Item> itemList = itemService.searchItem(itemCd, itemNm, companyCd, companyNm, itemGb, itemType, itemUnit, startDate, endDate);
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
+        for(ItemDto items : itemDtoList){
+            items.setItemGbNm(CodeServiceImpl.getCodeNm("ITEM_GB", items.getItemGb()));
+            items.setItemTypeNm(CodeServiceImpl.getCodeNm("ITEM_TYPE", items.getItemType()));
+            items.setItemUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", items.getItemUnit()));
+        }
 
         model.addAttribute("itemList", itemDtoList);
 

@@ -46,7 +46,11 @@ public class ObtainOrderDto {
     //공통 코드
     private String orderState;   //수주 상태
 
+    private String orderStateNm;   //수주 상태 코드
+
     private String orderUnit;    //단위
+
+    private String orderUnitNm;    //단위 코드
     //공통 코드
 
     private LocalDate regDate;

@@ -1,11 +1,13 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.repository.EquipRepository;
 import B2A3_M2S.mes.repository.ProcessesRepository;
 import B2A3_M2S.mes.dto.EquipDto;
 import B2A3_M2S.mes.entity.Equipment;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.EquipService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +37,15 @@ public class EquipController {
         List<Equipment> equipmentList = equipRepository.findAll();
         List<EquipDto> equipDtoList = EquipDto.of(equipmentList);
 
-        /**
-         Equipment -> equipDto로 변환 성공
-         Dto에 Setter, Getter를 반드시 넣어야함
-          **/
-//        Equipment equipment = equipRepository.findByEquipCd("A1");
-//        EquipDto equipDto = EquipDto.of(equipment);
+        for(EquipDto equipDto : equipDtoList){
+            equipDto.setReadyUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", equipDto.getReadyUnit()));
+            equipDto.setCapaUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", equipDto.getCapaUnit()));
+            equipDto.setEquipStateNm(CodeServiceImpl.getCodeNm("EQUIP_STATE", equipDto.getEquipState()));
+            equipDto.setWorkTimeUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", equipDto.getWorkTimeUnit()));
+        }
+
+        model.addAttribute("codeList1", CodeServiceImpl.getCodeList("EQUIP_STATE"));
+        model.addAttribute("codeList2", CodeServiceImpl.getCodeList("UNIT_TYPE"));
 
         model.addAttribute("equipList", equipDtoList);
         return "equipPage";
@@ -60,6 +65,13 @@ public class EquipController {
         List<Equipment> equipmentList = equipService.findEquipList(equipNm, equipState);
         List<EquipDto> equipDtoList = EquipDto.of(equipmentList);
         // 조회 페이지의 attributeName과 동일한 값으로 넣어 조회
+
+        for(EquipDto equipDto : equipDtoList){
+            equipDto.setReadyUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", equipDto.getReadyUnit()));
+            equipDto.setCapaUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", equipDto.getCapaUnit()));
+            equipDto.setEquipStateNm(CodeServiceImpl.getCodeNm("EQUIP_STATE", equipDto.getEquipState()));
+            equipDto.setWorkTimeUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", equipDto.getWorkTimeUnit()));
+        }
         model.addAttribute("equipList", equipDtoList);
 
         return "equipPage";

@@ -27,11 +27,15 @@ public class EquipDto {
     private String remark;      //비고
     private Processes processes;      //공정 코드
     private String readyUnit;   //준비시간 단위
+    private String readyUnitNm;   //준비시간 단위
     private String capaUnit;    //생산 단위
+    private String capaUnitNm;    //생산 단위
     private String equipState;       //설비 상태
+    private String equipStateNm;       //설비 상태
     private String seatingCapacity;     // 수용능력
     private Character fixYn;            // 고정여부
     private String workTimeUnit;      // 작업시간단위
+    private String workTimeUnitNm;      // 작업시간단위
 
     private List<EquipDto> equipDtos = new ArrayList<>();
     public static ModelMapper modelMapper = new ModelMapper();

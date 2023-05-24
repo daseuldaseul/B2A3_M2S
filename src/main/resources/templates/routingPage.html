@@ -113,7 +113,7 @@
 
                                             </div>
                                             <input type="text" id="routingName" name="itemNm" class="form-control"
-                                                   placeholder="품목명" onkeyup="autoComplete(this.value)">
+                                                   placeholder="품목명" onkeyup="autoComplete(this.value)" autocomplete="off">
                                             <input type="hidden" id="routingCode" name="itemCd">
                                         </div>
 
@@ -340,7 +340,7 @@
   function autoComplete(text) {
     console.log(text);
             $.ajax({
-        url: '/routing/autoComplete',
+        url: '/autoComplete3',
         type: 'GET',
         data: { text: text },
         success: function(response) {

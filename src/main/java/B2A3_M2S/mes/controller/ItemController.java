@@ -44,7 +44,6 @@ public class ItemController {
 
     @GetMapping("/item")
     public String item(Model model){
-        itemService.ItemList(model);
 
         List<Item> itemList = itemRepository.findAll();
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
@@ -103,30 +102,6 @@ public class ItemController {
         return "itemPage";
     }
 
-
-    @GetMapping("/item/autoComplete")
-    @ResponseBody
-    public String itemAutoComplete(@RequestParam("text") String text) {
-        Gson gson = new Gson();
-        System.out.println(text);
-        System.out.println("-------------------------------------------");
-        List<Item> itemList = itemRepository.findByItemNmContaining(text);
-
-        String json = gson.toJson(itemList);
-        return json;
-    }
-
-    @GetMapping("/item/autoComplete2")
-    @ResponseBody
-    public String itemAutoComplete2(@RequestParam("text") String text) {
-        Gson gson = new Gson();
-        System.out.println(text);
-        System.out.println("-------------------------------------------");
-        List<Company> companyList = companyRepository.findByCompanyNmContaining(text);
-
-        String json = gson.toJson(companyList);
-        return json;
-    }
 
 
 }

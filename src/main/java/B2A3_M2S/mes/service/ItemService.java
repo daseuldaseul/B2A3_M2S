@@ -26,15 +26,8 @@ public class ItemService {
 
     public List<ItemDto> getItemList(String text) {
 
-        ModelMapper modelMapper = new ModelMapper();
-        List<ItemDto> itemDtoList = new ArrayList<>();
+        List<ItemDto> itemDtoList = ItemDto.of(repository.findAllByItemNmContains(text));
 
-        List<Item> itemList = repository.findAllByItemNmContains(text);
-
-        for (Item item : itemList) {
-            ItemDto itemDto = modelMapper.map(item, ItemDto.class);
-            itemDtoList.add(itemDto);
-        }
         return itemDtoList;
     }
 
@@ -91,5 +84,9 @@ public class ItemService {
         return (List<Item>) repository.findAll(builder);
 
     }
+
+
+
+
 
 }

@@ -387,7 +387,7 @@
         function autoSearch(text) {
             $.ajax({
                 type: "GET",
-                url: "/bom/ItemAutoComplete",
+                url: "/autoComplete2",
                 data: {text: text},
                 success: function (jsonItemList) {
                     var itemList = JSON.parse(jsonItemList);

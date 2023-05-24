@@ -37,11 +37,6 @@ public class ObtainOrderController {
     @Autowired
     ObtainOrderService obtainOrderService;
 
-    @Autowired
-    CompanyRepository companyRepository;
-
-    @Autowired
-    ItemRepository itemRepository;
 
     @GetMapping("/obtainOrder")
     public String ObtainOrder(Model model) {
@@ -64,7 +59,7 @@ public class ObtainOrderController {
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
         for(ObtainOrderDto obtainOrderDto : obtainOrderDtoList){
             obtainOrderDto.setOrderStateNm(CodeServiceImpl.getCodeNm("OBTAIN_STATE", obtainOrderDto.getOrderState()));
-    }
+        }
 
         String json = gson.toJson(obtainOrderDtoList);
         return json;
@@ -106,31 +101,8 @@ public class ObtainOrderController {
         return "obtainOrderPage";
     }
 
-    @GetMapping("/obtainOrder/autoComplete")
-    @ResponseBody
-    public String obtainOrderAutoComplete(@RequestParam("text") String text) {
 
-        Gson gson = new Gson();
-        System.out.println(text);
-        System.out.println("-------------------------------------------");
-        List<Company> obtainOrderList = companyRepository.findByCompanyNmContaining(text);
-        System.out.println(obtainOrderList);
 
-        String json = gson.toJson(obtainOrderList);
-        return json;
-    }
 
-    @GetMapping("/obtainOrder/autoComplete2")
-    @ResponseBody
-    public String obtainOrderAutoComplete2(@RequestParam("text") String text) {
 
-        Gson gson = new Gson();
-        System.out.println(text);
-        System.out.println("-------------------------------------------");
-        List<Item> obtainOrderList = itemRepository.findByItemNmContainingAndItemCdContaining(text, "P");
-        System.out.println(obtainOrderList);
-
-        String json = gson.toJson(obtainOrderList);
-        return json;
-    }
 }

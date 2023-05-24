@@ -91,31 +91,17 @@ public class EquipController {
         return "equipPage";
     }
 
-    @GetMapping("/equipment/autoComplete")
-    @ResponseBody
-    public String equipmentAutoComplete(@RequestParam("text") String text) {
-
-        Gson gson = new Gson();
-        System.out.println(text);
-        System.out.println("-------------------------------------------");
-        List<Equipment> equip = equipRepository.findByEquipNmContaining(text);
-        System.out.println(equip);
-
-        String json = gson.toJson(equip);
-        return json;
-    }
-
-    @GetMapping("/equipment/autoComplete2")
-    @ResponseBody
-    public String equipmentAutoComplete2(@RequestParam("text") String text) {
-
-        Gson gson = new Gson();
-        System.out.println(text);
-        System.out.println("-------------------------------------------");
-        List<Processes> processes = processesRepository.findByProcNmContaining(text);
-        System.out.println(processes);
-
-        String json = gson.toJson(processes);
-        return json;
-    }
+//    @GetMapping("/equipment/autoComplete")
+//    @ResponseBody
+//    public String equipmentAutoComplete(@RequestParam("text") String text) {
+//
+//        Gson gson = new Gson();
+//        System.out.println(text);
+//        System.out.println("-------------------------------------------");
+//        List<Equipment> equip = equipRepository.findByEquipNmContaining(text);
+//        System.out.println(equip);
+//
+//        String json = gson.toJson(equip);
+//        return json;
+//    }
 }

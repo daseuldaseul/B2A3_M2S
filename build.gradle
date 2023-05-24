@@ -101,6 +101,7 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.9.0'
 
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1")
 
 }
 

@@ -83,14 +83,4 @@ public class ProcessesController {
         return "redirect:/process";
     }
 
-    @GetMapping("/process/searchWord")
-    @ResponseBody
-    public String autoComplete(@RequestParam String text){
-        Gson gson = new Gson();
-
-        List<Processes> processList = processesRepository.findByProcNmContaining(text);
-        List<ProcessesDto> processesDtoList = ProcessesDto.of(processList);
-        String json = gson.toJson(processesDtoList);
-        return json;
-    }
 }

@@ -97,7 +97,7 @@
                     <div id="autocomplete-results" class="autocomplete-results">
 
                     </div>
-                    <input type="text" id="equipName" name="equipNm" class="form-control" placeholder="설비명" onkeyup="autoComplete(this.value)" autoComplete="off">
+                    <input type="text" id="equipName" name="equipNm" class="form-control" placeholder="설비명" onkeyup="autoComplete(this.value)" autocomplete="off">
                     <input type="hidden" id="equipCode" name="equipCd">
 
                   </div>
@@ -372,7 +372,7 @@
     console.log(text);
 
             $.ajax({
-        url: '/equipment/autoComplete',
+        url: '/autoComplete5',
         type: 'GET',
         data: { text: text },
         success: function(response) {

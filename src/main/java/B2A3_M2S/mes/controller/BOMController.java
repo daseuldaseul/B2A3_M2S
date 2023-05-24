@@ -65,13 +65,5 @@ public class BOMController {
         return "BOM";
     }
 
-    @GetMapping("/ItemAutoComplete")
-    @ResponseBody
-    public String ItemAutoComplete(String text){
-        Gson gson = new Gson();
-        String itemList =  gson.toJson(itemService.getItemList(text));
-
-        return itemList;
-    }
 
 }

@@ -1,20 +1,16 @@
 package B2A3_M2S.mes.service;
 
-import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.dto.ItemDto;
-import B2A3_M2S.mes.entity.*;
+import B2A3_M2S.mes.entity.Item;
+import B2A3_M2S.mes.entity.QItem;
 import B2A3_M2S.mes.repository.ItemRepository;
 import com.querydsl.core.BooleanBuilder;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

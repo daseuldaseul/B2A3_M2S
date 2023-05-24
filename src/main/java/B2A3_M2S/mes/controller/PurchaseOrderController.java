@@ -3,8 +3,10 @@ package B2A3_M2S.mes.controller;
 import B2A3_M2S.mes.dto.CompanyDto;
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.PurchaseOrderDto;
+import B2A3_M2S.mes.dto.RoutingDto;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.entity.PurchaseOrder;
+import B2A3_M2S.mes.entity.Routing;
 import B2A3_M2S.mes.repository.PurchaseOrderRepository;
 import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.PurchaseOrderService;
@@ -71,6 +73,17 @@ public class PurchaseOrderController {
         model.addAttribute("codeList", CodeServiceImpl.getCodeList("PURCHASE_STATE"));
         return "purchaseOrderPage";
 
+    }
+
+    @ResponseBody
+    @GetMapping("/purchaseOrder/detail")
+    public String purchaseOrderDetail(@RequestParam String orderNo, Model model) {
+
+        Gson gson = new Gson();
+        PurchaseOrderDto purchaseOrderDto = PurchaseOrderDto.of(purchaseOrderRepository.findByOrderNo(orderNo));
+        purchaseOrderDto.setPurchaseStateNm(CodeServiceImpl.getCodeNm("PURCHASE_STATE", purchaseOrderDto.getPurchaseState()));
+        String json = gson.toJson(purchaseOrderDto);
+        return json;
     }
 
 }

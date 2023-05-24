@@ -1,14 +1,8 @@
 package B2A3_M2S.mes.controller;
 
 
-import B2A3_M2S.mes.dto.CompanyDto;
-import B2A3_M2S.mes.dto.EquipDto;
-import B2A3_M2S.mes.dto.ItemDto;
-import B2A3_M2S.mes.dto.ProcessesDto;
-import B2A3_M2S.mes.entity.Company;
-import B2A3_M2S.mes.entity.Equipment;
-import B2A3_M2S.mes.entity.Item;
-import B2A3_M2S.mes.entity.Processes;
+import B2A3_M2S.mes.dto.*;
+import B2A3_M2S.mes.entity.*;
 import B2A3_M2S.mes.repository.CompanyRepository;
 import B2A3_M2S.mes.repository.EquipRepository;
 import B2A3_M2S.mes.repository.ItemRepository;
@@ -17,6 +11,7 @@ import B2A3_M2S.mes.service.ItemService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -109,5 +104,7 @@ public class AutoCompleteController {
         String json = gson.toJson(itemList);
         return json;
     }
+
+
 
 }

@@ -1,16 +1,8 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.ObtainOrderFormDto;
 import B2A3_M2S.mes.entity.ObtainOrder;
-import B2A3_M2S.mes.dto.ItemDto;
-import B2A3_M2S.mes.dto.ObtainOrderDto;
-import B2A3_M2S.mes.dto.RoutingDto;
-import B2A3_M2S.mes.entity.Company;
-import B2A3_M2S.mes.entity.Item;
-import B2A3_M2S.mes.entity.ObtainOrder;
-import B2A3_M2S.mes.entity.Routing;
-import B2A3_M2S.mes.repository.CompanyRepository;
-import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ObtainOrderService;

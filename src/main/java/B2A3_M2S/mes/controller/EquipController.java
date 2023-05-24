@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,21 +49,25 @@ public class EquipController {
 
         model.addAttribute("codeList1", CodeServiceImpl.getCodeList("EQUIP_STATE"));
         model.addAttribute("codeList2", CodeServiceImpl.getCodeList("UNIT_TYPE"));
-
         model.addAttribute("equipList", equipDtoList);
         return "equipPage";
     }
 
 
     @PostMapping("/equipment")
-    public String equipmentRegister(EquipFormDto equipFormDto, String procNm, Model model) {
-        EquipFormDto result = equipService.writeEquip(equipFormDto, procNm);
-        Equipment equipment = new Equipment();
-        equipment = result.createEquipment(); // equipFormDto를 equipment로 변환
-        equipRepository.save(equipment);
-
-
-        return "redirect:/equipment";
+    public String equipmentRegister(EquipFormDto equipFormDto, String procNm, Model model, BindingResult bindingResult) {
+        try {
+            EquipFormDto result = equipService.writeEquip(equipFormDto, procNm);
+            Equipment equipment = new Equipment();
+            equipment = result.createEquipment(); // equipFormDto를 equipment로 변환
+            equipRepository.save(equipment);
+        } catch(IllegalStateException e) {
+            model.addAttribute("Message", e.getMessage());
+            System.out.println("테스트다아아아아" + e.getMessage());
+            return "equipPage";
+        }
+            model.addAttribute("Message", "등록 되었습니다.");
+            return "equipPage";
     }
 
 
@@ -97,6 +102,20 @@ public class EquipController {
         System.out.println(equip);
 
         String json = gson.toJson(equip);
+        return json;
+    }
+
+    @GetMapping("/equipment/autoComplete2")
+    @ResponseBody
+    public String equipmentAutoComplete2(@RequestParam("text") String text) {
+
+        Gson gson = new Gson();
+        System.out.println(text);
+        System.out.println("-------------------------------------------");
+        List<Processes> processes = processesRepository.findByProcNmContaining(text);
+        System.out.println(processes);
+
+        String json = gson.toJson(processes);
         return json;
     }
 }

@@ -40,6 +40,7 @@ public class CodeServiceImpl implements CodeService {
                                     .toMap(CommonCodeDTO::getCd, Function.identity())
                             )
                     );
+
                     Set<String> keySet = codeSetDTO.getCodeGroup().keySet();
                     Map<String, List<CommonCodeDTO>> map = codeSetDTO.getCode();
                     for (String codeGroup : keySet) {

@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Production extends BaseTimeEntity{
-
     @Id
     private String planNo;      //계획 번호
 

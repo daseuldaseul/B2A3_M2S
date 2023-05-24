@@ -43,4 +43,30 @@ public class ProcessesDto {
         return modelMapper.map(processes, ProcessesDto.class);
     }
 
+    // 공정 상태
+    private ProcessResultDTO pDto;
+    public ProcessResultDTO operation(int inputQty) {
+        //  0 : 미사용
+        //  1 : 사용중
+
+        //  0 : 실패
+        //  1 : 완료
+        if(pDto.getState() == 1) {
+            pDto.setResult(0);
+            return this.pDto;
+        }
+
+        this.pDto.setState(1);
+        return pDto;
+    }
+    public void endOperation() {
+        pDto.setState(0);
+    }
+
+
+
+    public ProcessesDto() {
+        pDto = new ProcessResultDTO();
+    }
+
 }

@@ -41,6 +41,9 @@ public class RoutingDto {
     public Routing createRouting() {
         return modelMapper.map(this, Routing.class);
     }
+    public List<Routing> createRouting(List<RoutingDto> routingDtoList) {
+        return modelMapper.map(this, new TypeToken<List<Routing>>() {}.getType());
+    }
 
     public static RoutingDto of(Routing routing) {
         return modelMapper.map(routing, RoutingDto.class);

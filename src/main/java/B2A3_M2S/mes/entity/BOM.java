@@ -51,7 +51,7 @@ import java.time.LocalDate;
                 + " ON b.product_cd = r.material_cd"
                 + " )"
                 + " SELECT a.bom_no, a.product_cd, a.material_cd, a.depth, a.standard, a.consumption,"
-                + " IFNULL((SELECT (a.consumption - sum(ifnull(qty, 0))) FROM stock  WHERE a.material_cd = item_cd GROUP BY item_cd), a.consumption) AS need_qty, a.reg_date, a.mod_date,"
+                + " IFNULL((SELECT (a.consumption - (sum(ifnull(qty, 0)) - sum(ifnull(plan_qty, 0)))) FROM stock  WHERE a.material_cd = item_cd GROUP BY item_cd), a.consumption) AS need_qty, a.reg_date, a.mod_date,"
                 + " a.remark, a.use_yn"
                 + " FROM rc a",
         resultSetMapping = "BOMDTOMapping"

@@ -20,7 +20,7 @@ public class Production extends BaseTimeEntity{
 
     private LocalDateTime startDate;    //생산 시작 일시
 
-    private LocalDateTime endDate;      //생상 종료 일시
+    private LocalDateTime endDate;      //생산 종료 일시
 
     private String remark;
 

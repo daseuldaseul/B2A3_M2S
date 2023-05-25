@@ -12,9 +12,11 @@ import java.time.LocalDateTime;
 @Table(name = "warehouse_log")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class WarehouseLog extends BaseTimeEntity{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String inoutNo;     //입출고 번호
 
     private String logGb;   //입출고 구분

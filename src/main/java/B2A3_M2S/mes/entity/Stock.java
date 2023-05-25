@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "stock")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Stock extends BaseTimeEntity{
 
     @Id

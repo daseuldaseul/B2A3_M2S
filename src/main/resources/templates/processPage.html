@@ -110,7 +110,7 @@
 
                       </div>
                       <input type="hidden" id="processCode" name="procCd">
-                      <input type="text" id="processName" name="procNm" class="form-control" onkeyup="autoComplete(this.value)">
+                      <input type="text" id="processName" name="procNm" class="form-control" onkeyup="autoComplete(this.value)" autocomplete="off">
 
                     </div>
 
@@ -368,7 +368,7 @@
    function autoComplete(text){
 
 $.ajax({
-  url: '/process/searchWord',
+  url: '/autoComplete4',
   type: 'GET',
   data: { text: text },
   success: function(response) {

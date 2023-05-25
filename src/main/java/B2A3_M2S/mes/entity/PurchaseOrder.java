@@ -15,11 +15,13 @@ import java.time.LocalDateTime;
 public class PurchaseOrder {
 
     @Id
-    private String pOrderNo;    //발주 번호
+    private String orderNo;    //발주 번호
 
-    private Long pOrderQty; //발주 수량
+    private Long orderQty; //발주 수량
 
-    private LocalDateTime pOrderDate;   //발주일
+    private LocalDateTime orderDate;   //발주일
+
+    private LocalDateTime dueDate;     //입고예정일
 
     private Character urgencyYn;    //긴급 요청 여부
 
@@ -36,6 +38,6 @@ public class PurchaseOrder {
     private Item item;    //자재 기본키
 
     //공통코드
-    private String pState;   //발주 상태
+    private String purchaseState;   //발주 상태
 
 }

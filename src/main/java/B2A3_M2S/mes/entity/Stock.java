@@ -33,4 +33,7 @@ public class Stock extends BaseTimeEntity{
     @JoinColumn(name = "item_cd")
     private Item item;
 
+
+    // 추가
+    private Long planQty;
 }

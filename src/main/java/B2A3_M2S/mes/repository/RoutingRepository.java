@@ -16,5 +16,4 @@ public interface RoutingRepository extends JpaRepository<Routing, Long>, Queryds
 
     List<Routing> findByItem(Item item);
 
-    List<Routing> findByItem_ItemCd(String item_itemCd);
 }

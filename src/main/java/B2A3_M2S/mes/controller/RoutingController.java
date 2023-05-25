@@ -84,17 +84,5 @@ public class RoutingController {
         return "routingPage";
     }
 
-    @GetMapping("/routing/autoComplete")
-    @ResponseBody
-    public String routingAutoComplete(@RequestParam("text") String text) {
 
-        Gson gson = new Gson();
-        System.out.println(text);
-        System.out.println("-------------------------------------------");
-        List<Item> item = itemRepository.findByItemNmContainingAndItemCdContaining(text, "P");
-        System.out.println(item);
-
-        String json = gson.toJson(item);
-        return json;
-    }
 }

@@ -11,6 +11,8 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface BOMRepository extends JpaRepository<BOM, Long> , QuerydslPredicateExecutor<BOM> {

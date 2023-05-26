@@ -8,15 +8,14 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity(name = "warehouse_log")
-@Table(name = "warehouse_log")
+@Entity
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class WarehouseLog extends BaseTimeEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String inoutNo;     //입출고 번호
 
     private String logGb;   //입출고 구분

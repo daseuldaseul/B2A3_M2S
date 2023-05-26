@@ -48,10 +48,12 @@ public class StickDueTests {
         System.out.println("발주 입고 시각 : " + dueTime);
 
 
-        System.out.println(routingRepository.findByItem_ItemCd(item.getItemCd()));
+       // System.out.println(routingRepository.findByItem_ItemCd(item.getItemCd()));
 
 
 
     }
+
+
 
 }

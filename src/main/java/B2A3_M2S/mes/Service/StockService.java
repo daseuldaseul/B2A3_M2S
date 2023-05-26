@@ -3,11 +3,16 @@ package B2A3_M2S.mes.service;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Stock;
 import B2A3_M2S.mes.entity.WarehouseLog;
+import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.StockRepository;
 import B2A3_M2S.mes.repository.WarehouseLogRepository;
+import B2A3_M2S.mes.util.NumPrefix;
+import B2A3_M2S.mes.util.NumberingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,35 +26,41 @@ public class StockService {
     @Autowired
     StockRepository stockRepository;
 
+    @Autowired
+    ItemRepository itemRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    public List<Stock> getStockList() {
+
+        List<Stock> stockList = new ArrayList<>();
+
+        stockList = stockRepository.findByQtyIsNot(0L);
+
+
+        return stockList;
+
+    }
+
+
+
+
+
+
+
 /**
  * 자재를 재고 테이블에 저장하고 입출고 테이블에 기록.
  *
  * @param item  아이템 엔티티
- * @param logGb 로그 구분
  * @param qty 수량
  *
  * */
-    public void addMaterials(Item item, String logGb, Long qty ){
-        String lotNo = "로트로트";
+    public void addMaterials(Item item, Long qty ){
 
-        Stock stock = Stock.builder()
-                //.lotNo(lotNo)
-                .item(item)
-                .qty(qty)
-                .build();
-
-        WarehouseLog warehouseLog = WarehouseLog.builder()
-                .item(item)
-                //.lotNo(lotNo)
-                .logGb("입고")
-                .qty(qty)
-                .build();
-
-        stockRepository.save(stock);
-
-        warehouseLogRepository.save(warehouseLog);
-    }
-    public void addProducts(Item item ,String lotNo  ,String logGb, Long qty ){
+        String lotNo = "로트번호";//채번으로 변경예정
+        NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
+        String ocd = service.getNumbering("inoutNo", NumPrefix.RECEIVING);
 
         Stock stock = Stock.builder()
                 .lotNo(lotNo)
@@ -58,9 +69,31 @@ public class StockService {
                 .build();
 
         WarehouseLog warehouseLog = WarehouseLog.builder()
+                .inoutNo(ocd)//채번으로 변경 예정
                 .item(item)
                 .lotNo(lotNo)
-                .logGb(logGb)
+                .logGb("RECEIVING")
+                .qty(qty)
+                .build();
+
+        stockRepository.save(stock);
+        warehouseLogRepository.save(warehouseLog);
+    }
+    public void addProducts(Item item ,String lotNo, Long qty ){
+        NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
+        String ocd = service.getNumbering("inoutNo", NumPrefix.RECEIVING);
+
+        Stock stock = Stock.builder()
+                .lotNo(lotNo)
+                .item(item)
+                .qty(qty)
+                .build();
+
+        WarehouseLog warehouseLog = WarehouseLog.builder()
+                .inoutNo(ocd)
+                .item(item)
+                .lotNo(lotNo)
+                .logGb("RECEIVING")
                 .qty(qty)
                 .build();
 
@@ -69,22 +102,36 @@ public class StockService {
         warehouseLogRepository.save(warehouseLog);
 
     }
-    public List<Stock> releaseItem(Item item,Long qty ){
+    /**
+     * 공정 및 출하 진행 시 itemEntity 와 qty을 입력 받아
+     * 재고 테이블에서 qty만큼 뺀 후
+     * 입출고 테이블에 출고 기록.
+     *
+     *
+     * @param item  아이템 엔티티
+     * @param qty 수량
+     *
+     * */
+    public void releaseItem(Item item, Long qty){
 
-         List<Stock> stockList = stockRepository.findByItem_ItemCdOrderByRegDate(item.getItemCd());
+        List<Stock> stockList = stockRepository.findByItem(item);
 
-         List<Stock> releaseList = new ArrayList<>();
 
          for(Stock stock : stockList){
 
              if(stock.getQty() <= qty){
+                 NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
+                 String ocd = service.getNumbering("inoutNo", NumPrefix.RELEASE);
+
                  qty -= stock.getQty();
-                 releaseList.add(stock);
+                 System.out.println(stock.getQty());
+                 System.out.println(qty);
 
                  WarehouseLog warehouseLog = WarehouseLog.builder()
+                         .inoutNo(ocd)
                          .item(item)
                          .lotNo(stock.getLotNo())
-                         .logGb("출고")
+                         .logGb("RELEASE")
                          .qty(stock.getQty())
                          .build();
 
@@ -95,33 +142,24 @@ public class StockService {
                  stockRepository.save(stock);
 
                  if(qty == 0) break;
-                 //i 번쨰 stock qty 를 0 으로
-                 //입출고 테이블에 출고 기록
-                 //출고 리스트에 추가
 
              }else {
+                 NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
+                 String ocd = service.getNumbering("inoutNo", NumPrefix.RELEASE);
                  Long stockQty = stock.getQty() - qty;
 
                  WarehouseLog warehouseLog = WarehouseLog.builder()
+                         .inoutNo(ocd)
                          .item(item)
                          .lotNo(stock.getLotNo())
-                         .logGb("출고")
+                         .logGb("RELEASE")
                          .qty(qty)
                          .build();
 
 
                  warehouseLogRepository.save(warehouseLog);
 
-
                  stock.setQty(stockQty);
-
-
-
-
-
-                 releaseList.add(stock);
-
-
                  stockRepository.save(stock);
 
                  break;
@@ -129,7 +167,6 @@ public class StockService {
 
          }
 
-         return  releaseList;
     }
 
 }

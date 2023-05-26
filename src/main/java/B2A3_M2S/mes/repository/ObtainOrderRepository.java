@@ -12,4 +12,8 @@ public interface ObtainOrderRepository extends JpaRepository<ObtainOrder, String
 
     List<ObtainOrder> findByOrderCd(String orderCd);
 
+
+
+
+
 }

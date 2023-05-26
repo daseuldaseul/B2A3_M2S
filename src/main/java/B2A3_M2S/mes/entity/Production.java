@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.entity;
 
+import B2A3_M2S.mes.dto.LotNoLogDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,21 +13,18 @@ import java.time.LocalDateTime;
 @Table(name = "production")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Production extends BaseTimeEntity{
+public class Production extends BaseTimeEntity {
 
     @Id
     private String planNo;      //계획 번호
-
     private Long planQty;       //생산 수량
-
     private LocalDateTime startDate;    //생산 시작 일시
-
     private LocalDateTime endDate;      //생상 종료 일시
+    private String remark;              // 비고
 
-    private String remark;
-
-
-    /**외래키**/
+    /**
+     * 외래키
+     **/
 
     @OneToOne
     @JoinColumn(name = "order_cd")
@@ -36,4 +34,7 @@ public class Production extends BaseTimeEntity{
     @JoinColumn(name = "proc_cd")
     private Processes processes;     //공정 코드
 
+    @OneToOne
+    private LotNoLog lotNoLog;
+    private boolean completion;
 }

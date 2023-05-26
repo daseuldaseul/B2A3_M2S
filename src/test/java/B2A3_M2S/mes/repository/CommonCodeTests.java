@@ -1,8 +1,8 @@
 package B2A3_M2S.mes.repository;
 
 import B2A3_M2S.mes.entity.*;
-import B2A3_M2S.mes.util.NumPrefix;
-import B2A3_M2S.mes.util.NumberingService;
+import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.service.NumberingService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.Test;

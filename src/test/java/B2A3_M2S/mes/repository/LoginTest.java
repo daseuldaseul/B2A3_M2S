@@ -43,7 +43,7 @@ public class LoginTest {
     double workTime = 0;
     double leadTime = 0;
 
-    double cabbage = 10000000;
+    double cabbage = 1000000;
     double cabbageExtract = 0;
     double cabbageJuice = 0;
     double cabbageJuiceBox = 0;
@@ -223,8 +223,6 @@ public class LoginTest {
             System.out.println("가열공정_1 종료 (생산수량): " + outputQty);
             System.out.println("가열공정 (남은수량): " + temp);
         } while (temp > 0); // 조건식
-
-
         return outputQty;
     }
     public double proc4_2(double inputQty) {
@@ -283,7 +281,7 @@ public class LoginTest {
     public double proc7(double inputQty) {
         System.out.println("식힘공정 시작 (투입량): " + inputQty);
         leadTime += 0;
-        workTime += 86400;
+        workTime += 1440;
         System.out.println("식힘공정 종료 (생산수량): " + inputQty);
         return inputQty;
     }
@@ -296,13 +294,12 @@ public class LoginTest {
         leadTime += 20;
         System.out.println("포장공정 시작 (투입량): " + inputQty);
 
-        num = (int)(temp / 10);
+        num = (int)(temp / 30);
         rQty = (temp % 30);
-        workTime += (num * 3);
+        workTime += Math.ceil((num * 0.3));
         outputQty += (int)(temp / 30);
 
         System.out.println("포장공정 종료 (생산수량): " + outputQty);
         return outputQty;
     }
-
 }

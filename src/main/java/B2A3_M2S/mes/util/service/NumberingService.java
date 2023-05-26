@@ -1,5 +1,7 @@
-package B2A3_M2S.mes.util;
+package B2A3_M2S.mes.util.service;
 
+import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.repository.NumberingRepository;
 import lombok.Setter;
 
 import javax.persistence.EntityManager;
@@ -40,7 +42,7 @@ public class NumberingService<T> implements NumberingRepository<T> {
         } else {
             String temp = list.get(0);
             String suffix = temp.substring(temp.lastIndexOf("-") + 1, temp.length());
-            String tempStr = String.valueOf(Integer.parseInt(suffix.replace("0", "")) + 1);
+            String tempStr = String.valueOf(Integer.parseInt(suffix) + 1);
 
             while (true) {
                 if (tempStr.length() >= 5)
@@ -51,6 +53,7 @@ public class NumberingService<T> implements NumberingRepository<T> {
         }
         return numbering;
     }
+
 }
 
 

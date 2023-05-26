@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "item")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Item extends BaseTimeEntity{
     @Id
     @Column(name="item_cd")

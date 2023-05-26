@@ -7,8 +7,6 @@ import B2A3_M2S.mes.repository.EquipRepository;
 import B2A3_M2S.mes.repository.ProcessesRepository;
 import B2A3_M2S.mes.repository.specification.EquipSpecification;
 import B2A3_M2S.mes.entity.Equipment;
-import B2A3_M2S.mes.util.NumPrefix;
-import B2A3_M2S.mes.util.NumberingService;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,10 +56,8 @@ public class EquipService {
 
     public EquipFormDto writeEquip(EquipFormDto equipFormDto, String procNm) {
         equipFormDto.setProcesses(ProcessesDto.of(processesRepository.findByProcNm(procNm)));
-
         equipFormDto.setCapaUnit("UNIT01");
 
         return equipFormDto;
     }
-
 }

@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Table(name = "processes")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Processes extends BaseTimeEntity {
 
     @Id

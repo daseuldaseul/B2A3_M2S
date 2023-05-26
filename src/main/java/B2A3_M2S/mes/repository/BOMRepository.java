@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public interface BOMRepository extends JpaRepository<BOM, Long> , QuerydslPredicateExecutor<BOM> {
 /*    @Query("WITH recursive rc AS ("

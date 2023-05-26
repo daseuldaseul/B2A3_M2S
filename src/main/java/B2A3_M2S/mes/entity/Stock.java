@@ -7,10 +7,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@Entity(name = "stock")
-@Table(name = "stock")
+@Entity
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Stock extends BaseTimeEntity{
 
     @Id

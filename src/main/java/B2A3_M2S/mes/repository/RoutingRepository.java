@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.repository;
 
+import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Routing;
 import org.springframework.data.jpa.repository.JpaRepository;

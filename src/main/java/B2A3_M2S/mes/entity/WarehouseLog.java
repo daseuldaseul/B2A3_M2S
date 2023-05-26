@@ -8,10 +8,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity(name = "warehouse_log")
-@Table(name = "warehouse_log")
+@Entity
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class WarehouseLog extends BaseTimeEntity{
 
     @Id

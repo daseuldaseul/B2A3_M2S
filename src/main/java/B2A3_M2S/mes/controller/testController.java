@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDateTime;
+
 @Controller
 public class testController {
     @Autowired
@@ -13,7 +15,9 @@ public class testController {
 
     @GetMapping("/testtest")
     public String testControlerrrr(Model model) {
-        productionService.cabbageCalculator();
+        LocalDateTime startTime = LocalDateTime.now();
+        String obtainOrderCd = "OC-2";
+        productionService.cabbageCalculator(startTime, obtainOrderCd);
 //        productionService.blackGarlicCalculator();
 //        productionService.stickCalculator();
 

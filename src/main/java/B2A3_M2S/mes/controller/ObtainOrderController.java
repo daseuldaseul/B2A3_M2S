@@ -49,7 +49,6 @@ public class ObtainOrderController {
     @GetMapping("/obtainOrder/detail")
     public String obtainOrderDetail(@RequestParam String orderCd, Model model) {
         Gson gson = new Gson();
-        System.out.println("-------------------------------------------");
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findByOrderCd(orderCd);
         List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
         for(ObtainOrderDto obtainOrderDto : obtainOrderDtoList){

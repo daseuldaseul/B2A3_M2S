@@ -192,14 +192,14 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="itemDto, status: ${itemList}" onclick="getItemValue(this)">
+                  <tr th:each="itemDto, status: ${itemList}">
                     <td th:text="${status.index}+1"></td>
                     <td th:text="${itemDto.itemCd}"></td>
                     <td th:text="${itemDto.itemNm}"></td>
                     <td th:text="${itemDto.itemGbNm}"></td>
                     <td th:text="${itemDto.itemTypeNm}"></td>
                     <td th:text="${itemDto.itemUnitNm}"></td>
-                    <td th:text="${itemDto.company.companyNm}"></td>
+                    <td th:text="${itemDto.company == null ? '' : itemDto.company.companyNm}"></td>
                     <td th:text="${#temporals.format(itemDto.regDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${itemDto.remark}"></td>
 

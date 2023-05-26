@@ -1,19 +1,27 @@
 package B2A3_M2S.mes.dto;
 
+import B2A3_M2S.mes.entity.BOM;
+import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Item;
 import jdk.jfr.DataAmount;
 import lombok.*;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter@Setter
 public class BOMDTO {
+    public static ModelMapper modelMapper = new ModelMapper();
+
     private Long bomNo;         // BOM 번호
 
     private String remark;      // 비고
@@ -50,4 +58,5 @@ public class BOMDTO {
         this.productCd = productCd;
         this.materialCd = materialCd;
     }
+
 }

@@ -40,7 +40,7 @@ public class NumberingService<T> implements NumberingRepository<T> {
         } else {
             String temp = list.get(0);
             String suffix = temp.substring(temp.lastIndexOf("-") + 1, temp.length());
-            String tempStr = String.valueOf(Integer.parseInt(suffix.replace("0", "")) + 1);
+            String tempStr = String.valueOf(Integer.parseInt(suffix) + 1);
 
             while (true) {
                 if (tempStr.length() >= 5)

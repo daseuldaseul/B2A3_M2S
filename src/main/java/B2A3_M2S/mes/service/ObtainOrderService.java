@@ -55,10 +55,7 @@ public class ObtainOrderService {
         NumberingService<ObtainOrder> service = new NumberingService<>(entityManager, ObtainOrder.class);
         String ocd = service.getNumbering("orderCd", NumPrefix.OBTAIN_ORDER);
         obtainOrderFormDto.setOrderCd(ocd);
-//        double min = 3060 + 6.1 * (double) obtainOrderFormDto.getQty();
-//        min = Math.ceil(min);
         LocalDateTime orderDate = LocalDateTime.now();
-//
         LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 0));
         LocalDateTime dueTime = orderDate;
         obtainOrderFormDto.setOrderDate(orderDate);

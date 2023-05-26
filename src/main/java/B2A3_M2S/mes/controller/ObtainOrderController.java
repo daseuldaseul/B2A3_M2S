@@ -6,6 +6,7 @@ import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ObtainOrderService;
+import B2A3_M2S.mes.service.PurchaseOrderService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,6 +27,8 @@ public class ObtainOrderController {
     @Autowired
     ObtainOrderRepository obtainOrderRepository;
 
+    @Autowired
+    PurchaseOrderService purchaseOrderService;
     @Autowired
     ObtainOrderService obtainOrderService;
 
@@ -64,6 +67,7 @@ public class ObtainOrderController {
         ObtainOrder obtainOrder = new ObtainOrder();
         obtainOrder = result.createObtainOrder();
         obtainOrderRepository.save(obtainOrder);
+        purchaseOrderService.purchaseOrderCreate(itemNm,(int)(long)obtainOrderFormDto.getQty());
         return "redirect:/obtainOrder";
     }
 

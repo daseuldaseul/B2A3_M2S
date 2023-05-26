@@ -100,7 +100,6 @@ public class CompanyController {
     public String companyWrite(CompanyFormDto companyFormDto, Model model){
         Company company = new Company();
         company = companyFormDto.createCompany();
-        company.setRegDate(LocalDate.now());
         companyRepository.save(company);
 
        return "redirect:/company";

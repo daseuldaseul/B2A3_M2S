@@ -50,6 +50,9 @@ public class ItemDto {
 
     private LocalDate modDate;
 
+    private Long orderMin;
+
+    private Long orderMax;
     
     // 코드값
     private String sUnitValue;

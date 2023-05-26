@@ -30,6 +30,9 @@ public class Company extends BaseTimeEntity{
 
     private String remark;      //비고
 
+    private Integer orderTime;  //주문 시간
+
+    private Integer orderDay;   //배송 걸리는 시간
     //공통코드
     private String companyGb;   //업체 구분
 

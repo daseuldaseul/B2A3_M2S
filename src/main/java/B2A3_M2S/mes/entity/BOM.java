@@ -35,7 +35,7 @@ import java.time.LocalDate;
         )
 )
 @NamedNativeQuery(
-        name = "BOM.finNeedQtyBypItem",
+        name = "BOM.findNeedQtyBypItem",
         query = "WITH recursive rc as ("
                 + " SELECT std.bom_no, std.product_cd, std.material_cd, 1 as depth, :standard as standard,"
                 + " (std.consumption * :standard / std.standard) as consumption, std.remark, std.use_yn,"

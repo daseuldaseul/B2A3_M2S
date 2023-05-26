@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity(name = "purchase_order")
-@Table(name = "purchase_order")
+@Entity
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
 public class PurchaseOrder {

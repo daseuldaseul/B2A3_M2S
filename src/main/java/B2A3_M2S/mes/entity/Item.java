@@ -26,6 +26,9 @@ public class Item extends BaseTimeEntity{
 
     private Character useYn;    //사용유무
 
+    private Long orderMin;
+
+    private Long orderMax;
     /**
         외래키 설정해야함
      **/

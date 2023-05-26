@@ -23,6 +23,9 @@ public class CompanyFormDto {
 
     private String companyGb;   //업체 구분
 
+    private Integer orderTime;  //주문 시간
+
+    private Integer orderDay;   //배송 걸리는 시간
 
     public Company createCompany(){
         return modelMapper.map(this, Company.class);

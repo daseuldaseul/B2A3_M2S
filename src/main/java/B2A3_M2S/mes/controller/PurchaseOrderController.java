@@ -13,6 +13,8 @@ import B2A3_M2S.mes.service.PurchaseOrderService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +37,6 @@ public class PurchaseOrderController {
 
     @GetMapping("/purchaseOrder")
     public String purchaseOrder(Model model){
-
         List<PurchaseOrderDto> purchaseOrderList = PurchaseOrderDto.of(purchaseOrderRepository.findAll());
 
         for(PurchaseOrderDto orders : purchaseOrderList){
@@ -85,5 +86,7 @@ public class PurchaseOrderController {
         String json = gson.toJson(purchaseOrderDto);
         return json;
     }
+
+
 
 }

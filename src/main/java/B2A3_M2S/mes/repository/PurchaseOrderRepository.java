@@ -14,6 +14,8 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, St
     List<PurchaseOrder> findAll();
 
     PurchaseOrder findByOrderNo(String orderNo);
+
+    List<PurchaseOrder> findByPurchaseState(String state);
 //    PurchaseOrder findByPOrderDate(LocalDateTime time);
 }
 

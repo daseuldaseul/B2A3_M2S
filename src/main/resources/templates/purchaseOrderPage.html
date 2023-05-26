@@ -170,7 +170,7 @@
                                         <th>업체명</th>
                                         <th>품목명</th>
                                         <th>발주일자</th>
-<!--                                        <th>입고예정일</th>-->
+                                        <th>입고예정일</th>
                                         <th>주문량</th>
                                         <th>상태</th>
                                         <th>비고</th>
@@ -182,7 +182,7 @@
                                         <td th:text="${purchaseOrderDto.company.companyNm}"></td>
                                         <td th:text="${purchaseOrderDto.item.itemNm}"></td>
                                         <td th:text="${#temporals.format(purchaseOrderDto.orderDate, 'yyyy-MM-dd')}" ></td>
-<!--                                        <td th:text="${#temporals.format(purchaseOrderDto.pDueDate, 'yyyy-MM-dd')}" ></td>-->
+                                        <td th:text="${#temporals.format(purchaseOrderDto.dueDate, 'yyyy-MM-dd')}" ></td>
                                         <td th:text="${purchaseOrderDto.orderQty}"></td>
                                         <td th:text="${purchaseOrderDto.purchaseStateNm}"></td>
                                         <td th:text="${purchaseOrderDto.remark}"></td>
@@ -210,7 +210,6 @@
                                         <th>품목명</th>
                                         <th>긴급 요청 여부</th>
                                         <th>연락처</th>
-                                        <th>배송지</th>
                                         <th>비고</th>
                                     </tr>
 
@@ -224,7 +223,6 @@
                                         <td id="itemNm"></td>
                                         <td id="urgencyYn"></td>
                                         <td id="phoneNumber"></td>
-                                        <td id="address"></td>
                                         <td id="remark"></td>
 
                                     </tr>
@@ -434,7 +432,6 @@ document.getElementById('itemCd').innerText = purchaseOrders.item.itemCd;
 document.getElementById('itemNm').innerText = purchaseOrders.item.itemNm;
 document.getElementById('urgencyYn').innerText = purchaseOrders.urgencyYn;
 document.getElementById('phoneNumber').innerText = purchaseOrders.company.phoneNumber;
-document.getElementById('address').innerText = purchaseOrders.company.address;
 document.getElementById('remark').innerText = purchaseOrders.remark;
 
 

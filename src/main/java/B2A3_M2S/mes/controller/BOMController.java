@@ -2,6 +2,7 @@ package B2A3_M2S.mes.controller;
 
 import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.dto.ItemDto;
+import B2A3_M2S.mes.repository.BOMRepository;
 import B2A3_M2S.mes.service.BOMService;
 import B2A3_M2S.mes.service.ItemService;
 import com.google.gson.Gson;
@@ -43,7 +44,6 @@ public class BOMController {
 //        return "BOM";
 //    }
 
-
     @GetMapping("/list")
     /*public String test1(Model model
                     , @RequestParam("product")String product
@@ -61,6 +61,11 @@ public class BOMController {
 
         model.addAttribute( "BOM" ,  BOM) ;
         System.out.println(BOM);
+//        service.findNeedQtyBypItem("P_002", 1200);
+//        service.findNeedQtyBypItem("P_002", 1200);
+
+
+
 
         return "BOM";
     }

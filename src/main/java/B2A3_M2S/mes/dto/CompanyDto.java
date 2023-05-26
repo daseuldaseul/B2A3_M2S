@@ -28,10 +28,14 @@ public class CompanyDto {
     private String remark;      //비고
 
     private String companyGb;   //업체 구분
+
     private String companyGbNm;
 
     private LocalDate regDate;
 
+    private Integer orderTime;  //주문 시간
+
+    private Integer orderDay;   //배송 걸리는 시간
 
 
     public static List<CompanyDto> of(List<Company> companyList){

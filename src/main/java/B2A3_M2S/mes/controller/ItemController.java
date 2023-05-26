@@ -63,7 +63,6 @@ public class ItemController {
     public String itemWrite(ItemFormDto itemFormDto, @RequestParam String companyNm, Model model){
         CompanyDto companyDto = CompanyDto.of(companyRepository.findByCompanyNm(companyNm));
         itemFormDto.setCompany(companyDto);
-        itemFormDto.setRegDate(LocalDate.now());
         Item item = itemFormDto.createItem();
 
         itemRepository.save(item);

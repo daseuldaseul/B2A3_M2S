@@ -76,7 +76,6 @@ public class ProcessesController {
     public String processWrite(ProcessesFormDto processesFormDto, Model model){
         Processes processes = new Processes();
         processes = processesFormDto.createProcesses();
-        processes.setRegDate(LocalDate.now());
 
         processesRepository.save(processes);
 

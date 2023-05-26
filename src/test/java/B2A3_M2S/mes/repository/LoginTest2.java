@@ -50,8 +50,7 @@ public class LoginTest2 {
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("--------------------------------------------------------------------------------");
-        bomRepository.finNeedQtyBypItem("P_002", 1200).stream().forEach(System.out::println);
-
+        bomRepository.findNeedQtyBypItem("P_002", 1200).stream().forEach(System.out::println);
 
     }
 }

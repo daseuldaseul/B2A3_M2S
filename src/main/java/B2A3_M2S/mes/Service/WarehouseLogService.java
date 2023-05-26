@@ -12,6 +12,9 @@ import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class WarehouseLogService {
 
@@ -34,6 +37,15 @@ public class WarehouseLogService {
 
 
 
+    }
+
+    public List<WarehouseLog> getWareHouseLog(){
+
+        List<WarehouseLog> warehouseLogList = new ArrayList<>();
+
+        warehouseLogList = warehouseLogRepository.findAll();
+
+        return warehouseLogList;
     }
 
 

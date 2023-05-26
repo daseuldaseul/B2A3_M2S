@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | DataTables</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/css/adminlte.min.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <style>
+    .autocomplete-results {
+      position: absolute;
+      top: 40px;
+      width: 85.5%;
+      z-index: 999;
+      background-color: #fff;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      margin-left: 60px;
+    }
+
+    .autocomplete-results ul {
+      list-style-type: none;
+      margin: 20px;
+      padding: 0;
+    }
+
+    .autocomplete-results li {
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    .autocomplete-results li:hover {
+      background-color: #f5f5f5;
+    }
+
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <!-- /Main Sidebar Container -->
+
+  <!-- Content Wrapper. Contains page content -->
+
+  <th:block th:include="sidebar.html"></th:block>
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>품목 조회</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <form action="/item/search" method="GET">
+                  <div class="row">
+                    <div class="input-group col-12 justify-content-end">
+
+                      <div class="col-auto">
+                        <button type="submit" class="btn btn-block btn-primary ">조회 <i class="nav-icon fas fa-search"></i></button>
+
+                      </div>
+                      <div class="col-auto">
+                        <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-xl">등록</button>
+                      </div>
+
+                      <!--                      <div class="col-auto">-->
+                      <!--                        <button type="button" class="btn btn-block btn-warning">수정</button>-->
+                      <!--                      </div>-->
+                    </div>
+                  </div>
+
+
+                  <hr>
+
+                  <div class="row">
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">품목</button>
+                      </div>
+                      <div id="autocomplete-results" class="autocomplete-results">
+
+                      </div>
+                      <input type="hidden" id="itemCode" name="itemCd">
+                      <input type="text" id="itemName" name="itemNm" class="form-control" placeholder="품목명" onkeyup="autoComplete(this.value)" autocomplete="off">
+                    </div>
+
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">품목구분</button>
+                      </div>
+                      <select class="form-control" name="itemGb">
+                        <option selected>미선택</option>
+                        <option th:each="codeList : ${codeList1}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+                      </select>
+
+                    </div>
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">품목타입</button>
+                      </div>
+                      <select class="form-control" name="itemType">
+                        <option selected>미선택</option>
+                        <option th:each="codeList : ${codeList2}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+                      </select>
+                    </div>
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">단위</button>
+                      </div>
+                      <select class="form-control" name="itemUnit">
+                        <option selected>미선택</option>
+                        <option th:each="codeList : ${codeList3}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                  <hr>
+
+
+                  <div class="row">
+
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">업체</button>
+                      </div>
+                      <div id="autocomplete-results2" class="autocomplete-results">
+                      </div>
+                      <input type="hidden" id="companyCode" name="companyCd">
+                      <input type="text" id="companyName" name="companyNm" class="form-control" placeholder="업체명" onkeyup="autoComplete2(this.value)" autocomplete="off">
+                    </div>
+
+
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">등록일</button>
+                      </div>
+                      <input type="date" class="form-control" name="startDate">
+                      <input type="date" class="form-control" name="endDate">
+                    </div>
+
+
+                  </div>
+
+                  </hr>
+
+                </form>
+              </div>
+
+
+              <!-- /.card-header -->
+              <!-- /.card-header -->
+              <div class="card-body">
+
+                <table id="example1" class="table table-bordered table-hover">
+                  <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
+                  <tr>
+                    <th>번호</th>
+                    <th>품목코드</th>
+                    <th>품목구분</th>
+                    <th>품목명</th>
+                    <th>수량</th>
+                    <th>등록일</th>
+                    <th>비고</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="stock, status: ${stockList}" onclick="getItemValue(this)">
+
+                    <td th:text="${stock.stockNo}"></td>
+                    <td th:text="${stock.item.getItemCd()}"></td>
+                    <td th:text="${stock.item.getItemGb()}"></td>
+                    <td th:text="${stock.item.getItemNm()}"></td>
+                    <td th:text="${stock.qty + stock.item.itemUnit}"></td>
+
+                    <td th:text="${#temporals.format(stock.regDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${stock.remark}"></td>
+
+
+
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+          </div>
+          <!-- /.col -->
+
+
+
+
+
+
+
+
+          <!-- modal -->
+          <!-- 수정 -->
+          <form method="post" action="/item" th:object="${itemFormDto}">
+            <div class="modal fade" id="modal-xl">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">품목 등록</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">품목</button>
+                        </div>
+                        <input type="text" class="form-control" name="itemCd" placeholder="품목코드">
+                        <input type="text" class="form-control" name="itemNm" placeholder="품목명">
+
+                      </div>
+
+
+
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">품목 구분</button>
+                        </div>
+                        <select class="form-control" name="itemGb" >
+                          <!-- 공통코드로 바꿔야함 -->
+                          <option th:each="codeList1 : ${codeList1}" th:value="${codeList1.codeId.cd}" th:text="${codeList1.displayValue}"></option>
+
+                        </select>
+                      </div>
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">품목 타입</button>
+                        </div>
+                        <select class="form-control" name="itemType" >
+                          <!-- 공통코드로 바꿔야함 -->
+                          <option th:each="codeList2 : ${codeList2}" th:value="${codeList2.codeId.cd}" th:text="${codeList2.displayValue}"></option>
+
+                        </select>
+
+                      </div>
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">단위</button>
+                        </div>
+                        <select class="form-control" name="itemUnit" >
+                          <!-- 공통코드로 바꿔야함 -->
+                          <option th:each="codeList3 : ${codeList3}" th:value="${codeList3.codeId.cd}" th:text="${codeList3.displayValue}"></option>
+
+                        </select>
+
+                      </div>
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="input-group col-3">
+                        <div class="input-group-prepend">
+                          <button type="text" class="btn btn-default">업체명</button>
+                        </div>
+                        <div id="autocomplete-results3" class="autocomplete-results">
+
+                        </div>
+                        <input type="text" class="form-control" name="companyNm" id="companySearch" placeholder="업체명" onkeyup="autoComplete3(this.value)" autocomplete="off">
+                      </div>
+
+
+                    </div>
+
+                    <hr>
+
+
+                    <div class="row">
+                      <div class="input-group col-12">
+                        <div class="input-group-prepend">
+                          <button type="button" class="btn btn-default">비고</button>
+                        </div>
+
+                        <textarea id="" cols="135" rows="3" name="remark"></textarea>
+
+
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <div class="">
+                      <button type="reset" class="btn btn-danger">삭제</button>
+                      <button type="submit" class="btn btn-primary">저장</button>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+
+              </div>
+
+              <!-- /.modal-dialog -->
+            </div>
+
+          </form>
+
+          <!-- 수정 -->
+
+
+
+        </div>
+        <!-- /.row -->
+
+        <!-- /.container-fluid -->
+        </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- <footer class="main-footer">
+
+  </footer> -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/plugins/jszip/jszip.min.js"></script>
+<script src="/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/js/demo.js"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["excel"],
+      "searching": false,
+      "info": false
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+  function autoComplete(text) {
+
+  }
+</script>
+
+
+<script>
+  function autoComplete(text) {
+    console.log(text);
+
+    $.ajax({
+      url: '/autoComplete2',
+      type: 'GET',
+      data: { text: text },
+      success: function(response) {
+        console.log(response);
+        var itemList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('itemCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+        for (var i=0; i < itemList.length; i++){
+          var list = document.createElement("li");
+          list.innerText ='[' + itemList[i].itemCd + ']' + itemList[i].itemNm;
+          list.setAttribute("data-item-nm", itemList[i].itemNm); // 데이터 속성 추가
+          list.setAttribute("data-item-cd", itemList[i].itemCd);
+
+
+          list.addEventListener("click", function() {
+            var result = document.getElementById('itemName');
+            var itemNm = this.getAttribute("data-item-nm"); // 데이터 속성 값 가져오기
+            var itemCd = this.getAttribute("data-item-cd");
+            result.value = itemNm;
+            code.value = itemCd;
+            div.innerHTML = "";
+          });
+
+          ul.append(list);
+          div.append(ul);
+        }
+
+      },
+      error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+      }
+    });
+
+  }
+
+
+  function autoComplete2(text) {
+    console.log(text);
+
+    $.ajax({
+      url: '/autoComplete',
+      type: 'GET',
+      data: { text: text },
+      success: function(response) {
+        console.log(response);
+        var companyList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results2'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('companyCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+        for (var i=0; i < companyList.length; i++){
+          var list = document.createElement("li");
+          list.innerText ='[' + companyList[i].companyCd + ']' + companyList[i].companyNm;
+          list.setAttribute("data-company-nm", companyList[i].companyNm); // 데이터 속성 추가
+          list.setAttribute("data-company-cd", companyList[i].companyCd);
+
+
+          list.addEventListener("click", function() {
+            var result = document.getElementById('companyName');
+            var companyNm = this.getAttribute("data-company-nm"); // 데이터 속성 값 가져오기
+            var companyCd = this.getAttribute("data-company-cd");
+            result.value = companyNm;
+            code.value = companyCd;
+            div.innerHTML = "";
+          });
+
+          ul.append(list);
+          div.append(ul);
+        }
+
+      },
+      error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+      }
+    });
+
+  }
+
+  function autoComplete3(text) {
+    console.log(text);
+
+    $.ajax({
+      url: '/autoComplete',
+      type: 'GET',
+      data: { text: text },
+      success: function(response) {
+        console.log(response);
+        var companyList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results3'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('companyCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+        for (var i=0; i < companyList.length; i++){
+          var list = document.createElement("li");
+          list.innerText ='[' + companyList[i].companyCd + ']' + companyList[i].companyNm;
+          list.setAttribute("data-company-nm", companyList[i].companyNm); // 데이터 속성 추가
+          list.setAttribute("data-company-cd", companyList[i].companyCd);
+
+
+          list.addEventListener("click", function() {
+            var result = document.getElementById('companySearch');
+            var companyNm = this.getAttribute("data-company-nm"); // 데이터 속성 값 가져오기
+            var companyCd = this.getAttribute("data-company-cd");
+            result.value = companyNm;
+            code.value = companyCd;
+            div.innerHTML = "";
+          });
+
+          ul.append(list);
+          div.append(ul);
+        }
+
+      },
+      error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+      }
+    });
+
+  }
+</script>
+
+
+
+</body>
+</html>

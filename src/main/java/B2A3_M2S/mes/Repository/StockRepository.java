@@ -13,6 +13,8 @@ public interface StockRepository extends JpaRepository<Stock, Long>, QuerydslPre
     List<Stock> findByItemOrderByRegDate(Item item);
     List<Stock> findByItem(Item item);
 
+    List<Stock> findAll(Item item);
+
     List<Stock> findByQtyIsNot(Long qty);
 
  }

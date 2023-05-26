@@ -3,28 +3,21 @@ package B2A3_M2S.mes.service;
 import B2A3_M2S.mes.dto.CompanyDto;
 import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.dto.ObtainOrderFormDto;
-import B2A3_M2S.mes.entity.CommonCode;
 import B2A3_M2S.mes.repository.CompanyRepository;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
-import B2A3_M2S.mes.util.NumPrefix;
-import B2A3_M2S.mes.util.NumberingService;
-import net.bytebuddy.asm.Advice;
+import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.service.NumberingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Access;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.entity.QObtainOrder;
-import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import com.querydsl.core.BooleanBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

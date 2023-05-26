@@ -7,4 +7,9 @@
 
 body{
 font-family: 'NanumSquareNeo-Variable'!important;
+
+}
+
+thead {
+  background-color: #29282e !important;
 }

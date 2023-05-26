@@ -40,12 +40,9 @@ public class AutoCompleteController {
     // 회사
     @GetMapping("/autoComplete")
     public String autoComplete(@RequestParam("text") String text) {
-        System.out.println("====================");
-        System.out.println(text);
         Gson gson = new Gson();
         List<Company> companys = companyRepository.findByCompanyNmContaining(text);
         List<CompanyDto> companyList = CompanyDto.of(companys);
-        System.out.println("====================");
         String json = gson.toJson(companyList);
         return json;
     }
@@ -102,6 +99,17 @@ public class AutoCompleteController {
         List<ItemDto> itemList = ItemDto.of(items);
 
         String json = gson.toJson(itemList);
+        return json;
+    }
+
+    @GetMapping("/autoComplete7")
+    public String autoComplete7(@RequestParam("text") String text) {
+
+        Gson gson = new Gson();
+        List<Company> companys = companyRepository.findByCompanyNmContainingAndCompanyCdContaining(text, "OC");
+        List<CompanyDto> companyList = CompanyDto.of(companys);
+
+        String json = gson.toJson(companyList);
         return json;
     }
 

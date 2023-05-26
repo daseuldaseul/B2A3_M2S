@@ -132,7 +132,9 @@ public interface BOMRepository extends JpaRepository<BOM, Long> , QuerydslPredic
             + " IFNULL((SELECT (a.consumption - sum(ifnull(qty, 0))) FROM stock  WHERE a.material_cd = item_cd GROUP BY item_cd), a.consumption) AS needQty, a.reg_date, a.mod_date,"
             + " a.remark, a.use_yn"
             + " FROM rc a", nativeQuery = true)
-    List<BOMDTO> finNeedQtyBypItem(@Param("productCode") String productCode, @Param("standard") int standard);*/
+    List<BOMDTO> findNeedQtyBypItem(@Param("productCode") String productCode, @Param("standard") int standard);*/
     @Query(nativeQuery = true)
     List<BOMDTO> findNeedQtyBypItem(@Param("productCode") String productCode, @Param("standard") int standard);
+
+    List<BOM> findByProductItem(Item pitem);
 }

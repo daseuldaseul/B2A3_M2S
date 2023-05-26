@@ -1,5 +1,7 @@
-package B2A3_M2S.mes.util;
+package B2A3_M2S.mes.util.service;
 
+import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.repository.NumberingRepository;
 import lombok.Setter;
 
 import javax.persistence.EntityManager;
@@ -51,6 +53,7 @@ public class NumberingService<T> implements NumberingRepository<T> {
         }
         return numbering;
     }
+
 }
 
 

@@ -73,11 +73,11 @@ public class BOM extends BaseTimeEntity{
 
     @ManyToOne
     @JoinColumn(name = "product_cd", referencedColumnName = "item_cd")
-    private Item pItem;     //제품 코드
+    private Item productItem;     //제품 코드
 
     @ManyToOne
     @JoinColumn(name = "material_cd", referencedColumnName = "item_cd")
-    private Item mItem;    //자재 코드
+    private Item materialItem;    //자재 코드
 
 
 }

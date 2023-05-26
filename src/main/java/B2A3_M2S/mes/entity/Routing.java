@@ -17,7 +17,7 @@ public class Routing extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long routingNo; //라우팅번호
 
-    private Long pTime;     //생산 시간
+    private Long capacity;     // 총 수용량
 
     private Long pOrder;  //순서
 
@@ -35,4 +35,5 @@ public class Routing extends BaseTimeEntity{
     @ManyToOne
     @JoinColumn(name = "proc_cd")
     private Processes processes; //공정 코드
+
 }

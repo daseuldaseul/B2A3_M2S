@@ -1,6 +1,6 @@
-package B2A3_M2S.mes.util;
+package B2A3_M2S.mes.util.repository;
 
-import javax.persistence.EntityManager;
+import B2A3_M2S.mes.util.enums.NumPrefix;
 
 public interface NumberingRepository<T> {
     String getNumbering(String varName, NumPrefix prefix);

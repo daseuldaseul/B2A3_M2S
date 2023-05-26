@@ -13,15 +13,17 @@ import javax.persistence.*;
 public class ProcessStock extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stockNo;   //재고 번호
-    private String lotNo;
+    private Long stockNo;       //재고 번호
     private String location;    //위치
-    private Long qty;   //수량
-    private String remark;  //비고
+    private Long qty;           //수량
+    private String remark;      //비고
 
     //외래키
     @ManyToOne
-    @JoinColumn(name = "item_cd")
+    @JoinColumn(name = "itemCd")
     private Item item;
 
+    @OneToOne
+    @JoinColumn(name = "lotSeq")
+    private LotNoLog lotNoLog;
 }

@@ -44,6 +44,7 @@
         }
 
     </style>
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -120,6 +121,8 @@
               <!-- /.card-header -->
               <div class="card-body">
 
+                <input id="message" type="hidden" th:value="${Message}">
+
                 <table id="example1" class="table table-bordered table-hover">
                   <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
                   <tr>
@@ -135,6 +138,7 @@
                   </tr>
                   </thead>
                   <tbody>
+
                     <tr th:each="equipDto, status: ${equipList}">
                       <td th:text="${equipDto.equipCd}"></td>
                       <td th:text="${equipDto.equipNm}"></td>
@@ -188,10 +192,8 @@
                         <div id="autocomplete-results2" class="autocomplete-results">
 
                         </div>
-                        <input type="text" class="form-control" name="procNm" id="processesName" placeholder="공정명" onkeyup="autoComplete2(this.value)" autocomplete="off">
-
-
-
+                        <input type="text" class="form-control" name="procNm" id="processesName" placeholder="공정명" onkeyup="autoComplete2(this.value)">
+                        <input type="hidden" id="processesCode" name="procCd">
                       </div>
 
 
@@ -412,6 +414,66 @@
         });
 
   }
+
+
+  function autoComplete2(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/equipment/autoComplete2',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var processList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results2'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('processesCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < processList.length; i++){
+            var list = document.createElement("li");
+            list.innerText = '[' + processList[i].procCd + ']' + processList[i].procNm;
+            list.setAttribute("data-process-nm", processList[i].procNm); // 데이터 속성 추가
+            list.setAttribute("data-process-cd", processList[i].procCd); // 데이터 속성 추가
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('processesName');
+            var procNm = this.getAttribute("data-process-nm"); // 데이터 속성 값 가져오기
+            var procCd = this.getAttribute("data-process-cd");
+            result.value = procNm;
+            code.value = procCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
+  }
 </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    var message = document.getElementById('message').value;
+
+    if (message == '이미 존재하는 설비입니다.' || message == '등록 되었습니다.') {
+      alert(message);
+    }
+  });
+  </script>
+
 </body>
 </html>

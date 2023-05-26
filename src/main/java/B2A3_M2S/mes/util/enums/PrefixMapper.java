@@ -1,4 +1,4 @@
-package B2A3_M2S.mes.util;
+package B2A3_M2S.mes.util.enums;
 
 public interface PrefixMapper {
     // Enum의 이름을 조회

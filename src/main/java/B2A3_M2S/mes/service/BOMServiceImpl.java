@@ -3,11 +3,9 @@ package B2A3_M2S.mes.service;
 
 import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.entity.BOM;
-
 import B2A3_M2S.mes.entity.QBOM;
 import B2A3_M2S.mes.repository.BOMRepository;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,10 +43,10 @@ public class BOMServiceImpl implements BOMService {
         List<BOMDTO> bomDTOList = new ArrayList<>();
 
         if (dto.getPItem() != null) {
-            predicate.and(qbom.pItem.itemNm.contains(dto.getPItem().getItemNm()));
+            predicate.and(qbom.productItem.itemNm.contains(dto.getPItem().getItemNm()));
         }
         if (dto.getMItem() != null) {
-            predicate.and(qbom.mItem.itemNm.contains(dto.getMItem().getItemNm()));
+            predicate.and(qbom.materialItem.itemNm.contains(dto.getMItem().getItemNm()));
         }
         if (dto.getRegDate() != null && dto != null) {
             predicate.and(qbom.regDate.between(dto.getRegDate(), dto.getEndDate()));

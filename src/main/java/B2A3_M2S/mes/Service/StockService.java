@@ -6,8 +6,8 @@ import B2A3_M2S.mes.entity.WarehouseLog;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.StockRepository;
 import B2A3_M2S.mes.repository.WarehouseLogRepository;
-import B2A3_M2S.mes.util.NumPrefix;
-import B2A3_M2S.mes.util.NumberingService;
+import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.service.NumberingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

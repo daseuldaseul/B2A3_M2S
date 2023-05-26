@@ -19,4 +19,6 @@ public interface CompanyRepository extends JpaRepository<Company, String>, Query
 
     List<Company> findByCompanyNmContaining(String name);
 
+    List<Company> findByCompanyNmContainingAndCompanyCdContaining(String name, String code);
+
 }

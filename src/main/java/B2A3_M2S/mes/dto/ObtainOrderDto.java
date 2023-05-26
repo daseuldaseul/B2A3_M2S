@@ -68,6 +68,9 @@ public class ObtainOrderDto {
     }
 
     public static List<ObtainOrderDto> of(List<ObtainOrder> obtainOrderList) {
+        for(int i = 0; i < obtainOrderList.size(); i++) {
+            System.out.println("여기야:" + (i+1) + " " + obtainOrderList.get(i));
+        }
         return modelMapper.map(obtainOrderList, new TypeToken<List<ObtainOrderDto>>() {
         }.getType());
     }

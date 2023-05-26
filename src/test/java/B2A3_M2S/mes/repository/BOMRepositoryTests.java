@@ -54,8 +54,8 @@ public class BOMRepositoryTests {
 
 
                 .consumption(625.0)
-                .mItem(material)
-                .pItem(item)
+                .materialItem(material)
+                .productItem(item)
                     .build();
 
         itemRepository.save(material);
@@ -97,10 +97,10 @@ public class BOMRepositoryTests {
             System.out.println("BOM ID: " + bom.getBomNo());
             System.out.println("Consumption: " + bom.getConsumption());
 
-            System.out.println("Material: " + bom.getMItem());
+            System.out.println("Material: " + bom.getMaterialItem());
 
-            System.out.println("Material: " + bom.getMItem().getItemCd());
-            System.out.println("Product: " + bom.getPItem().getItemCd());
+            System.out.println("Material: " + bom.getMaterialItem().getItemCd());
+            System.out.println("Product: " + bom.getProductItem().getItemCd());
 
             System.out.println("-------------------------");
         }

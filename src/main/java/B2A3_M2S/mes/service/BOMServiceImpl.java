@@ -3,11 +3,9 @@ package B2A3_M2S.mes.service;
 
 import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.entity.BOM;
-
 import B2A3_M2S.mes.entity.QBOM;
 import B2A3_M2S.mes.repository.BOMRepository;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

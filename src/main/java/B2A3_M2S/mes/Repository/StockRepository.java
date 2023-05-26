@@ -8,12 +8,11 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 
+
 public interface StockRepository extends JpaRepository<Stock, Long>, QuerydslPredicateExecutor<Stock> {
 
     List<Stock> findByItemOrderByRegDate(Item item);
     List<Stock> findByItem(Item item);
-
-    List<Stock> findAll(Item item);
 
     List<Stock> findByQtyIsNot(Long qty);
 

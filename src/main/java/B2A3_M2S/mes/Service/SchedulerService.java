@@ -16,24 +16,24 @@ import java.util.List;
 @EnableScheduling
 @Service
 public class SchedulerService {
-    @Autowired
-    PurchaseOrderRepository repository;
-
-    @Scheduled(cron = "10 * * * * *")
-    @Transactional
-    public void run() {
-        LocalDateTime date = LocalDateTime.now();
-
-        List<PurchaseOrder> orderList = repository.findByPurchaseState("ORDER01");
-
-        for(PurchaseOrder order : orderList){
-            if(date.isAfter(order.getDueDate())){
-                order.setPurchaseState("ORDER03");
-
-            }
-        }
-
-    }
+//    @Autowired
+//    PurchaseOrderRepository repository;
+//
+//    @Scheduled(cron = "10 * * * * *")
+//    @Transactional
+//    public void run() {
+//        LocalDateTime date = LocalDateTime.now();
+//
+//        List<PurchaseOrder> orderList = repository.findByPurchaseState("ORDER01");
+//
+//        for(PurchaseOrder order : orderList){
+//            if(date.isAfter(order.getDueDate())){
+//                order.setPurchaseState("ORDER03");
+//
+//            }
+//        }
+//
+//    }
 
 }
 

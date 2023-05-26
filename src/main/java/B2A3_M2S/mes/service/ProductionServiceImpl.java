@@ -410,10 +410,10 @@ public class ProductionServiceImpl implements ProductionService {
         do {
             leadTime += 20;
 
-            if(temp >= 1000000) {
+            if(temp >= 200000) {
                 workTime += 60;
-                temp -= 1000000;
-                outputQty += 1000000;
+                temp -= 200000;
+                outputQty += 200000;
             } else {
                 int num = (int) Math.ceil(temp / 50000); // 50kg(50000g)/3min
                 workTime += (num * 3);
@@ -772,6 +772,8 @@ public class ProductionServiceImpl implements ProductionService {
         System.out.println("포장공정 종료 (생산수량): " + outputQty);
         System.out.println("포장공정 종료 (작업시간): " + workTime);
         System.out.println("포장공정 종료 (준비시간): " + leadTime);
+
+
 
         return outputQty;
     }

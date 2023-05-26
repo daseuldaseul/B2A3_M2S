@@ -42,11 +42,11 @@ public class BOMServiceImpl implements BOMService {
         ModelMapper modelMapper = new ModelMapper();
         List<BOMDTO> bomDTOList = new ArrayList<>();
 
-        if (dto.getPItem() != null) {
-            predicate.and(qbom.productItem.itemNm.contains(dto.getPItem().getItemNm()));
+        if (dto.getProductItem() != null) {
+            predicate.and(qbom.productItem.itemNm.contains(dto.getProductItem().getItemNm()));
         }
-        if (dto.getMItem() != null) {
-            predicate.and(qbom.materialItem.itemNm.contains(dto.getMItem().getItemNm()));
+        if (dto.getMaterialItem() != null) {
+            predicate.and(qbom.materialItem.itemNm.contains(dto.getMaterialItem().getItemNm()));
         }
         if (dto.getRegDate() != null && dto != null) {
             predicate.and(qbom.regDate.between(dto.getRegDate(), dto.getEndDate()));
@@ -54,6 +54,12 @@ public class BOMServiceImpl implements BOMService {
             predicate.and(qbom.regDate.after(dto.getRegDate()));
         }
         Iterable<BOM> bomList = repository.findAll(predicate);
+
+        System.out.println("------------------------------------------------");
+        System.out.println("------------------------------------------------");
+        bomList.forEach(System.out::println);
+        System.out.println("------------------------------------------------");
+        System.out.println("------------------------------------------------");
 
         for (BOM bom : bomList) {
             BOMDTO bomDTO = modelMapper.map(bom, BOMDTO.class);

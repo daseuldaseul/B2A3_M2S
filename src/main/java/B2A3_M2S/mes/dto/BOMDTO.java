@@ -16,9 +16,10 @@ import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Getter@Setter
+@NoArgsConstructor
+@Getter
+@Setter
 public class BOMDTO {
     public static ModelMapper modelMapper = new ModelMapper();
 
@@ -30,9 +31,9 @@ public class BOMDTO {
 
     private Character useYn;    //사용유무
 
-    private ItemDto pItem;     //제품 코드
+    private ItemDto productItem;     //제품 코드
 
-    private ItemDto mItem;    //자재 코드
+    private ItemDto materialItem;    //자재 코드
 
     private LocalDate regDate;
     private LocalDate endDate;
@@ -58,5 +59,4 @@ public class BOMDTO {
         this.productCd = productCd;
         this.materialCd = materialCd;
     }
-
 }

@@ -8,6 +8,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 
+
 public interface RoutingRepository extends JpaRepository<Routing, Long>, QuerydslPredicateExecutor<Routing> {
     List<Routing> findAll();
 

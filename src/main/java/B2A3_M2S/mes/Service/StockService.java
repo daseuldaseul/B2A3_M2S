@@ -8,6 +8,7 @@ import B2A3_M2S.mes.repository.StockRepository;
 import B2A3_M2S.mes.repository.WarehouseLogRepository;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
+import B2A3_M2S.mes.util.service.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,6 @@ import java.util.List;
 @Service
 public class StockService {
 
-
     @Autowired
     WarehouseLogRepository warehouseLogRepository;
 
@@ -29,6 +29,8 @@ public class StockService {
     @Autowired
     ItemRepository itemRepository;
 
+    @Autowired
+    UtilService utilService;
     @PersistenceContext
     EntityManager entityManager;
 
@@ -58,9 +60,11 @@ public class StockService {
  * */
     public void addMaterials(Item item, Long qty ){
 
-        String lotNo = "로트번호";//채번으로 변경예정
+
         NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
         String ocd = service.getNumbering("inoutNo", NumPrefix.RECEIVING);
+
+        String lotNo = utilService.getLotNo(NumPrefix.RECEIVING);
 
         Stock stock = Stock.builder()
                 .lotNo(lotNo)

@@ -114,7 +114,7 @@
                                                 <button type="button" class="btn btn-default">제품</button>
                                             </div>
 
-                                            <input type="text" class="form-control" name="pItem.itemNm" onkeyup="autoSearch(this.value)" autocomplete="off">
+                                            <input type="text" class="form-control" name="productItem.itemNm" onkeyup="autoSearch(this.value)" autocomplete="off">
 
                                             <div id="autocomplete-results" class="autocomplete-results">
 
@@ -127,7 +127,7 @@
                                                 <button type="button" class="btn btn-default">자재</button>
                                             </div>
 
-                                            <input type="text" class="form-control" name="mItem.itemNm">
+                                            <input type="text" class="form-control" name="materialItem.itemNm">
 
                                         </div>
 
@@ -177,16 +177,16 @@
                                         <tbody>
                                         <tr th:each="BOM : ${BOM}">
                                             <td th:text="${BOM.bomNo}"></td>
-                                            <td th:text="${BOM.pItem.itemCd}"></td>
-                                            <td th:text="${BOM.pItem.itemNm}"></td>
+                                            <td th:text="${BOM.productItem.itemCd}"></td>
+                                            <td th:text="${BOM.productItem.itemNm}"></td>
 
-                                            <td th:text="${BOM.mItem.itemCd}"></td>
-                                            <td th:text="${BOM.mItem.itemNm}"></td>
+                                            <td th:text="${BOM.materialItem.itemCd}"></td>
+                                            <td th:text="${BOM.materialItem.itemNm}"></td>
 
-<!--                                            <td th:text="${BOM.consumption + BOM.MItem.getItemUnitValue()}"></td>-->
+<!--                                            <td th:text="${BOM.consumption + BOM.materialItem.getItemUnitValue()}"></td>-->
 <!--                                            <th:block th:if="${BOM.consumption "-->
-<!--                                            <td th:text="${BOM.consumption + BOM.mItem.itemUnitValue}"></td>-->
-                                            <td th:text="${BOM.consumption +' ' +BOM.mItem.itemUnitValue}"></td>
+<!--                                            <td th:text="${BOM.consumption + BOM.materialItem.itemUnitValue}"></td>-->
+                                            <td th:text="${BOM.consumption +' ' +BOM.materialItem.itemUnitValue}"></td>
 
                                             <td th:text="${BOM.regDate}"></td>
                                             <td th:text="${BOM.modDate}"></td>
@@ -413,7 +413,7 @@
 
                         // li 클릭 이벤트 처리
                         li.addEventListener('click', function() {
-                            var inputBox = document.querySelector("input[name='pItem.itemNm']");
+                            var inputBox = document.querySelector("input[name='productItem.itemNm']");
 
                             inputBox.value = this.textContent.substring(this.textContent.indexOf(']') + 2);
                             autocompleteResults.style.display = "none";

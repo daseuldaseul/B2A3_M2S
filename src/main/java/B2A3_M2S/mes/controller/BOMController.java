@@ -4,6 +4,7 @@ import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.repository.BOMRepository;
 import B2A3_M2S.mes.service.BOMService;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ItemService;
 import com.google.gson.Gson;
 import com.querydsl.core.types.Predicate;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Controller
@@ -53,14 +55,13 @@ public class BOMController {
         List<BOMDTO> BOM = service.selectAllBOM(product, material , endregDate , startregDate);*/
     public String test1(Model model, BOMDTO dto){
         List<BOMDTO> BOM = service.selectAllBOM(dto);
-
+        BOM.forEach(System.out::println);
         for(BOMDTO bDto : BOM) {
-            bDto.getMItem().setCodeValue();
-            bDto.getPItem().setCodeValue();
+            bDto.getMaterialItem().setItemUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE" , bDto.getMaterialItem().getItemUnit()));
+            bDto.getProductItem().setItemUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE" , bDto.getProductItem().getItemUnit()));
         }
 
         model.addAttribute( "BOM" ,  BOM) ;
-        System.out.println(BOM);
 //        service.findNeedQtyBypItem("P_002", 1200);
 //        service.findNeedQtyBypItem("P_002", 1200);
 

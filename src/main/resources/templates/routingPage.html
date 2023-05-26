@@ -172,7 +172,6 @@
                                     <tr>
                                         <th>공정 순서</th>
                                         <th>공정</th>
-                                        <th>생산 소요 시간</th>
                                         <th>준비 시간</th>
                                         <th>비고</th>
                                     </tr>
@@ -378,7 +377,6 @@
                 tableRow += '<tr>';
                 tableRow += '<td th:text="${routing.pOrder}">' + routing.pOrder + '</td>';
                 tableRow += '<td th:text="${routing.processes.procNm}">' + routing.processes.procNm + '</td>';
-                tableRow += '<td th:text="${routing.pTime}">' + routing.pTime + '</td>';
                 tableRow += '<td th:text="${routing.processes.readyTime}">' + routing.processes.readyTime + '</td>';
                 tableRow += '<td th:text="${routing.remark}">' + routing.remark + '</td>';
                 tableRow += '</tr>';
@@ -417,7 +415,6 @@
                 tableRow += '<tr>';
                 tableRow += '<td th:text="${routing.pOrder}">' + routing.pOrder + '</td>';
                 tableRow += '<td th:text="${routing.processes.procNm}">' + routing.processes.procNm + '</td>';
-                tableRow += '<td th:text="${routing.pTime}">' + routing.pTime + '</td>';
                 tableRow += '<td th:text="${routing.processes.readyTime}">' + routing.processes.readyTime + '</td>';
                 tableRow += '<td th:text="${routing.remark}">' + routing.remark + '</td>';
                 tableRow += '</tr>';

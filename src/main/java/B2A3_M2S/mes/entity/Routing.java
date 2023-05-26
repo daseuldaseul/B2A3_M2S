@@ -35,4 +35,5 @@ public class Routing extends BaseTimeEntity{
     @ManyToOne
     @JoinColumn(name = "proc_cd")
     private Processes processes; //공정 코드
+
 }

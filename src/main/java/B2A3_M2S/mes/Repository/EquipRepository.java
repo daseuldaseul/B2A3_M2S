@@ -1,7 +1,6 @@
 package B2A3_M2S.mes.repository;
 
 import B2A3_M2S.mes.entity.Equipment;
-import B2A3_M2S.mes.entity.QEquipment;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,8 +13,8 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
-import static B2A3_M2S.mes.entity.QEquipment.equipment;
 
 public interface EquipRepository extends JpaRepository<Equipment, String>, QuerydslPredicateExecutor<Equipment> /* JpaSpecificationExecutor<Equipment> */ {
     List<Equipment> findAll();
@@ -27,4 +26,5 @@ public interface EquipRepository extends JpaRepository<Equipment, String>, Query
 
     List<Equipment> findByEquipNmContaining(String EquipNm);
 
+    Optional<Equipment> findById(String equipCd);
 }

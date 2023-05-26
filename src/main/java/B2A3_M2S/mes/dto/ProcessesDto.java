@@ -4,6 +4,7 @@ package B2A3_M2S.mes.dto;
 import B2A3_M2S.mes.entity.Processes;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.tomcat.jni.Proc;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 

@@ -4,7 +4,6 @@ import B2A3_M2S.mes.dto.CompanyDto;
 import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.entity.QCompany;
-import B2A3_M2S.mes.entity.QProcesses;
 import B2A3_M2S.mes.repository.CompanyRepository;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

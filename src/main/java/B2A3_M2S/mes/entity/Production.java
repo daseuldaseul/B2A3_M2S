@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity(name = "production")
-@Table(name = "production")
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class Production extends BaseTimeEntity {

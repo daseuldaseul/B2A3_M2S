@@ -8,6 +8,7 @@ import B2A3_M2S.mes.repository.ProcessesRepository;
 import B2A3_M2S.mes.repository.specification.EquipSpecification;
 import B2A3_M2S.mes.entity.Equipment;
 import com.querydsl.core.BooleanBuilder;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -55,9 +56,17 @@ public class EquipService {
     }
 
     public EquipFormDto writeEquip(EquipFormDto equipFormDto, String procNm) {
+        validateEquipCd(equipFormDto);
         equipFormDto.setProcesses(ProcessesDto.of(processesRepository.findByProcNm(procNm)));
         equipFormDto.setCapaUnit("UNIT01");
 
         return equipFormDto;
+    }
+
+    public void validateEquipCd(EquipFormDto equipFormDto) {
+       equipRepository.findById(equipFormDto.getEquipCd())
+                .ifPresent(m -> {
+                    throw new IllegalStateException("이미 존재하는 설비입니다.");
+                });
     }
 }

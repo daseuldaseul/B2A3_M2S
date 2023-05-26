@@ -45,10 +45,10 @@ public class BOMServiceImpl implements BOMService {
         List<BOMDTO> bomDTOList = new ArrayList<>();
 
         if (dto.getPItem() != null) {
-            predicate.and(qbom.pItem.itemNm.contains(dto.getPItem().getItemNm()));
+            predicate.and(qbom.productItem.itemNm.contains(dto.getPItem().getItemNm()));
         }
         if (dto.getMItem() != null) {
-            predicate.and(qbom.mItem.itemNm.contains(dto.getMItem().getItemNm()));
+            predicate.and(qbom.materialItem.itemNm.contains(dto.getMItem().getItemNm()));
         }
         if (dto.getRegDate() != null && dto != null) {
             predicate.and(qbom.regDate.between(dto.getRegDate(), dto.getEndDate()));

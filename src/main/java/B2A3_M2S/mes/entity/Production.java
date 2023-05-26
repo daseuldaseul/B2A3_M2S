@@ -17,7 +17,8 @@ public class Production extends BaseTimeEntity {
 
     @Id
     private String planNo;      //계획 번호
-    private Long planQty;       //생산 수량
+    private Long planQty;       //계획 수량
+    private Long prodQty;       //생산 수량
     private LocalDateTime startDate;    //생산 시작 일시
     private LocalDateTime endDate;      //생상 종료 일시
     private String remark;              // 비고

@@ -1,7 +1,6 @@
 package B2A3_M2S.mes.repository;
 
 import B2A3_M2S.mes.entity.Processes;
-import B2A3_M2S.mes.entity.QProcesses;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

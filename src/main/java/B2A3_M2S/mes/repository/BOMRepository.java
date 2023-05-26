@@ -134,4 +134,6 @@ public interface BOMRepository extends JpaRepository<BOM, Long> , QuerydslPredic
     List<BOMDTO> finNeedQtyBypItem(@Param("productCode") String productCode, @Param("standard") int standard);*/
     @Query(nativeQuery = true)
     List<BOMDTO> finNeedQtyBypItem(@Param("productCode") String productCode, @Param("standard") int standard);
+
+    List<BOM> findByProductItem(Item pitem);
 }

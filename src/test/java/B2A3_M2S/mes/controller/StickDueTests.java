@@ -6,6 +6,7 @@ import B2A3_M2S.mes.repository.ItemRepository;
 
 import B2A3_M2S.mes.repository.RoutingRepository;
 import B2A3_M2S.mes.service.RoutingService;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,6 +48,7 @@ public class StickDueTests {
 
         System.out.println("발주 입고 시각 : " + dueTime);
 
+        
 
        // System.out.println(routingRepository.findByItem_ItemCd(item.getItemCd()));
 

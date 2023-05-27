@@ -26,6 +26,8 @@ public class WarehouseLogService {
 
     public void insertStock(Item item,String lotNo, String logGb, Long qty){
 
+
+
         WarehouseLog warehouseLog = WarehouseLog.builder()
                 .item(item)
                 .lotNo(lotNo)

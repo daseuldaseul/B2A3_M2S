@@ -196,7 +196,7 @@
                     <td th:text="${stock.item.getItemCd()}"></td>
                     <td th:text="${stock.item.getItemGb()}"></td>
                     <td th:text="${stock.item.getItemNm()}"></td>
-                    <td th:text="${stock.qty + stock.item.itemUnit}"></td>
+                    <td th:text="${stock.qty + stock.item.itemUnitValue}"></td>
 
                     <td th:text="${#temporals.format(stock.regDate, 'yyyy-MM-dd')}"></td>
                     <td th:text="${stock.remark}"></td>

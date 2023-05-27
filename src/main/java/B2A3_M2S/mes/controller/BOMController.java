@@ -31,11 +31,7 @@ public class BOMController {
     private Object predicate;
 
 
-    @GetMapping("/main")
-    public String home(){
 
-        return "main";
-    }
 
 //    @GetMapping("/test")
 //    public String test(Model model){
@@ -55,7 +51,7 @@ public class BOMController {
         List<BOMDTO> BOM = service.selectAllBOM(product, material , endregDate , startregDate);*/
     public String test1(Model model, BOMDTO dto){
         List<BOMDTO> BOM = service.selectAllBOM(dto);
-        BOM.forEach(System.out::println);
+
         for(BOMDTO bDto : BOM) {
             bDto.getMaterialItem().setItemUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE" , bDto.getMaterialItem().getItemUnit()));
             bDto.getProductItem().setItemUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE" , bDto.getProductItem().getItemUnit()));

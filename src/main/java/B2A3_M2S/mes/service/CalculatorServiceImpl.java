@@ -227,6 +227,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                 productionDTO.setStartDate(start.plusMinutes(workTime + leadTime));
                 productionDTO.setProcesses(pDto);
                 productionDTO.setObtainOrder(oDto);
+                productionDTO.setCompletion(false);
                 productionDTO.setEndDate(start.plusMinutes(workTime + leadTime + workTime_temp + leadTime_temp));
                 productionRepository.save(productionDTO.createProduction());
             }

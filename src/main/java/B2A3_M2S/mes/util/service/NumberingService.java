@@ -29,19 +29,18 @@ public class NumberingService<T> implements NumberingRepository<T> {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
         String numbering = prefix.getTitle()
                 + LocalDate.now(ZoneId.of("Asia/Seoul")).format(formatter);
-
+        System.out.println("여기 numbering: " + numbering);
         String className = entityClass.getSimpleName();
         String qurey = "SELECT MAX(m." + varName + ") FROM " + className + " m WHERE m." + varName + " LIKE '%" + numbering + "%'";
 
         List<String> list = em.createQuery(qurey, String.class).getResultList();
-
+        System.out.println("list 사이즈" + list.size());
         if (list.size() == 0 || list.get(0) == null) {
             numbering += "00001";
         } else {
             String temp = list.get(0);
-            String suffix = temp.substring(temp.lastIndexOf(numbering) + 1, temp.length());
+            String suffix = temp.split(numbering)[1];
             String tempStr = String.valueOf(Integer.parseInt(suffix) + 1);
-
             while (true) {
                 if (tempStr.length() >= 5)
                     break;

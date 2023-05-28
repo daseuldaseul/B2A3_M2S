@@ -39,6 +39,10 @@ public class ObtainOrderController {
     @Autowired
     ItemRepository itemRepository;
 
+    @Autowired
+    private CalculatorService service;
+
+
 
     @GetMapping("/obtainOrder")
     public String ObtainOrder(Model model) {
@@ -80,6 +84,7 @@ public class ObtainOrderController {
         productionService.calculate(itemRepository.findByItemNm(itemNm).getItemCd()
                 , startTime, obtainOrderFormDto.getOrderCd(), qty);
 
+//        service.getDeliveryDate();
 
         return "redirect:/obtainOrder";
     }

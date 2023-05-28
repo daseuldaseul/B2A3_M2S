@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.service.CalculatorService;
 import B2A3_M2S.mes.service.ProductionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,9 @@ public class testController {
     @Autowired
     ProductionServiceImpl productionService;
 
+    @Autowired
+    private CalculatorService service;
+
     @GetMapping("/testtest")
     public String testControlerrrr(Model model) {
         LocalDateTime startTime = LocalDateTime.now();
@@ -21,6 +25,7 @@ public class testController {
 //        productionService.blackGarlicCalculator();
 //        productionService.stickCalculator();
 
+//        service.getDeliveryDate();
         return "test";
     }
 }

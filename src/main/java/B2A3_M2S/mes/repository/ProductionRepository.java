@@ -9,5 +9,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.List;
 
 public interface ProductionRepository extends JpaRepository<Production, String>, QuerydslPredicateExecutor<Production> {
-    List<Production> findByObtainOrder(List<ObtainOrder> obtainOrderList);
+//    List<Production> findByObtainOrder(List<ObtainOrder> obtainOrderList);
 }

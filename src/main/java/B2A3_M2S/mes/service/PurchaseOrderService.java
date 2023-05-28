@@ -43,8 +43,6 @@ public class PurchaseOrderService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    ProductionServiceImpl productionService;
 
 
     @Transactional

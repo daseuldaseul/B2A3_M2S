@@ -37,7 +37,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         // 수주가 들어오면 자재량 계산 이후 발주일 뽑고 해당 시간 추가
         // 테스트를 위해 수주 정보 조회
         ObtainOrderDto oDto = obtainOrderRepository.findAll()
-                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(0);
+                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
         System.out.println("여기야1. : " + oDto);
 
         // 자재 조회

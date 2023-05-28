@@ -21,26 +21,26 @@ public class ProductionPlanController {
     @Autowired
     ObtainOrderRepository obtainOrderRepository;
 
-    @GetMapping("/productionPlan")
-    public String productionPlan(Model model){
-        List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
-        List<Production> productionPlan = productionRepository.findByObtainOrder(obtainOrderList);
-        List<ProductionDTO> productionDtoList = ProductionDTO.of(productionPlan);
-
-        if(!productionDtoList.isEmpty()) {
-            ProductionDTO firstProductionDto = productionDtoList.get(0);
-            ProductionDTO lastProductionDto = productionDtoList.get(productionDtoList.size() - 1);
-
-            // 가져온 객체를 모델에 추가
-            model.addAttribute("firstProductionDto", firstProductionDto);
-            model.addAttribute("lastProductionDto", lastProductionDto);
-
-        }
-
-            model.addAttribute("productionList", productionDtoList);
-
-        model.addAttribute("obtainOrderList", obtainOrderList);
-        return "productionPlanPage";
-    }
+//    @GetMapping("/productionPlan")
+//    public String productionPlan(Model model){
+//        List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
+//        List<Production> productionPlan = productionRepository.findByObtainOrder(obtainOrderList);
+//        List<ProductionDTO> productionDtoList = ProductionDTO.of(productionPlan);
+//
+//        if(!productionDtoList.isEmpty()) {
+//            ProductionDTO firstProductionDto = productionDtoList.get(0);
+//            ProductionDTO lastProductionDto = productionDtoList.get(productionDtoList.size() - 1);
+//
+//            // 가져온 객체를 모델에 추가
+//            model.addAttribute("firstProductionDto", firstProductionDto);
+//            model.addAttribute("lastProductionDto", lastProductionDto);
+//
+//        }
+//
+//            model.addAttribute("productionList", productionDtoList);
+//
+//        model.addAttribute("obtainOrderList", obtainOrderList);
+//        return "productionPlanPage";
+//    }
 
 }

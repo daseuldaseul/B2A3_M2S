@@ -48,9 +48,8 @@ public class CalculatorServiceImpl implements CalculatorService {
         LocalDateTime start = LocalDateTime.now();  //임시 시작시간
         // 테스트를 위해 수주 정보 조회
         ObtainOrderDto oDto = obtainOrderRepository.findAll()
-                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(0);
-        System.out.println("여기야1. : " + oDto.getOrderCd());
-        /* 여기서 수주 DTO 찾아서 가져옴, 일단은 testDTO 가져오는 거 */
+                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
+        System.out.println("여기야1. : " + oDto);
 
         // 자재 조회
         List<BOMDTO> bList = bomRepository.findBypItem(oDto.getItem().getItemCd(), oDto.getQty()).stream().map(BOMDTO::of).collect(Collectors.toList());

@@ -43,6 +43,8 @@ public class PurchaseOrderService {
     @PersistenceContext
     private EntityManager entityManager;
 
+
+
     @Transactional
     public List<PurchaseOrder> searchPurchaseOrder(String companyCd, String companyNm, String purchaseState,
                                                    String itemCd, String itemNm, String orderNo,
@@ -73,6 +75,31 @@ public class PurchaseOrderService {
         return (List<PurchaseOrder>) purchaseOrderRepository.findAll(builder);
     }
 
+    public int needQty(String itemNm, int qty) {
+        String itemCd = itemRepository.findByItemNm(itemNm).getItemCd();
+        List<BOMDTO> list2 = bomRepository.findNeedQtyBypItem(itemCd, qty);
+
+        for(BOMDTO list : list2) {
+
+            if (list.getMaterialCd().equals("M_001") || list.getMaterialCd().equals("M_002") ) {
+
+                int orderMin = (int) (long) ItemDto.of(itemRepository.findByItemCd(list.getMaterialCd())).getOrderMin();
+
+                int orderMax = (int) (long) ItemDto.of(itemRepository.findByItemCd(list.getMaterialCd())).getOrderMax();
+                double needQty = list.getNeedQty();
+                int n = 0;
+                n = (int) needQty / orderMin;
+                if (needQty % orderMin != 0) {
+                    n++;
+                }
+                int orderQty = n * orderMin;
+                System.out.println("=======================");
+                System.out.println(orderQty);
+
+                return orderQty;
+            }
+        } return 0;
+    }
 
    @Transactional
    public void purchaseOrderCreate(String itemNm, int qty){
@@ -100,6 +127,8 @@ public class PurchaseOrderService {
                    if(orderQty > orderMax){
                        test2(orderMax, list);
                        orderQty -= orderMax;
+
+
                    }else{
                        test2(orderQty, list);
                        orderQty = 0;
@@ -107,8 +136,13 @@ public class PurchaseOrderService {
 
 
                }
+
+
            }
+
        }
+
+
    }
 
     @Transactional
@@ -156,6 +190,7 @@ public class PurchaseOrderService {
 
         PurchaseOrder purchaseOrder = purchaseOrderFormDto.createPurchaseOrder();
         purchaseOrderRepository.save(purchaseOrder);
+
     }
 
     @Scheduled(cron = "0 0 10 * * *")

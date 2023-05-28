@@ -75,6 +75,36 @@ public class PurchaseOrderService {
         return (List<PurchaseOrder>) purchaseOrderRepository.findAll(builder);
     }
 
+    @Transactional
+    public List<PurchaseOrder> searchPurchaseIn(String companyCd, String companyNm,
+                                                   String itemCd, String itemNm, String orderNo,
+                                                   LocalDateTime startDate, LocalDateTime endDate) {
+        QPurchaseOrder qPurchaseOrder = QPurchaseOrder.purchaseOrder;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(qPurchaseOrder.purchaseState.eq("ORDER03"));
+        if (companyCd != null) {
+            builder.and(qPurchaseOrder.company.companyCd.contains(companyCd));
+        }
+        if (companyNm != null) {
+            builder.and(qPurchaseOrder.company.companyNm.contains(companyNm));
+        }
+        if (itemCd != null) {
+            builder.and(qPurchaseOrder.item.itemCd.contains(itemCd));
+        }
+        if (itemNm != null) {
+            builder.and(qPurchaseOrder.item.itemNm.contains(itemNm));
+        }
+        if (orderNo != null) {
+            builder.and(qPurchaseOrder.orderNo.contains(orderNo));
+        }
+        if (startDate != null && endDate != null) {
+            builder.and(qPurchaseOrder.dueDate.between(startDate, endDate));
+        }
+        return (List<PurchaseOrder>) purchaseOrderRepository.findAll(builder);
+    }
+
+
     public int needQty(String itemNm, int qty) {
         String itemCd = itemRepository.findByItemNm(itemNm).getItemCd();
         List<BOMDTO> list2 = bomRepository.findNeedQtyBypItem(itemCd, qty);

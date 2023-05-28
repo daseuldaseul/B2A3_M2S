@@ -102,6 +102,8 @@ public class AutoCompleteController {
         return json;
     }
 
+
+    //수주업체만
     @GetMapping("/autoComplete7")
     public String autoComplete7(@RequestParam("text") String text) {
 
@@ -113,6 +115,17 @@ public class AutoCompleteController {
         return json;
     }
 
+    // 발주업체만
+    @GetMapping("/autoComplete8")
+    public String autoComplete8(@RequestParam("text") String text) {
+
+        Gson gson = new Gson();
+        List<Company> companys = companyRepository.findByCompanyNmContainingAndCompanyCdContaining(text, "PC");
+        List<CompanyDto> companyList = CompanyDto.of(companys);
+
+        String json = gson.toJson(companyList);
+        return json;
+    }
 
 
 }

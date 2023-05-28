@@ -16,8 +16,8 @@ public class testController {
     @GetMapping("/testtest")
     public String testControlerrrr(Model model) {
         LocalDateTime startTime = LocalDateTime.now();
-        String obtainOrderCd = "OC-2";
-        productionService.cabbageCalculator(startTime, obtainOrderCd);
+        String obtainOrderCd = "SO-230527-00003";
+//        productionService.cabbageCalculator(startTime, obtainOrderCd);
 //        productionService.blackGarlicCalculator();
 //        productionService.stickCalculator();
 

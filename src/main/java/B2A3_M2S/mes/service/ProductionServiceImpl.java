@@ -42,7 +42,7 @@ public class ProductionServiceImpl implements ProductionService {
     double workTime = 0;
     double leadTime = 0;
 
-    double cabbage = 2000000;
+    double cabbage = 0;
     double blackGarlic = 600000;
     double cabbageExtract = 0;
     double blackGarlicExtract = 0;
@@ -69,9 +69,9 @@ public class ProductionServiceImpl implements ProductionService {
         productionRepository.save(productionDTO.createProduction());
     }
 
-    public void calculate(String itemCd, LocalDateTime startTime, String obtainOrderCd){
+    public void calculate(String itemCd, LocalDateTime startTime, String obtainOrderCd, double material){
         if(itemCd.equals("P_001")){
-            cabbageCalculator(startTime,obtainOrderCd);
+            cabbageCalculator(startTime,obtainOrderCd, material);
         }else if(itemCd.equals("P_002")){
 //            blackGarlicCalculator();
         }else if(itemCd.equals("P_003") || itemCd.equals("P_004")){
@@ -79,7 +79,7 @@ public class ProductionServiceImpl implements ProductionService {
         }
     }
 
-    public void cabbageCalculator(LocalDateTime startTime, String obtainOrderCd) {
+    public void cabbageCalculator(LocalDateTime startTime, String obtainOrderCd, double material) {
         //계량 -> 세척 -> 추출-> 가열 -> 충진 -> 검사 ->식힘 -> 포장
 
         // 실제 돌릴때 로직
@@ -121,7 +121,7 @@ public class ProductionServiceImpl implements ProductionService {
 
 
         // 소요시간
-        cabbage = cabbageProc1(cabbage,startTime,obtainOrderCd);
+        cabbage = cabbageProc1(material,startTime,obtainOrderCd);
         cabbage = cabbageProc2(cabbage,startTime,obtainOrderCd);
         cabbageExtract = cabbageProc3_1(cabbage,startTime,obtainOrderCd);
         cabbageExtract = cabbageProc4_1(cabbageExtract,startTime, obtainOrderCd);

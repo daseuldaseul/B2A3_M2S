@@ -2,6 +2,7 @@ package B2A3_M2S.mes.dto;
 
 
 import B2A3_M2S.mes.entity.Processes;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.jni.Proc;
@@ -12,8 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class ProcessesDto {
 
     public static ModelMapper modelMapper = new ModelMapper();
@@ -30,7 +30,7 @@ public class ProcessesDto {
     private String procState;       //
     private LocalDate regDate;
     private LocalDate modDate;
-    private String seatingCapacity;     // 수용능력
+    private Long seatingCapacity;     // 수용능력
     private Character fixYn;            // 고정여부
     private String workTimeUnit;      // 작업시간단위
 
@@ -38,6 +38,8 @@ public class ProcessesDto {
     private String readyUnitNm;   //준비시간 단위
     private String procUnitNm;        //단위
     private String workTimeUnitNm;      // 작업시간단위
+    //계산하려고 추가
+    private Long rowCnt;  // 열 갯수
 
     public static List<ProcessesDto> of(List<Processes> processesList) {
         return modelMapper.map(processesList, new TypeToken<List<ProcessesDto>>() {
@@ -68,10 +70,7 @@ public class ProcessesDto {
         pDto.setState(0);
     }
 
-
-
     public ProcessesDto() {
         pDto = new ProcessResultDTO();
     }
-
 }

@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,6 +25,12 @@ public class WarehouseLogDTO {
     private String remark;  //비고
 
     private ItemDto item;    //품목 코드
+
+    private LocalDate regDate;
+
+    private LocalDate modDate;
+
+
 
     public static ModelMapper modelMapper = new ModelMapper();
 

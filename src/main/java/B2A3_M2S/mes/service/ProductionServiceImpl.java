@@ -42,7 +42,7 @@ public class ProductionServiceImpl implements ProductionService {
     double workTime = 0;
     double leadTime = 0;
 
-    double cabbage = 0;
+    double cabbage = 1500000;
     double blackGarlic = 600000;
     double cabbageExtract = 0;
     double blackGarlicExtract = 0;

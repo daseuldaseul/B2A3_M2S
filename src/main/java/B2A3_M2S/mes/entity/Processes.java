@@ -5,11 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@ToString
-@Entity(name = "processes")
-@Table(name = "processes")
+@Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -32,9 +29,12 @@ public class Processes extends BaseTimeEntity {
     private String procUnit;        //단위
     private String readyUnit;   //준비시간 단위
     private String procState;       //공정상태
-    //
+    //계산하려고 추가
+    private Long rowCnt;  // 열 갯수
 
 
     private String remark;              // 비고
     private String workTimeUnit;      // 작업시간단위
+
+
 }

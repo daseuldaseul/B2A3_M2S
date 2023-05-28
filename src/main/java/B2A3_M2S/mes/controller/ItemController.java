@@ -47,6 +47,9 @@ public class ItemController {
         model.addAttribute("codeList2", CodeServiceImpl.getCodeList("ITEM_TYPE"));
         model.addAttribute("codeList3", CodeServiceImpl.getCodeList("UNIT_TYPE"));
         model.addAttribute("itemList", itemDtoList);
+
+        System.out.println("여기 출력합니당");
+        CodeServiceImpl.getCodeList("ITEM_TYPE").forEach(System.out::println);
         return "itemPage";
     }
 

@@ -51,7 +51,7 @@ public class LoginTest2 {
     public void test() {
         //계량 -> 세척 -> 추출-> 가열 -> 충진 -> 검사 ->식힘 -> 포장
 
-        bomRepository.findBypItem("P_002", 1200).stream().forEach(System.out::println);
+        bomRepository.findBypItem("P_002", 1200L).stream().forEach(System.out::println);
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("--------------------------------------------------------------------------------");

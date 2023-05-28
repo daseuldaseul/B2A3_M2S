@@ -3,6 +3,7 @@ package B2A3_M2S.mes.dto;
 import B2A3_M2S.mes.entity.BOM;
 import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Item;
+import B2A3_M2S.mes.entity.LotNoLog;
 import jdk.jfr.DataAmount;
 import lombok.*;
 import org.modelmapper.ModelMapper;
@@ -58,5 +59,19 @@ public class BOMDTO {
         this.standard = standard;
         this.productCd = productCd;
         this.materialCd = materialCd;
+    }
+
+    public static List<BOMDTO> of(List<BOM> list) {
+        return modelMapper.map(list, new TypeToken<List<BOMDTO>>() {
+        }.getType());
+    }
+
+    public static BOMDTO of(BOM bom) {
+        return modelMapper.map(bom, BOMDTO.class);
+    }
+
+    public BOM createBOM() {
+        // EquipDto -> Equipment 변환
+        return modelMapper.map(this, BOM.class);
     }
 }

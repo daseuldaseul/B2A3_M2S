@@ -32,6 +32,7 @@ public class StockDto {
 
     private LocalDate modDate;
 
+
     public static ModelMapper modelMapper = new ModelMapper();
     public static StockDto of(Stock stock) {return modelMapper.map(stock, StockDto.class);}
 

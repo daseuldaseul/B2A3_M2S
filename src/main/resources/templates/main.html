@@ -148,7 +148,7 @@
               <div class="card-body" >
                 <div class="row">
                   <div class="col-6 col-md-3 text-center">
-                    <input type="text" class="knob" value="30" data-width="120" data-height="120" data-fgColor="#3c8dbc">
+                    <input type="text" class="knob" th:value="${process}" data-width="120" data-height="120" data-fgColor="#3c8dbc">
 
                     <div class="knob-label">원료계량</div>
                   </div>
@@ -281,20 +281,23 @@
                     <th>수주번호</th>
                     <th>업체명</th>
                     <th>품목</th>
+                    <th>작업상태</th>
                     <th>진행률</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>OR9842</a></td>
-                    <td>슬다푸드</td>
-                    <td><span class="badge badge-success">작업완료</span></td>
+                  <tr th:each="order : ${orderList}">
+                    <td th:text="${order.getOrderCd()}">OR9842</td>
+                    <td th:text="${order.company.companyNm}">슬다푸드</td>
+                    <td th:text="${order.item.itemNm}">슬다푸드</td>
+                    <td>
+                      <span class="badge badge-success" th:text="${order.getOrderStateNm() }"></span>
+                    </td>
                     <td>
                       <div class="progress-group">
-
-                        <span class=""><b>80</b>/100</span>
+                        <span th:text="${order.getProgressPercent()} + '/100'"></span>
                         <div class="progress progress-sm">
-                          <div class="progress-bar bg-success" style="width: 80%"></div>
+                          <div class="progress-bar bg-success" th:style="'width: ' + ${order.getProgressPercent()} + '%'"></div>
                         </div>
                       </div>
                     </td>
@@ -306,7 +309,7 @@
                     <td>
                       <div class="progress-group">
 
-                        <span class=""><b>80</b>/100</span>
+                        <span class=""><b>30</b>/100</span>
                         <div class="progress progress-sm">
                           <div class="progress-bar bg-warning" style="width: 80%"></div>
                         </div>
@@ -382,63 +385,23 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>OR9842</a></td>
-                    <td>슬다푸드</td>
-                    <td><span class="badge badge-success">작업완료</span></td>
+                  <tr th:each="purchase : ${purchaseList}" th:limit="5">
+                    <td th:text="${purchase.getOrderNo()}">OR9842</td>
+                    <td th:text="${purchase.getCompany().companyNm}">슬다푸드</td>
+                    <td th:text="${purchase.item.itemNm}">슬다푸드</td>
+                    <td>
+                      <span class="badge badge-success" th:text="${purchase.getPurchaseStateNm() }"></span>
+                    </td>
                     <td>
                       <div class="progress-group">
-
-                        <span class=""><b>80</b>/100</span>
+                        <span th:text="${purchase.getOrderDate()} + '/100'"></span>
                         <div class="progress progress-sm">
-                          <div class="progress-bar bg-success" style="width: 80%"></div>
+                          <div class="progress-bar bg-success" th:style="'width: ' + ${purchase.getOrderDate()} + '%'"></div>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>원식짱</td>
-                    <td><span class="badge badge-warning">작업대기</span></td>
-                    <td>
-                      <div class="progress-group">
 
-                        <span class=""><b>80</b>/100</span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-warning" style="width: 80%"></div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>섹시원식</td>
-                    <td><span class="badge badge-danger">작업중지</span></td>
-                    <td>
-                      <div class="progress-group">
-
-                        <span class=""><b>80</b>/100</span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-danger" style="width: 80%"></div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>프린세스원식</td>
-                    <td><span class="badge badge-info">작업진행중</span></td>
-                    <td>
-                      <div class="progress-group">
-
-                        <span class=""><b>50%</b>/100%</span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-info" style="width: 50%"></div>
-                        </div>
-                      </div>
-
-                    </td>
-                  </tr>
 
                   </tbody>
                 </table>

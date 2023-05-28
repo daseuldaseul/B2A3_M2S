@@ -18,13 +18,13 @@ import java.util.stream.IntStream;
 public class BOMRepositoryTests {
 
     @Autowired
-    BOMRepository bomRepository;
+    B2A3_M2S.mes.repository.BOMRepository bomRepository;
 
     @Autowired
     BOMService service;
 
     @Autowired
-    ItemRepository itemRepository;
+    B2A3_M2S.mes.repository.ItemRepository itemRepository;
 
     @Test
     public void test(){

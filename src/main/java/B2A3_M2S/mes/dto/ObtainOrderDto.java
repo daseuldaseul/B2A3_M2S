@@ -57,6 +57,8 @@ public class ObtainOrderDto {
 
     private LocalDate modDate;
 
+    private int progressPercent; //진행률
+
     public static ModelMapper modelMapper = new ModelMapper();
 
     public ObtainOrder createObtainOrder() {

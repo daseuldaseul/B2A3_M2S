@@ -1,6 +1,7 @@
 package B2A3_M2S.mes.controller;
 
 import B2A3_M2S.mes.dto.BOMDTO;
+import B2A3_M2S.mes.dto.CommonCodeDTO;
 import B2A3_M2S.mes.dto.StockDto;
 import B2A3_M2S.mes.entity.Stock;
 import B2A3_M2S.mes.service.CodeServiceImpl;
@@ -28,10 +29,14 @@ public class StockController {
         List<StockDto> stockDtoList = StockDto.of(stockList);
         for(StockDto stock : stockDtoList) {
             stock.getItem().setItemUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE" , stock.getItem().getItemUnit()));
+            stock.getItem().setItemGbNm(CodeServiceImpl.getCodeNm("ITEM_GB" , stock.getItem().getItemGb()));
         }
+
+        List<CommonCodeDTO> codeList = CodeServiceImpl.getCodeList("ITEM_GB");
 
 
         model.addAttribute("stockList" , stockDtoList );
+        model.addAttribute("codeList" , codeList );
 
         return "stock";
     }

@@ -146,13 +146,8 @@ public class CalculatorServiceImpl implements CalculatorService {
             // 열 갯수만큼 나누기
             total /= pDto.getRowCnt();
 
+            double test = total;
 
-            ProductionDTO productionDTO = new ProductionDTO();
-            NumberingService<Production> service = new NumberingService<>(entityManager, Production.class);
-            String pn = service.getNumbering("planNo", NumPrefix.PRODUCTION);
-            System.out.println(pn);
-            productionDTO.setPlanQty((long)total);
-            productionDTO.setStartDate(start.plusMinutes(workTime + leadTime));
 
             //작업별로 돌립니다
             // 2열 짜리도 계산 추가로 넣어야 함
@@ -223,16 +218,29 @@ public class CalculatorServiceImpl implements CalculatorService {
             System.out.println(pDto.getProcNm() + " 공정 리드타임: " + leadTime_temp);
             System.out.println(pDto.getProcNm() + " 종료");
 
+            //수정
+            for(int j=0; j<pDto.getRowCnt(); j++) {
+                ProductionDTO productionDTO = new ProductionDTO();
+                NumberingService<Production> service = new NumberingService<>(entityManager, Production.class);
+                String pn = service.getNumbering("planNo", NumPrefix.PRODUCTION);
+                productionDTO.setPlanNo(pn);
+                productionDTO.setPlanQty((long) test);
+                productionDTO.setStartDate(start.plusMinutes(workTime + leadTime));
+                productionDTO.setProcesses(pDto);
+                productionDTO.setObtainOrder(oDto);
+                productionDTO.setEndDate(start.plusMinutes(workTime + leadTime + workTime_temp + leadTime_temp));
+                productionRepository.save(productionDTO.createProduction());
+            }
+            //수정
 
-            productionDTO.setPlanNo(pn);
 
             workTime += workTime_temp;
             leadTime += leadTime_temp;
-            productionDTO.setEndDate(start.plusMinutes(workTime + leadTime));
 
 
 
-            productionRepository.save(productionDTO.createProduction());
+
+
         }
 
         System.out.println("전체 작업시간: " + workTime);

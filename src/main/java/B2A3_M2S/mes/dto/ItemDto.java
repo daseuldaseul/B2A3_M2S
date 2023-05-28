@@ -4,6 +4,7 @@ import B2A3_M2S.mes.entity.Company;
 import B2A3_M2S.mes.entity.Equipment;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.service.CodeServiceImpl;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -17,8 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class ItemDto {
     private String itemCd;        //품목 코드
 
@@ -85,4 +85,8 @@ public class ItemDto {
         if (this.getItemUnit() != null)
             setItemUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE", this.getItemUnit()));
     }
+
+    // 임시로 추가
+    private double currentQty;
+    private double consumption;
 }

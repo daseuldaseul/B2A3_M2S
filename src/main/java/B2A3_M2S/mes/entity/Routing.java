@@ -36,4 +36,6 @@ public class Routing extends BaseTimeEntity{
     @JoinColumn(name = "proc_cd")
     private Processes processes; //공정 코드
 
+    // 내가 추가함
+    private Double yield;       // 수율
 }

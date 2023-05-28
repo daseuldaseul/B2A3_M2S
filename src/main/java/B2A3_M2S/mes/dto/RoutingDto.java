@@ -53,4 +53,7 @@ public class RoutingDto {
         return modelMapper.map(routingList, new TypeToken<List<RoutingDto>>() {}.getType());
     }
 
+    // 임시임시
+    private Double yield;       // 수율
+
 }

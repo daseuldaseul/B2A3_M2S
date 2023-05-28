@@ -28,9 +28,7 @@ public class NumberingService<T> implements NumberingRepository<T> {
     public String getNumbering(String varName, NumPrefix prefix) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
         String numbering = prefix.getTitle()
-                + "-"
-                + LocalDate.now(ZoneId.of("Asia/Seoul")).format(formatter)
-                + "-";
+                + LocalDate.now(ZoneId.of("Asia/Seoul")).format(formatter);
 
         String className = entityClass.getSimpleName();
         String qurey = "SELECT MAX(m." + varName + ") FROM " + className + " m WHERE m." + varName + " LIKE '%" + numbering + "%'";
@@ -41,7 +39,7 @@ public class NumberingService<T> implements NumberingRepository<T> {
             numbering += "00001";
         } else {
             String temp = list.get(0);
-            String suffix = temp.substring(temp.lastIndexOf("-") + 1, temp.length());
+            String suffix = temp.substring(temp.lastIndexOf(numbering) + 1, temp.length());
             String tempStr = String.valueOf(Integer.parseInt(suffix) + 1);
 
             while (true) {
@@ -52,6 +50,33 @@ public class NumberingService<T> implements NumberingRepository<T> {
             numbering += tempStr;
         }
         return numbering;
+
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
+//        String numbering = prefix.getTitle()
+//                + "-"
+//                + LocalDate.now(ZoneId.of("Asia/Seoul")).format(formatter)
+//                + "-";
+//
+//        String className = entityClass.getSimpleName();
+//        String qurey = "SELECT MAX(m." + varName + ") FROM " + className + " m WHERE m." + varName + " LIKE '%" + numbering + "%'";
+//
+//        List<String> list = em.createQuery(qurey, String.class).getResultList();
+//
+//        if (list.size() == 0 || list.get(0) == null) {
+//            numbering += "00001";
+//        } else {
+//            String temp = list.get(0);
+//            String suffix = temp.substring(temp.lastIndexOf("-") + 1, temp.length());
+//            String tempStr = String.valueOf(Integer.parseInt(suffix) + 1);
+//
+//            while (true) {
+//                if (tempStr.length() >= 5)
+//                    break;
+//                tempStr = "0" + tempStr;
+//            }
+//            numbering += tempStr;
+//        }
+//        return numbering;
     }
 
 }

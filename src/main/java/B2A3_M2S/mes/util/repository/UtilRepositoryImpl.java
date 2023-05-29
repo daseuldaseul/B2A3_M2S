@@ -35,7 +35,7 @@ public class UtilRepositoryImpl implements UtilRepository {
         } else {
             String temp = result;
             String suffix = temp.substring(temp.lastIndexOf("-") + 1, temp.length());
-            suffix = String.valueOf(Integer.parseInt(suffix.replace("0", "")) + 1);
+            suffix = String.valueOf(Integer.parseInt(suffix + 1));
 
             while (true) {
                 if (suffix.length() >= 5)

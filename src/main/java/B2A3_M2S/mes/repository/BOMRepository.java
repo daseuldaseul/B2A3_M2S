@@ -112,7 +112,7 @@ public interface BOMRepository extends JpaRepository<BOM, Long> , QuerydslPredic
             + " )"
             + " SELECT a.*"
             + " FROM rc a", nativeQuery = true)
-        List<BOM> findBypItem(@Param("productCode") String productCode, @Param("standard") int standard);
+        List<BOM> findBypItem(@Param("productCode") String productCode, @Param("standard") Long standard);
 
 /*    @Query(value = "WITH recursive rc as("
             + " SELECT std.bom_no, std.product_cd, std.material_cd, 1 as depth, :standard as standard,"

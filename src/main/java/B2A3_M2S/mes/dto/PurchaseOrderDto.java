@@ -41,6 +41,7 @@ public class PurchaseOrderDto {
 
     private String purchaseStateNm; //발주 상태 코드값
 
+    private int progressPercent; //진행률
     public static List<PurchaseOrderDto> of(List<PurchaseOrder> purchaseList) {
         return modelMapper.map(purchaseList, new TypeToken<List<PurchaseOrderDto>>() {
         }.getType());

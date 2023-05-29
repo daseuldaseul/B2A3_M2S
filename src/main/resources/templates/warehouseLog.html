@@ -130,44 +130,18 @@
                     </div>
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">단위</button>
-                      </div>
-                      <select class="form-control" name="itemUnit">
-                        <option selected>미선택</option>
-                        <option th:each="codeList : ${codeList3}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
-                      </select>
-                    </div>
-                  </div>
-
-
-                  <hr>
-
-
-                  <div class="row">
-
-                    <div class="input-group col-3">
-                      <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">업체</button>
-                      </div>
-                      <div id="autocomplete-results2" class="autocomplete-results">
-                      </div>
-                      <input type="hidden" id="companyCode" name="companyCd">
-                      <input type="text" id="companyName" name="companyNm" class="form-control" placeholder="업체명" onkeyup="autoComplete2(this.value)" autocomplete="off">
-                    </div>
-
-
-                    <div class="input-group col-3">
-                      <div class="input-group-prepend">
                         <button type="button" class="btn btn-default">등록일</button>
                       </div>
                       <input type="date" class="form-control" name="startDate">
                       <input type="date" class="form-control" name="endDate">
                     </div>
 
-
                   </div>
 
-                  </hr>
+
+                  <hr>
+
+
 
                 </form>
               </div>
@@ -197,8 +171,8 @@
                   <tr th:each="warehouse , status: ${warehouseLogList}" onclick="getItemValue(this)">
 
                     <td th:text="${warehouse.getInoutNo()}"></td>
-                    <td th:text="${warehouse.getLogGb()}"></td>
-                    <td th:text="${warehouse.item.getItemGb()}"></td>
+                    <td th:text="${warehouse.getWarehouseGb()}"></td>
+                    <td th:text="${warehouse.getItemGb()}"></td>
                     <td th:text="${warehouse.item.getItemCd()}"></td>
                     <td th:text="${warehouse.item.getItemNm()}"></td>
                     <td th:text="${warehouse.qty}"></td>

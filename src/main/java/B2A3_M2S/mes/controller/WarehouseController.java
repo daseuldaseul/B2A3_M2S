@@ -20,7 +20,7 @@ public class WarehouseController {
     @RequestMapping("/list")
     public String getWarehouseLog(Model model){
 
-        List<WarehouseLogDTO> warehouseLogDTOList = WarehouseLogDTO.of(service.getWareHouseLog());
+        List<WarehouseLogDTO> warehouseLogDTOList = service.getWareHouseLog();
 
         for(WarehouseLogDTO warehouseLog : warehouseLogDTOList){
             warehouseLog.getItem().setItemUnitValue(CodeServiceImpl.getCodeNm("UNIT_TYPE" , warehouseLog.getItem().getItemUnit()));

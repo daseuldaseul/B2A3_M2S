@@ -24,6 +24,10 @@ public class MainController {
 
         model.addAttribute("orderList",mainService.getObtainOrderDtoList());
         model.addAttribute("purchaseList",mainService.getPurchaseOrderDtoList());
+        model.addAttribute("processes" , mainService.getProcessesPercent());
+        model.addAttribute("dailyProduction" , mainService.getDailyProduction());
+        model.addAttribute("monthlyProduction", mainService.getMonthlyProduction());
+
 
 
         return "main";

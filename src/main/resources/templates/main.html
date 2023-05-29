@@ -36,7 +36,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard v2</h1>
+            <h1 class="m-0">현황 조회</h1>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -48,68 +48,68 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Info boxes -->
-        <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
+<!--        <div class="row">-->
+<!--          <div class="col-12 col-sm-6 col-md-3">-->
 
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+<!--            <div class="info-box">-->
+<!--              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>-->
 
-              <div class="info-box-content">
-                <span class="info-box-text">CPU Traffic</span>
-                <span class="info-box-number">
-                  10
-                  <small>%</small>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+<!--              <div class="info-box-content">-->
+<!--                <span class="info-box-text">CPU Traffic</span>-->
+<!--                <span class="info-box-number">-->
+<!--                  10-->
+<!--                  <small>%</small>-->
+<!--                </span>-->
+<!--              </div>-->
+<!--              &lt;!&ndash; /.info-box-content &ndash;&gt;-->
+<!--            </div>-->
+<!--            &lt;!&ndash; /.info-box &ndash;&gt;-->
+<!--          </div>-->
+<!--          &lt;!&ndash; /.col &ndash;&gt;-->
+<!--          <div class="col-12 col-sm-6 col-md-3">-->
+<!--            <div class="info-box mb-3">-->
+<!--              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>-->
 
-              <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">41,410</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
+<!--              <div class="info-box-content">-->
+<!--                <span class="info-box-text">Likes</span>-->
+<!--                <span class="info-box-number">41,410</span>-->
+<!--              </div>-->
+<!--              &lt;!&ndash; /.info-box-content &ndash;&gt;-->
+<!--            </div>-->
+<!--            &lt;!&ndash; /.info-box &ndash;&gt;-->
+<!--          </div>-->
+<!--          &lt;!&ndash; /.col &ndash;&gt;-->
 
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
+<!--          &lt;!&ndash; fix for small devices only &ndash;&gt;-->
+<!--          <div class="clearfix hidden-md-up"></div>-->
 
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+<!--          <div class="col-12 col-sm-6 col-md-3">-->
+<!--            <div class="info-box mb-3">-->
+<!--              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>-->
 
-              <div class="info-box-content">
-                <span class="info-box-text">Sales</span>
-                <span class="info-box-number">760</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+<!--              <div class="info-box-content">-->
+<!--                <span class="info-box-text">Sales</span>-->
+<!--                <span class="info-box-number">760</span>-->
+<!--              </div>-->
+<!--              &lt;!&ndash; /.info-box-content &ndash;&gt;-->
+<!--            </div>-->
+<!--            &lt;!&ndash; /.info-box &ndash;&gt;-->
+<!--          </div>-->
+<!--          &lt;!&ndash; /.col &ndash;&gt;-->
+<!--          <div class="col-12 col-sm-6 col-md-3">-->
+<!--            <div class="info-box mb-3">-->
+<!--              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>-->
 
-              <div class="info-box-content">
-                <span class="info-box-text">New Members</span>
-                <span class="info-box-number">2,000</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-        </div>
+<!--              <div class="info-box-content">-->
+<!--                <span class="info-box-text">New Members</span>-->
+<!--                <span class="info-box-number">2,000</span>-->
+<!--              </div>-->
+<!--              &lt;!&ndash; /.info-box-content &ndash;&gt;-->
+<!--            </div>-->
+<!--            &lt;!&ndash; /.info-box &ndash;&gt;-->
+<!--          </div>-->
+<!--          &lt;!&ndash; /.col &ndash;&gt;-->
+<!--        </div>-->
         <!-- /.row -->
 
         <div class="row">
@@ -148,25 +148,25 @@
               <div class="card-body" >
                 <div class="row">
                   <div class="col-6 col-md-3 text-center">
-                    <input type="text" class="knob" th:value="${process}" data-width="120" data-height="120" data-fgColor="#3c8dbc">
+                    <input type="text" class="knob" th:value="${processes.get('계량')}" data-width="120" data-height="120" data-fgColor="#3c8dbc">
 
                     <div class="knob-label">원료계량</div>
                   </div>
                   <!-- ./col -->
                   <div class="col-6 col-md-3 text-center">
-                    <input type="text" class="knob" value="70" data-width="120" data-height="120" data-fgColor="#f56954">
+                    <input type="text" class="knob" th:value="${processes.get('전처리')}" data-width="120" data-height="120" data-fgColor="#f56954">
 
                     <div class="knob-label">전처리</div>
                   </div>
                   <!-- ./col -->
                   <div class="col-6 col-md-3 text-center">
-                    <input type="text" class="knob" value="80"  data-width="120" data-height="120" data-fgColor="#00a65a">
+                    <input type="text" class="knob" th:value="${processes.get('추출')}"  data-width="120" data-height="120" data-fgColor="#00a65a">
 
                     <div class="knob-label">추출(가열)</div>
                   </div>
                   <!-- ./col -->
                   <div class="col-6 col-md-3 text-center">
-                    <input type="text" class="knob" value="40" data-width="120" data-height="120" data-fgColor="#00c0ef">
+                    <input type="text" class="knob" th:value="${processes.get('혼합')}" data-width="120" data-height="120" data-fgColor="#00c0ef">
 
                     <div class="knob-label">혼합 및 살균(열교환)</div>
                   </div>
@@ -176,13 +176,13 @@
 
                 <div class="row">
                   <div class="col-6 text-center">
-                    <input type="text" class="knob" value="90" data-width="120" data-height="120" data-fgColor="#932ab6">
+                    <input type="text" class="knob" th:value="${processes.get('충진')}" data-width="120" data-height="120" data-fgColor="#932ab6">
 
                     <div class="knob-label">충진</div>
                   </div>
                   <!-- ./col -->
                   <div class="col-6 text-center">
-                    <input type="text" class="knob" value="50" data-width="120" data-height="120" data-fgColor="#39CCCC">
+                    <input type="text" class="knob" th:value="${processes.get('포장')}" data-width="120" data-height="120" data-fgColor="#39CCCC">
 
                     <div class="knob-label">포장</div>
                   </div>
@@ -200,46 +200,46 @@
             </div>
             <!-- ./card-body -->
 
-            <div class="card-footer">
-              <div class="row">
-                <div class="col-sm-3 col-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                    <h5 class="description-header">$35,210.43</h5>
-                    <span class="description-text">TOTAL REVENUE</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-3 col-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
-                    <h5 class="description-header">$10,390.90</h5>
-                    <span class="description-text">TOTAL COST</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-3 col-6">
-                  <div class="description-block border-right">
-                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                    <h5 class="description-header">$24,813.53</h5>
-                    <span class="description-text">TOTAL PROFIT</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-3 col-6">
-                  <div class="description-block">
-                    <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-                    <h5 class="description-header">1200</h5>
-                    <span class="description-text">GOAL COMPLETIONS</span>
-                  </div>
-                  <!-- /.description-block -->
-                </div>
-              </div>
-              <!-- /.row -->
-            </div>
+<!--            <div class="card-footer">-->
+<!--              <div class="row">-->
+<!--                <div class="col-sm-3 col-6">-->
+<!--                  <div class="description-block border-right">-->
+<!--                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>-->
+<!--                    <h5 class="description-header">$35,210.43</h5>-->
+<!--                    <span class="description-text">TOTAL REVENUE</span>-->
+<!--                  </div>-->
+<!--                  &lt;!&ndash; /.description-block &ndash;&gt;-->
+<!--                </div>-->
+<!--                &lt;!&ndash; /.col &ndash;&gt;-->
+<!--                <div class="col-sm-3 col-6">-->
+<!--                  <div class="description-block border-right">-->
+<!--                    <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>-->
+<!--                    <h5 class="description-header">$10,390.90</h5>-->
+<!--                    <span class="description-text">TOTAL COST</span>-->
+<!--                  </div>-->
+<!--                  &lt;!&ndash; /.description-block &ndash;&gt;-->
+<!--                </div>-->
+<!--                &lt;!&ndash; /.col &ndash;&gt;-->
+<!--                <div class="col-sm-3 col-6">-->
+<!--                  <div class="description-block border-right">-->
+<!--                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>-->
+<!--                    <h5 class="description-header">$24,813.53</h5>-->
+<!--                    <span class="description-text">TOTAL PROFIT</span>-->
+<!--                  </div>-->
+<!--                  &lt;!&ndash; /.description-block &ndash;&gt;-->
+<!--                </div>-->
+<!--                &lt;!&ndash; /.col &ndash;&gt;-->
+<!--                <div class="col-sm-3 col-6">-->
+<!--                  <div class="description-block">-->
+<!--                    <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>-->
+<!--                    <h5 class="description-header">1200</h5>-->
+<!--                    <span class="description-text">GOAL COMPLETIONS</span>-->
+<!--                  </div>-->
+<!--                  &lt;!&ndash; /.description-block &ndash;&gt;-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              &lt;!&ndash; /.row &ndash;&gt;-->
+<!--            </div>-->
             <!-- /.card-footer -->
           </div>
           <!-- /.card -->
@@ -281,7 +281,7 @@
                     <th>수주번호</th>
                     <th>업체명</th>
                     <th>품목</th>
-                    <th>작업상태</th>
+                    <th>상태</th>
                     <th>진행률</th>
                   </tr>
                   </thead>
@@ -302,49 +302,49 @@
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                    <td>원식짱</td>
-                    <td><span class="badge badge-warning">작업대기</span></td>
-                    <td>
-                      <div class="progress-group">
+<!--                  <tr>-->
+<!--                    <td><a href="pages/examples/invoice.html">OR1848</a></td>-->
+<!--                    <td>원식짱</td>-->
+<!--                    <td><span class="badge badge-warning">작업대기</span></td>-->
+<!--                    <td>-->
+<!--                      <div class="progress-group">-->
 
-                        <span class=""><b>30</b>/100</span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-warning" style="width: 80%"></div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>섹시원식</td>
-                    <td><span class="badge badge-danger">작업중지</span></td>
-                    <td>
-                      <div class="progress-group">
+<!--                        <span class=""><b>30</b>/100</span>-->
+<!--                        <div class="progress progress-sm">-->
+<!--                          <div class="progress-bar bg-warning" style="width: 80%"></div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </td>-->
+<!--                  </tr>-->
+<!--                  <tr>-->
+<!--                    <td><a href="pages/examples/invoice.html">OR7429</a></td>-->
+<!--                    <td>섹시원식</td>-->
+<!--                    <td><span class="badge badge-danger">작업중지</span></td>-->
+<!--                    <td>-->
+<!--                      <div class="progress-group">-->
 
-                        <span class=""><b>80</b>/100</span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-danger" style="width: 80%"></div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                    <td>프린세스원식</td>
-                    <td><span class="badge badge-info">작업진행중</span></td>
-                    <td>
-                      <div class="progress-group">
+<!--                        <span class=""><b>80</b>/100</span>-->
+<!--                        <div class="progress progress-sm">-->
+<!--                          <div class="progress-bar bg-danger" style="width: 80%"></div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </td>-->
+<!--                  </tr>-->
+<!--                  <tr>-->
+<!--                    <td><a href="pages/examples/invoice.html">OR7429</a></td>-->
+<!--                    <td>프린세스원식</td>-->
+<!--                    <td><span class="badge badge-info">작업진행중</span></td>-->
+<!--                    <td>-->
+<!--                      <div class="progress-group">-->
 
-                        <span class=""><b>50%</b>/100%</span>
-                        <div class="progress progress-sm">
-                          <div class="progress-bar bg-info" style="width: 50%"></div>
-                        </div>
-                      </div>
+<!--                        <span class=""><b>50%</b>/100%</span>-->
+<!--                        <div class="progress progress-sm">-->
+<!--                          <div class="progress-bar bg-info" style="width: 50%"></div>-->
+<!--                        </div>-->
+<!--                      </div>-->
 
-                    </td>
-                  </tr>
+<!--                    </td>-->
+<!--                  </tr>-->
 
                   </tbody>
                 </table>
@@ -354,7 +354,7 @@
             <!-- /.card-body -->
             <div class="card-footer clearfix">
 
-              <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">모든 수주 보기</a>
+              <a href="/obtainOrder" class="btn btn-sm btn-secondary float-right">모든 수주 보기</a>
             </div>
             <!-- /.card-footer -->
           </div>
@@ -381,6 +381,7 @@
                     <th>발주번호</th>
                     <th>업체명</th>
                     <th>품목</th>
+                    <th>상태</th>
                     <th>진행률</th>
                   </tr>
                   </thead>
@@ -394,9 +395,9 @@
                     </td>
                     <td>
                       <div class="progress-group">
-                        <span th:text="${purchase.getOrderDate()} + '/100'"></span>
+                        <span th:text="${purchase.progressPercent} + '/100'"></span>
                         <div class="progress progress-sm">
-                          <div class="progress-bar bg-success" th:style="'width: ' + ${purchase.getOrderDate()} + '%'"></div>
+                          <div class="progress-bar bg-success" th:style="'width: ' + ${purchase.progressPercent} + '%'"></div>
                         </div>
                       </div>
                     </td>
@@ -411,7 +412,7 @@
             <!-- /.card-body -->
             <div class="card-footer clearfix">
 
-              <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">모든 수주 보기</a>
+              <a href="/purchaseOrder" class="btn btn-sm btn-secondary float-right">모든 발주 보기</a>
             </div>
             <!-- /.card-footer -->
           </div>
@@ -622,8 +623,9 @@
 
 </script>
 
-<script>
+<script th:inline="javascript">
   const ctx = document.getElementById('myChart1').getContext('2d');
+  var dailyList =[[${dailyProduction}]];
   const myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -631,7 +633,7 @@
       datasets: [{
 
 
-        data: [2000, 3400, 200, 500],
+        data: [dailyList[0] , dailyList[1], dailyList[2], dailyList[3]],
         backgroundColor: [
           'rgba(255, 99, 132, 0.7)',
           'rgba(54, 162, 235, 0.7)',
@@ -667,20 +669,18 @@
   });
 
   const ctx2 = document.getElementById('myChart2').getContext('2d');
+  var monthlyList = [[${monthlyProduction}]];
   const myChart2 = new Chart(ctx2, {
     type: 'bar',
     data: {
-      labels: ['양배추즙', '흑마늘즙', '석류 젤리스틱', '매실 젤리스틱'],
+      labels: ['양배추즙', '흑마늘즙', '석류 젤리스틱', '매실 젤리스틱'  ],
       datasets: [{
-
-
-        data: [2000, 3400, 200, 500],
+        data: [monthlyList[0] ,monthlyList[1], monthlyList[2],monthlyList[3]],
         backgroundColor: [
           'rgba(255, 99, 132, 0.7)',
           'rgba(54, 162, 235, 0.7)',
           'rgba(255, 206, 86, 0.7)',
           'rgba(75, 192, 192, 0.7)',
-
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',

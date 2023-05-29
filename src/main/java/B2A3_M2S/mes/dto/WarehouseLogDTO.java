@@ -24,11 +24,15 @@ public class WarehouseLogDTO {
     private LocalDateTime logDate;     //입출고 일시
     private String remark;  //비고
 
+
     private ItemDto item;    //품목 코드
 
     private LocalDate regDate;
 
     private LocalDate modDate;
+
+    private String warehouseGb;
+    private String itemGb;
 
 
 

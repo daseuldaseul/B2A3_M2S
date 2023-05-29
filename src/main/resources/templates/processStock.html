@@ -63,7 +63,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>품목 조회</h1>
+            <h1>재공재고 조회</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -76,7 +76,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <form action="/item/search" method="GET">
+                <form action="/processStock/search" method="GET">
                   <div class="row">
                     <div class="input-group col-12 justify-content-end">
 
@@ -111,16 +111,20 @@
 
                     <div class="input-group col-3">
                       <div class="input-group-prepend">
-                        <button type="button" class="btn btn-default">품목구분</button>
+                        <button type="button" class="btn btn-default">LotNo</button>
                       </div>
-                      <select class="form-control" name="itemGb">
-                        <option selected>미선택</option>
-                        <option th:each="code : ${codeList}" th:value="${code.getCodeId()}" th:text="${code.getDisplayValue()}"></option>
-                      </select>
+                      <input type="text" id="LotNo" name="LotNo" class="form-control" placeholder="Lot번호" onkeyup="" autocomplete="off">
 
+                    </div>
+                    <div class="input-group col-3">
+                      <div class="input-group-prepend">
+                        <button type="button" class="btn btn-default">공정</button>
+                      </div>
+                      <input type="text" id="process" name="process" class="form-control" placeholder="공정" onkeyup="" autocomplete="off">
                     </div>
 
                   </div>
+
 
 
                   <hr>

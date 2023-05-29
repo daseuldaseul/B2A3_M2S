@@ -143,31 +143,50 @@
                                         <th>수주 번호</th>
                                         <th>계획 수량</th>
                                         <th>생산 수량</th>
-                                        <th>생산시작 계획일시</th>
                                         <th>생산종료 계획일시</th>
-                                        <th>생산시작 일시</th>
                                         <th>생산종료 일시</th>
+                                        <th>비고</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="obtainOrderList, status: ${obtainOrderList}">
+                                    <tr th:each="obtainOrderList, status: ${obtainOrderList}" onclick="getProductionValue(this)">
                                         <td th:text="${obtainOrderList.orderCd}"></td>
                                         <td th:text="${obtainOrderList.qty}"></td>
                                         <td th:text="${obtainOrderList.qty}"></td>
-                                        <td th:text="${#temporals.format(firstProductionDto.startDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                        <td th:text="${#temporals.format(lastProductionDto.endDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                        <td th:text="${#temporals.format(firstProductionDto.startDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                        <td th:text="${#temporals.format(lastProductionDto.endDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-
+                                        <td th:text="${#temporals.format(obtainOrderList.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                        <td th:text="${#temporals.format(obtainOrderList.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                        <td th:text="${obtainOrderList.remark}"></td>
                                     </tr>
-
-
 
 
                                     </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->
+
+                            <div class="card-body">
+
+                                <table class="table table-bordered table-hover">
+                                    <thead style="background-color: rgb(16, 23, 86); color: #ffffff;">
+                                    <tr>
+                                        <th>계획 번호</th>
+                                        <th>Lot 번호</th>
+                                        <th>공정명</th>
+                                        <th>공정별 계획 수량</th>
+                                        <th>공정별 생산 수량</th>
+                                        <th>시작 시간</th>
+                                        <th>종료 시간</th>
+                                        <th>비고</th>
+                                    </tr>
+
+
+                                    </thead>
+                                    <tbody id="production">
+
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                         <!-- /.card -->
 
@@ -178,6 +197,7 @@
                 <!-- /.row -->
 
                 <!-- /.container-fluid -->
+            </div>
         </section>
         <!-- /.content -->
     </div>
@@ -382,6 +402,62 @@ function autoComplete2(text) {
         });
 
   }
+
+
+  function getProductionValue(element) {
+        var obtain = $(element); // 선택한 요소의 값을 가져옵니다.
+        $('tr').css('background-color', '');
+
+        element.style.backgroundColor = '#80808061';
+        var orderCd = obtain.find('td:first').text();
+
+        $.ajax({
+        url: '/production/detail',
+        type: 'GET',
+        data: { orderCd: orderCd },
+        success: function(response) {
+        console.log(response);
+        var productions = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+
+              var tableRow = '';
+              productions.forEach(function(production) {
+                tableRow += '<tr>';
+                tableRow += '<td>' + production.planNo + '</td>';
+                tableRow += '<td>' + production.processes.procNm + '</td>';
+                tableRow += '<td>' + production.planQty + '</td>';
+                tableRow += '<td>' + production.prodQty + '</td>';
+                var formattedStartDate = getFormattedDateTime(production.startDate);
+                tableRow += '<td>' + formattedStartDate  + '</td>';
+                var formattedEndDate = getFormattedDateTime(production.endDate);
+                tableRow += '<td>' + formattedEndDate + '</td>';
+                tableRow += '<td>' + production.remark + '</td>';
+                tableRow += '</tr>';
+              });
+
+              document.getElementById('production').innerHTML = tableRow;
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+}
+
+
+function getFormattedDateTime(localDateTime) {
+  var year = localDateTime.date.year;
+  var month = localDateTime.date.month.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var day = localDateTime.date.day.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var hour = localDateTime.time.hour.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var minute = localDateTime.time.minute.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var second = localDateTime.time.second.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+
+
+  // 원하는 형식에 맞게 포맷팅
+  var formattedDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+  return formattedDateTime;
+}
 </script>
 
 

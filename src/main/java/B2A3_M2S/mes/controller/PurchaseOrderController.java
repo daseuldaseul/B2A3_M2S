@@ -78,7 +78,7 @@ public class PurchaseOrderController {
 
     @ResponseBody
     @GetMapping("/purchaseOrder/detail")
-    public String purchaseOrderDetail(@RequestParam String orderNo, Model model) {
+    public String purchaseOrderDetail(@RequestParam String orderNo) {
 
         Gson gson = new Gson();
         PurchaseOrderDto purchaseOrderDto = PurchaseOrderDto.of(purchaseOrderRepository.findByOrderNo(orderNo));

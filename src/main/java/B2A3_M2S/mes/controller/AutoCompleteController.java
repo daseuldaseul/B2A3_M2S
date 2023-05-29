@@ -91,6 +91,8 @@ public class AutoCompleteController {
 
         return json;
     }
+
+    //품목 - 자재용
     @GetMapping("/autoComplete6")
     public String autoComplete6(@RequestParam("text") String text) {
 

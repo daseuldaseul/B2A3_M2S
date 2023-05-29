@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.WarehouseLogDTO;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Stock;
 import B2A3_M2S.mes.entity.WarehouseLog;
@@ -105,6 +106,8 @@ public class StockService {
 
         warehouseLogRepository.save(warehouseLog);
 
+
+
     }
     /**
      * 공정 및 출하 진행 시 itemEntity 와 qty을 입력 받아
@@ -139,9 +142,9 @@ public class StockService {
                          .qty(stock.getQty())
                          .build();
 
-
+                 WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
                  warehouseLogRepository.save(warehouseLog);
-
+                 utilService.saveInput(warehouseLogDTO);
                  stock.setQty(0L);
                  stockRepository.save(stock);
 
@@ -161,8 +164,9 @@ public class StockService {
                          .build();
 
 
+                 WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
                  warehouseLogRepository.save(warehouseLog);
-
+                 utilService.saveInput(warehouseLogDTO);
                  stock.setQty(stockQty);
                  stockRepository.save(stock);
 

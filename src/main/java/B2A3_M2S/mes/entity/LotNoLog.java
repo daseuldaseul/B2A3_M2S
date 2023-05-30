@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class LotNoLog extends BaseTimeEntity{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lotSeq;
 
     //외래키 설정

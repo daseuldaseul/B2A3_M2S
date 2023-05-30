@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -223,10 +224,14 @@ public class CalculatorServiceImpl implements CalculatorService {
                     productionDTO.setStatus("STATUS01");
                     productionDTO.setFirstGb(false);
                     productionDTO.setLastGb(false);
+                    productionDTO.setItem(recipeList.get(0).getOutputItem());
+                    productionDTO.setRouting(rList.get(i).createRouting());
+
                     if (i == 0 && total_2 == (total + total_temp))
                         productionDTO.setFirstGb(true);
                     else if ((rList.size() - 1) == i && total <= 0)
                         productionDTO.setLastGb(true);
+
                     productionRepository.save(productionDTO.createProduction());
                 }
                 //수정 // 다시 수정
@@ -240,8 +245,8 @@ public class CalculatorServiceImpl implements CalculatorService {
                     currentMaterial.remove(j);
                 }
             }
-
             currentMaterial.stream().forEach(System.out::println);
+
             // 친구들 정리_2
             for (int j = 0; j < currentMaterial.size(); j++) {
                 if (j == 0 && !recipeList.get(0).getOutputItem().getItemType().equals("ITEM04")) {
@@ -255,6 +260,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                     materialList.remove(currentMaterial.get(j));
                 }
             }
+
             System.out.println(pDto.getProcNm() + " 공정 작업시간: " + workTime_temp);
             System.out.println(pDto.getProcNm() + " 공정 리드타임: " + leadTime_temp);
             System.out.println(pDto.getProcNm() + " 종료");
@@ -271,12 +277,11 @@ public class CalculatorServiceImpl implements CalculatorService {
         return start.plusMinutes(workTime + leadTime);
     }
 
-    @Scheduled(fixedDelay = 30000)
-    @Transactional
+/*    @Scheduled(fixedDelay = 30000)
+    @Transactional*/
     @Override
     public void schedulerApplication() {
         System.out.println("스케쥴러 실행 중");
-
         List<ProductionDTO> list = productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList());
 
         // 계획수립 -> 생산중 변경
@@ -286,22 +291,25 @@ public class CalculatorServiceImpl implements CalculatorService {
 
             // 출고 루틴 해야할지 정함
             boolean releaseCheck = false;
-            for (int i = 0; i <= list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).isFirstGb()) {
                     releaseCheck = true;
                     break;
                 }
             }
-            ////////////////////////////////////////////////////////////////////
-            ////////////// 출고 로직 작성 및 재고 테이블 차감 로직 작성 /////////////
-            ////////////////////////////////////////////////////////////////////
 
             if(releaseCheck) {
                 /*
-
-
-                 */
+            ////////////////////////////////////////////////////////////////////
+            ////////////// 출고 로직 작성 및 재고 테이블 차감 로직 작성 //////////////
+            ///////////////////////////////////////////////////////////////////
+            //////////////////// 걍 자재 투입시마다 출고로 떄려버려 ////////////////
+            //////////////////////////////////////////////////////////////////
+             */
+                System.out.println("큰일");
             }
+
+
 
 
 
@@ -310,7 +318,9 @@ public class CalculatorServiceImpl implements CalculatorService {
             /////////////////////////////////
 
 
-            
+            // 재공재고 조회
+
+
         }
         list = productionRepository.findByEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList());
 
@@ -326,14 +336,13 @@ public class CalculatorServiceImpl implements CalculatorService {
                     break;
                 }
             }
-            
+
             // 우선 생산완료로 변경
             productionRepository.saveAll(list.stream().map(ProductionDTO::createProduction).collect(Collectors.toList()));
 
             /////////////////////////////////
             // 재공재고 및 Lot 관련 로직 작성 //
             /////////////////////////////////
-
             // 출하 아니면 종료
             if (!shipCheck)
                 return;

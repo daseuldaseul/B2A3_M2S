@@ -1,12 +1,15 @@
 package B2A3_M2S.mes.dto;
 
 import B2A3_M2S.mes.entity.Production;
+import B2A3_M2S.mes.entity.Routing;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,6 +38,12 @@ public class ProductionDTO {
     private String statusNm;
     private boolean firstGb;            // 첫번째 구분
     private boolean lastGb;             // 마지막 구분
+
+    private ItemDto item;
+
+    @ManyToOne
+    @JoinColumn(name = "routing_no")
+    private Routing routing;
 
     public static ModelMapper modelMapper = new ModelMapper();
 

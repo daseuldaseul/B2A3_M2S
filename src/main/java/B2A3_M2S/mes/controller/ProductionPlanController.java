@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.ProductionDTO;
 import B2A3_M2S.mes.dto.RoutingDto;
 import B2A3_M2S.mes.entity.Item;
@@ -9,14 +10,20 @@ import B2A3_M2S.mes.entity.Routing;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import B2A3_M2S.mes.repository.ProductionRepository;
 import B2A3_M2S.mes.service.CodeServiceImpl;
+import B2A3_M2S.mes.service.ProductionService;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +35,10 @@ public class ProductionPlanController {
     @Autowired
     ObtainOrderRepository obtainOrderRepository;
 
-    @GetMapping("/productionPlan")
+    @Autowired
+    ProductionService productionService;
+
+    @GetMapping("/production")
     public String productionPlan(Model model){
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();
         List<ProductionDTO> productionDtoList = new ArrayList<>();
@@ -37,18 +47,6 @@ public class ProductionPlanController {
             List<Production> productionPlan = productionRepository.findByObtainOrderOrderCd(obtainOrder.getOrderCd());
             productionDtoList.addAll(ProductionDTO.of(productionPlan));
         }
-
-
-//        if (!productionDtoList.isEmpty()) {
-//            List<ProductionDTO> firstProductionDto = new ArrayList<>();
-//            firstProductionDto.add(productionDtoList.get(0));
-//
-//            List<ProductionDTO> lastProductionDto = new ArrayList<>();
-//            lastProductionDto.add(productionDtoList.get(productionDtoList.size() - 1));
-//
-//            model.addAttribute("firstProductionDto", firstProductionDto);
-//            model.addAttribute("lastProductionDto", lastProductionDto);
-//        }
 
         model.addAttribute("productionList", productionDtoList);
         model.addAttribute("obtainOrderList", obtainOrderList);
@@ -71,4 +69,30 @@ public class ProductionPlanController {
         String json = gson.toJson(productionDTOList);
         return json;
     }
+
+
+    @GetMapping("/production/search")
+    public String productionSearch( @RequestParam(required = false) String orderCd,
+                                    @RequestParam(required = false) String itemNm,
+                                    @RequestParam(required = false) String itemCd,
+                                    @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dueStartDate,
+                                    @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dueEndDate,
+                                    Model model) {
+
+        LocalDateTime dueStartDateTime = null;
+        LocalDateTime dueEndDateTime = null;
+
+        if(dueStartDate != null && dueEndDate != null) {
+            dueStartDateTime = LocalDateTime.of(dueStartDate, LocalTime.MIN);
+            dueEndDateTime = LocalDateTime.of(dueEndDate, LocalTime.MAX);
+        }
+
+        List<ObtainOrder> obtainOrderList = productionService.searchProduction(orderCd, itemNm, itemCd, dueStartDateTime, dueEndDateTime);
+        List<ObtainOrderDto> obtainOrderDtoList = ObtainOrderDto.of(obtainOrderList);
+
+        model.addAttribute("obtainOrderList", obtainOrderDtoList);
+
+        return "productionPlanPage";
+    }
+
 }

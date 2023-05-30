@@ -19,9 +19,9 @@ public class ProductionDTO {
     private String planNo;      //계획 번호
     private Long planQty;       //계획 수량
     private Long prodQty;       //생산 수량
-    @JsonFormat(pattern = "yyyyMMddHHmmss")
+    @JsonFormat
     private LocalDateTime startDate;    //생산 시작 일시
-    @JsonFormat(pattern = "yyyyMMddHHmmss")
+    @JsonFormat
     private LocalDateTime endDate;      //생상 종료 일시
 
 

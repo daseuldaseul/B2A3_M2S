@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProductionServiceImpl implements ProductionService {
+public class ProductionCalService {
     @Autowired
     private ProcessesRepository procRepository;
     @Autowired

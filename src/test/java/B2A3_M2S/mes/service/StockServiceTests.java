@@ -32,9 +32,13 @@ public class StockServiceTests {
     @Test
     public void addStockTest(){
         Item item = repository.findByItemNm("흑마늘");
-        service.addMaterials(item , 100000L);
-        service.addMaterials(item , 100000L);
-        service.addMaterials(item , 100000L);
+        WarehouseLogDTO wDto;
+        wDto = service.addMaterials(item , 100000L);
+        service.saveInput(wDto);
+        wDto = service.addMaterials(item , 100000L);
+        service.saveInput(wDto);
+        wDto = service.addMaterials(item , 100000L);
+        service.saveInput(wDto);
     }
 
     @Test
@@ -48,10 +52,7 @@ public class StockServiceTests {
     @Test
     public void releaseStockTest(){
         Item item =repository.findByItemNm("양배추");
-
        service.releaseItem(item, 105L);
-
-
     }
     @Test
     public void asdsadada(){

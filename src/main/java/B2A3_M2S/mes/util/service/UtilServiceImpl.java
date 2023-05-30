@@ -30,35 +30,6 @@ public class UtilServiceImpl implements UtilService {
     @Autowired
     StockService service;
 
-    /**
-     * 출고시 호출하는 메소드 입니다.
-     *
-     * @param "Enum 코드번호 (출고)"
-     * @return 저장된 LotNoLog 객체 반환
-     */
-//    @Override
-//    public ProcessStockDTO saveInput(WarehouseLogDTO wDto) {
-//        // 최초 LotNoLog 생성
-//        LotNoLogDTO lDto = new LotNoLogDTO();
-//        lDto.setLotNo(wDto.getLotNo());
-//        lDto.setFStockNo(-1L);
-//        lDto.setInputQty(wDto.getQty());
-//        lDto.setOutputQty(wDto.getQty());
-//        lDto.setIItem(wDto.getItem());
-//        lDto.setOItem(wDto.getItem());
-//        lDto.setRemark(wDto.getInoutNo());
-//        lDto = LotNoLogDTO.of(lotRepository.save(lDto.createLotNoLog()));
-//
-//        // 재공재고 생성
-//        ProcessStockDTO pDto = new ProcessStockDTO();
-//        pDto.setQty(wDto.getQty());
-//        pDto.setItem(wDto.getItem());
-//        pDto.setLotNoLog(lDto);
-//        pDto.setLocation(NumPrefix.RELEASE.getTitle());
-//        pDto = ProcessStockDTO.of(procStockRepository.save(pDto.createProcessStock()));
-//        return pDto;
-//    }
-
     /***
      * 출고를 제외한 각 공정 단계에서 자재 투입시 호출하는 메소드 입니다.
      * @param "Enum 코드번호 (출고)"
@@ -82,19 +53,6 @@ public class UtilServiceImpl implements UtilService {
         for (ProductionDTO pDto : pList) {
             // 하나의 생산계획 단계에서 투입할 자재를 모아두는 리스트입니다.
             List<ProcessStockDTO> inputItem = new ArrayList<>();
-
-            // 해당 제품을 만들기 위해 소모되는 자재량 계산이 필요함
-            // 라우팅 아이템을 조회해서 bom_no가 존재하면
-            // 해당 bom을 조회해서 소모량을 가지고 온 다음 계산해서 총 소모량 계산
-
-            // 그렇지 않다면 (bom_no)가 null 이라면
-            // 해당 자재 100프로가 그대로 넘어가기 때문에 재공재고에서 결과물 수량만큼 감소시킨다 ?
-
-            // 근데 그 전에 재공재고 테이블에 해당 자재가 없으면
-            // 출고를 시킨다.
-
-            // 아웃풋 아이템 기준으로 해당 라우팅으로 어떤 아이템을 생산하는지 확인 (라우팅 아이템) 조회
-            // 아웃풋 기준으로 어떤 자재가 소모되는지 확인
             riList = routingItemRepository.findByRouting(pDto.getRouting()).stream().map(RoutingItemDTO::of).collect(Collectors.toList());
 
             // 라우팅 아이템, 즉 소모되는 자재 기준으로 (재공재고가 충분한지 파악하기 위해서)
@@ -125,11 +83,6 @@ public class UtilServiceImpl implements UtilService {
                     // 해당 bom 조회
                     BOMDTO bDto = BOMDTO.of(bomRepository.findByBomNo(riDto.getBom().getBomNo()));
                     needQty = (pDto.getPlanQty() / bDto.getStandard()) * bDto.getConsumption();
-
-                    // 해당 자재에 대한 소모량 구함
-//                    Double dobule_temp = bomRepository.findByProductItemAndMaterialItem(riDto.getOutputItem().getItemCd(), riDto.getInputItem().getItemCd(), pDto.getPlanQty());
-//                    needQty = bomRepository.findByProductItemAndMaterialItem(riDto.getOutputItem().getItemCd(), riDto.getInputItem().getItemCd(), pDto.getPlanQty());
-//                    needQty = needQty == null ? 0.0 : needQty;
                 } else { // 존재 안할때
                     needQty = Double.valueOf(pDto.getPlanQty());
                 }
@@ -189,16 +142,15 @@ public class UtilServiceImpl implements UtilService {
                 lList.add(lDto);
             }
 
-
             List<LotNoLog> llist2 = lotRepository.saveAll(lList.stream().map(LotNoLogDTO::createLotNoLog).collect(Collectors.toList()));
             procStockRepository.saveAll(psList.stream().map(ProcessStockDTO::createProcessStock).collect(Collectors.toList()));
-
 
             System.out.println("최종 재공재고 ");
             psList.stream().forEach(System.out::println);
             System.out.println("최종 lot list: ");
             llist2.stream().forEach(System.out::println);
-
+            System.out.println("최종 lot list: " + llist2);
+            System.out.println("최종 lot list: " + llist2.size());
         }
         return null;
     }
@@ -221,13 +173,14 @@ public class UtilServiceImpl implements UtilService {
         return lotRepository.createLotNo(numbering.getTitle());
     }
 
+    // 입고시 사용합니다.
     @Override
     public LotNoLogDTO saveReceiving(WarehouseLogDTO wDto) {
         // 최초 LotNoLog 생성
         LotNoLogDTO lDto = new LotNoLogDTO();
         //lDto.setLotNo(lotRepository.createLotNo(wDto.getLotNo()));
         lDto.setLotNo(wDto.getLotNo());
-        lDto.setFStockNo(-1L);
+        lDto.setFStockNo(-2L);
         lDto.setInputQty(wDto.getQty());
         lDto.setOutputQty(wDto.getQty());
         lDto.setIItem(wDto.getItem());

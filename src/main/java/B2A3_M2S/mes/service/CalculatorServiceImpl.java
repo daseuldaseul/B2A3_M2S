@@ -306,10 +306,6 @@ public class CalculatorServiceImpl implements CalculatorService {
                 System.out.println("큰일");
             }
 
-
-
-
-
             /////////////////////////////////
             // 재공재고 및 Lot 이력 로직 작성 //
             /////////////////////////////////

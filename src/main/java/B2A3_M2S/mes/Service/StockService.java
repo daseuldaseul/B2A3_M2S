@@ -43,20 +43,13 @@ public class StockService {
 
     }
 
-
-
-
-
-
-
-/**
- * 자재를 재고 테이블에 저장하고 입출고 테이블에 기록.
- *
- * @param item  아이템 엔티티
- * @param qty 수량
- *
- * */
-    public WarehouseLogDTO addMaterials(Item item, Long qty ){
+    /**
+     * 자재를 재고 테이블에 저장하고 입출고 테이블에 기록.
+     *
+     * @param item 아이템 엔티티
+     * @param qty  수량
+     */
+    public WarehouseLogDTO addMaterials(Item item, Long qty) {
         NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
         String ocd = service.getNumbering("inoutNo", NumPrefix.RECEIVING);
 
@@ -81,7 +74,7 @@ public class StockService {
         return WarehouseLogDTO.of(warehouseLog);
     }
 
-    public WarehouseLogDTO addProducts(Item item ,String lotNo, Long qty ){
+    public WarehouseLogDTO addProducts(Item item, String lotNo, Long qty) {
         NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
         String ocd = service.getNumbering("inoutNo", NumPrefix.RECEIVING);
 
@@ -104,74 +97,76 @@ public class StockService {
         return WarehouseLogDTO.of(warehouseLog);
 
     }
+
     /**
      * 공정 및 출하 진행 시 itemEntity 와 qty을 입력 받아
      * 재고 테이블에서 qty만큼 뺀 후
      * 입출고 테이블에 출고 기록.
      *
-     *
-     * @param item  아이템 엔티티
-     * @param qty 수량
-     *
-     * */
-    public List<ProcessStockDTO> releaseItem(Item item, Long qty){
+     * @param item 아이템 엔티티
+     * @param qty  수량
+     */
+    public List<ProcessStockDTO> releaseItem(Item item, Long qty) {
         System.out.println("아이템: " + item);
         List<Stock> stockList = stockRepository.findByItem(item);
         List<ProcessStockDTO> pDtoList = new ArrayList<>();
 
-         for(Stock stock : stockList){
-             if(stock.getQty() <= qty){
-                 NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
-                 String ocd = service.getNumbering("inoutNo", NumPrefix.RELEASE);
+        for (Stock stock : stockList) {
+            if (stock.getQty() <= qty) {
+                NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
+                String ocd = service.getNumbering("inoutNo", NumPrefix.RELEASE);
 
-                 qty -= stock.getQty();
-                 System.out.println(stock.getQty());
-                 System.out.println(qty);
+                qty -= stock.getQty();
+                System.out.println(stock.getQty());
+                System.out.println(qty);
 
-                 WarehouseLog warehouseLog = WarehouseLog.builder()
-                         .inoutNo(ocd)
-                         .item(item)
-                         .lotNo(stock.getLotNo())
-                         .logGb("RELEASE")
-                         .qty(stock.getQty())
-                         .build();
+                WarehouseLog warehouseLog = WarehouseLog.builder()
+                        .inoutNo(ocd)
+                        .item(item)
+                        .lotNo(stock.getLotNo())
+                        .logGb("RELEASE")
+                        .qty(stock.getQty())
+                        .build();
 
-                 WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
-                 warehouseLogRepository.save(warehouseLog);
-                 pDtoList.add(saveInput(warehouseLogDTO));
-                 stock.setQty(0L);
-                 stockRepository.save(stock);
+                WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
+                warehouseLogRepository.save(warehouseLog);
+                pDtoList.add(saveInput(warehouseLogDTO));
+                stock.setQty(0L);
+                stockRepository.save(stock);
 
-                 if(qty == 0) break;
+                if (qty == 0) break;
 
-             }else {
-                 NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
-                 String ocd = service.getNumbering("inoutNo", NumPrefix.RELEASE);
-                 Long stockQty = stock.getQty() - qty;
+            } else {
+                NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
+                String ocd = service.getNumbering("inoutNo", NumPrefix.RELEASE);
+                Long stockQty = stock.getQty() - qty;
 
-                 WarehouseLog warehouseLog = WarehouseLog.builder()
-                         .inoutNo(ocd)
-                         .item(item)
-                         .lotNo(stock.getLotNo())
-                         .logGb("RELEASE")
-                         .qty(qty)
-                         .build();
+                WarehouseLog warehouseLog = WarehouseLog.builder()
+                        .inoutNo(ocd)
+                        .item(item)
+                        .lotNo(stock.getLotNo())
+                        .logGb("RELEASE")
+                        .qty(qty)
+                        .build();
 
 
-                 WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
-                 warehouseLogRepository.save(warehouseLog);
-                 pDtoList.add(saveInput(warehouseLogDTO));
-                 stock.setQty(stockQty);
-                 stockRepository.save(stock);
+                WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
+                warehouseLogRepository.save(warehouseLog);
+                pDtoList.add(saveInput(warehouseLogDTO));
+                stock.setQty(stockQty);
+                stockRepository.save(stock);
 
-                 break;
-             }
+                break;
+            }
 
-         }
+        }
 
-         return pDtoList;
+        return pDtoList;
     }
 
+    /*
+       출고시 찍습니다
+     */
     public ProcessStockDTO saveInput(WarehouseLogDTO wDto) {
         // 최초 LotNoLog 생성
         LotNoLogDTO lDto = new LotNoLogDTO();
@@ -197,7 +192,6 @@ public class StockService {
     public String getLotNo(NumPrefix numbering) {
         if (!numbering.equals(numbering.RECEIVING))
             return null;
-
         return lotRepository.createLotNo(numbering.getTitle());
     }
 

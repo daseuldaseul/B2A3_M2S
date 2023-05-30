@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Entity(name = "ship")
-@Table(name = "ship")
+@Entity
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ship extends BaseTimeEntity {

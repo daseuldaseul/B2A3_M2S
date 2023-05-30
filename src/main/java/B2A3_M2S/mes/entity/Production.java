@@ -37,4 +37,5 @@ public class Production extends BaseTimeEntity {
     @OneToOne
     private LotNoLog lotNoLog;
     private boolean completion;
+
 }

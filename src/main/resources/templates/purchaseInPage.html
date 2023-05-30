@@ -63,7 +63,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>발주 조회</h1>
+                        <h1>자재 입고 조회</h1>
                     </div>
 
                 </div>
@@ -77,7 +77,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <form action="/purchaseOrder/search" method="GET">
+                                <form action="/purchaseIn/search" method="GET">
                                     <div class="row">
                                         <div class="input-group col-12 justify-content-end">
 
@@ -86,11 +86,10 @@
 
                                             </div>
                                         </div>
-
-
                                     </div>
 
                                     <hr>
+
                                     <div class="row">
                                         <div class="input-group col-3">
                                             <div class="input-group-prepend">
@@ -106,18 +105,9 @@
 
 
 
-                                        <div class="input-group col-3">
-                                            <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">발주 상태</button>
-                                            </div>
-                                            <select class="form-control" name="purchaseState">
-                                                <option value="none" selected>미선택</option>
-                                                <option th:each="codeList : ${codeList}" th:value="${codeList.codeId.cd}" th:text="${codeList.displayValue}"></option>
-                                            </select>
-                                        </div>
                                         <div class="input-group col-4">
                                             <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">발주일</button>
+                                                <button type="button" class="btn btn-default">입고일</button>
                                             </div>
                                             <input type="date" class="form-control" name="startDate">
                                             <input type="date" class="form-control" name="endDate">
@@ -161,24 +151,22 @@
                                     <tr>
                                         <th>발주번호</th>
                                         <th>업체명</th>
+                                        <th>품목코드</th>
                                         <th>품목명</th>
-                                        <th>발주일자</th>
-                                        <th>입고예정일</th>
-                                        <th>주문량</th>
-                                        <th>상태</th>
+                                        <th>입고일자</th>
+                                        <th>입고량</th>
                                         <th>비고</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="purchaseOrderDto, status: ${purchaseOrderList}"  onclick="getPurchaseOrderValue(this)">
-                                        <td th:text="${purchaseOrderDto.orderNo}" ></td>
-                                        <td th:text="${purchaseOrderDto.company.companyNm}"></td>
-                                        <td th:text="${purchaseOrderDto.item.itemNm}"></td>
-                                        <td th:text="${#temporals.format(purchaseOrderDto.orderDate, 'yyyy-MM-dd')}" ></td>
-                                        <td th:text="${#temporals.format(purchaseOrderDto.dueDate, 'yyyy-MM-dd')}" ></td>
-                                        <td th:text="${purchaseOrderDto.orderQty}"></td>
-                                        <td th:text="${purchaseOrderDto.purchaseStateNm}"></td>
-                                        <td th:text="${purchaseOrderDto.remark}"></td>
+                                    <tr th:each="purchaseInDto, status: ${purchaseInList}">
+                                        <td th:text="${purchaseInDto.orderNo}" ></td>
+                                        <td th:text="${purchaseInDto.company.companyNm}"></td>
+                                        <td th:text="${purchaseInDto.item.itemCd}"></td>
+                                        <td th:text="${purchaseInDto.item.itemNm}"></td>
+                                        <td th:text="${#temporals.format(purchaseInDto.dueDate, 'yyyy-MM-dd')}" ></td>
+                                        <td th:text="${purchaseInDto.orderQty}"></td>
+                                        <td th:text="${purchaseInDto.remark}"></td>
                                     </tr>
 
                                     </tbody>
@@ -191,44 +179,7 @@
                             <!-- /.card-body -->
 
 
-                            <!-- 밑부분 표 -->
-                            <div class="card-body">
 
-                                <table class="table table-bordered table-hover">
-                                    <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
-                                    <tr>
-                                        <th>발주 번호</th>
-                                        <th>발주 상태</th>
-                                        <th>품목 코드</th>
-                                        <th>품목명</th>
-                                        <th>긴급 요청 여부</th>
-                                        <th>연락처</th>
-                                        <th>비고</th>
-                                    </tr>
-
-
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td id="orderNo"></td>
-                                        <td id="purchaseState"></td>
-                                        <td id="itemCd"></td>
-                                        <td id="itemNm"></td>
-                                        <td id="urgencyYn"></td>
-                                        <td id="phoneNumber"></td>
-                                        <td id="remark"></td>
-
-                                    </tr>
-
-                                    </tbody>
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- 밑부분 표 -->
 
 
                     </div>
@@ -406,36 +357,6 @@ function autoComplete2(text) {
 
 
 
-  function getPurchaseOrderValue(element) {
-var orders = $(element); // 선택한 요소의 값을 가져옵니다.
-$('tr').css('background-color', '');
-element.style.backgroundColor = '#80808061';
-var orderNo = orders.find('td:first').text();
-
-$.ajax({
-url: '/purchaseOrder/detail',
-type: 'GET',
-data: { orderNo: orderNo },
-success: function(response) {
-console.log(response);
-var purchaseOrders = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
-document.getElementById('orderNo').innerText = purchaseOrders.orderNo;
-document.getElementById('purchaseState').innerText = purchaseOrders.purchaseStateNm;
-document.getElementById('itemCd').innerText = purchaseOrders.item.itemCd;
-document.getElementById('itemNm').innerText = purchaseOrders.item.itemNm;
-document.getElementById('urgencyYn').innerText = purchaseOrders.urgencyYn;
-document.getElementById('phoneNumber').innerText = purchaseOrders.company.phoneNumber;
-document.getElementById('remark').innerText = purchaseOrders.remark;
-
-
-
-},
-error: function(xhr) {
-// 에러 처리를 수행합니다.
-console.log(xhr.responseText);
-}
-});
-}
 
 </script>
 

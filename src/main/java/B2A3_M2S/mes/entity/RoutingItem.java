@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class RoutingItem extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long routing_seq;       // 기본키
+    private Long routingSeq;       // 기본키
 
     @ManyToOne
     @JoinColumn(name = "routing_no")

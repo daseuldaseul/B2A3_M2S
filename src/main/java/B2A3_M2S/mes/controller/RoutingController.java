@@ -8,6 +8,10 @@ import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.ProcessesRepository;
+import B2A3_M2S.mes.dto.RoutingItemDTO;
+import B2A3_M2S.mes.entity.Item;
+import B2A3_M2S.mes.entity.RoutingItem;
+import B2A3_M2S.mes.repository.RoutingItemRepository;
 import B2A3_M2S.mes.repository.RoutingRepository;
 import B2A3_M2S.mes.entity.Routing;
 import B2A3_M2S.mes.service.ObtainOrderService;
@@ -43,6 +47,10 @@ public class RoutingController {
     @Autowired
     ProcessesRepository processesRepository;
 
+    @Autowired
+    RoutingItemRepository routingItemRepository;
+
+
     @GetMapping("/routing")
     public String routing(Model model) {
         List<Item> itemList = itemRepository.findByItemCdContaining("P");
@@ -75,6 +83,20 @@ public class RoutingController {
 
 
         String json = gson.toJson(routingDtoList);
+        return json;
+    }
+
+    @ResponseBody
+    @GetMapping("/routing/detail2")
+    public String routingDetail2(@RequestParam Long routingNo, Model model) {
+
+        Gson gson = new Gson();
+        Routing routing = routingRepository.findByRoutingNo(routingNo);
+        List<RoutingItem> routingItem = routingItemRepository.findByRouting(routing);
+
+        List<RoutingItemDTO> routingItemDtoList = RoutingItemDTO.of(routingItem);
+
+        String json = gson.toJson(routingItemDtoList);
         return json;
     }
 

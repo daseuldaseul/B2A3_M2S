@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.repository;
 
+import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.entity.*;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
@@ -11,11 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @SpringBootTest
 public class CommonCodeTests {
     @Autowired
-    private CommonCodeRepository repository;
+    private B2A3_M2S.mes.repository.CommonCodeRepository repository;
+    @Autowired
+    private B2A3_M2S.mes.repository.ItemRepository itemRepository;
 
     @Test
     public void selectTest() {
@@ -54,8 +58,10 @@ public class CommonCodeTests {
 
 
     }
+
     @PersistenceContext
     private EntityManager entityManager;
+
     @Test
     public void selectListTest() {
         System.out.println("여기 테스트 시작함");
@@ -69,5 +75,28 @@ public class CommonCodeTests {
         //repository.findByNumbering("codeId.codeGroup", "test");
         //repository.findByNumbering("codeId.cd", "0");
         //repository.findByNumbering("test", "test");
+    }
+
+    @Autowired
+    B2A3_M2S.mes.repository.StockRepository stockRepository;
+
+    @Test
+    public void stockTest() {
+
+        ;
+
+        Integer sum = stockRepository.getSumQtyByItemCd(itemRepository.findByItemNm("양배추").getItemCd());
+        System.out.println("여기" + sum);
+        List<Item> itemList = itemRepository.findAll();
+        List<ItemDto> itemDtoList = ItemDto.of(itemList);
+
+        //itemDtoList.get(0).setCurrentQty(stockList);
+        //List<Object[]> resultList = stockRepository.getSumQtyByItemCd();
+
+//        for (Object[] result : resultList) {
+//            String itemCd = (String) result[0];  // 두 번째 요소: itemCd
+//            Long sumQty = (Long) result[1];  // 첫 번째 요소: SUM(qty)
+//
+//        }
     }
 }

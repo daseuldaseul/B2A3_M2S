@@ -1,5 +1,7 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.ItemDto;
+import B2A3_M2S.mes.dto.StockDto;
 import B2A3_M2S.mes.dto.WarehouseLogDTO;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Stock;
@@ -7,6 +9,7 @@ import B2A3_M2S.mes.entity.WarehouseLog;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.StockRepository;
 import B2A3_M2S.mes.repository.WarehouseLogRepository;
+import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
 import B2A3_M2S.mes.util.service.UtilService;
@@ -17,6 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class StockService {
@@ -37,6 +41,8 @@ public class StockService {
 
     public List<Stock> getStockList() {
 
+
+
         List<Stock> stockList = new ArrayList<>();
 
         stockList = stockRepository.findByQtyIsNot(0L);
@@ -45,6 +51,24 @@ public class StockService {
         return stockList;
 
     }
+
+    public List<ItemDto> getStock () {
+
+         List<Item> itemList = itemRepository.findAll();
+         List<ItemDto> itemDtoList = ItemDto.of(itemList);
+
+         for (ItemDto itemDto : itemDtoList){
+             Integer sum = stockRepository.getSumQtyByItemCd(itemDto.getItemCd());
+             itemDto.setCurrentQty(sum != null ? sum : 0);
+             itemDto.setItemGbNm(CodeServiceImpl.getCodeNm("ITEM_GB", itemDto.getItemGb()));
+             System.out.println(itemDto.getItemGbNm());
+         }
+
+
+     return itemDtoList;
+    }
+
+
 
 
 
@@ -174,6 +198,14 @@ public class StockService {
              }
 
          }
+
+    }
+    public List<StockDto> detailStock(String itemCd){
+
+        List<Stock> stockList = stockRepository.findByItem_ItemCd(itemCd);
+        List<StockDto> stockDtoList = StockDto.of(stockList);
+
+        return stockDtoList;
 
     }
 

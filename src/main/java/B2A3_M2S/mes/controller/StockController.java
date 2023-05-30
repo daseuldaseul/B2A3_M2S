@@ -2,14 +2,19 @@ package B2A3_M2S.mes.controller;
 
 import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.dto.CommonCodeDTO;
+import B2A3_M2S.mes.dto.PurchaseOrderDto;
 import B2A3_M2S.mes.dto.StockDto;
 import B2A3_M2S.mes.entity.Stock;
+import B2A3_M2S.mes.repository.StockRepository;
 import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.StockService;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -20,6 +25,8 @@ public class StockController {
 
     @Autowired
     StockService service;
+
+
 
     @RequestMapping("/list")
     public String stockList(Model model) {
@@ -37,8 +44,21 @@ public class StockController {
 
         model.addAttribute("stockList" , stockDtoList );
         model.addAttribute("codeList" , codeList );
+        model.addAttribute("itemList",service.getStock());
 
         return "stock";
     }
 
+    @RequestMapping("/detail")
+    @ResponseBody
+    public String stockDetail(@RequestParam String itemCd, Model model){
+
+            Gson gson = new Gson();
+            List<StockDto> stockDtoList  = service.detailStock(itemCd);
+//            purchaseOrderDto.setPurchaseStateNm(CodeServiceImpl.getCodeNm("PURCHASE_STATE", purchaseOrderDto.getPurchaseState()));
+            String json = gson.toJson(stockDtoList);
+            return json;
+
+
+    }
 }

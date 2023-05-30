@@ -627,6 +627,7 @@
   const ctx = document.getElementById('myChart1').getContext('2d');
   var dailyList =[[${dailyProduction}]];
   const myChart = new Chart(ctx, {
+    scaleStartValue : 0,
     type: 'bar',
     data: {
       labels: ['양배추즙', '흑마늘즙', '석류 젤리스틱', '매실 젤리스틱'],

@@ -1,11 +1,13 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.Service.ProcessStockService;
 import B2A3_M2S.mes.dto.ProcessesDto;
 import B2A3_M2S.mes.dto.ProcessesFormDto;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.repository.ProcessesRepository;
 import B2A3_M2S.mes.service.CodeServiceImpl;
 import B2A3_M2S.mes.service.ProcessesService;
+import B2A3_M2S.mes.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,9 @@ public class ProcessStockController {
     @Autowired
     ProcessesService processesService;
 
+    @Autowired
+    StockService stockService;
+
     @GetMapping("/list")
     public String view(Model model){
 
@@ -41,7 +46,9 @@ public class ProcessStockController {
 
         model.addAttribute("codeList", CodeServiceImpl.getCodeList("PROCESS_STATE"));
         model.addAttribute("processList", processList);
+
         return "processStock";
+
     }
 
     @GetMapping("/search")
@@ -75,5 +82,7 @@ public class ProcessStockController {
 
         return "redirect:/processStock";
     }
+
+
 
 }

@@ -1,4 +1,4 @@
-package B2A3_M2S.mes.Service;
+package B2A3_M2S.mes.service;
 
 
 import B2A3_M2S.mes.dto.StockDto;
@@ -7,7 +7,6 @@ import B2A3_M2S.mes.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

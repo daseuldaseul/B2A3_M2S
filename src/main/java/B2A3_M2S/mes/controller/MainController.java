@@ -1,13 +1,10 @@
 package B2A3_M2S.mes.controller;
 
-import B2A3_M2S.mes.Service.MainService;
+import B2A3_M2S.mes.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 @Controller
 public class MainController {

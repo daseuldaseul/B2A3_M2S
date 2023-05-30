@@ -1,6 +1,5 @@
 package B2A3_M2S.mes.service;
 
-import B2A3_M2S.mes.Service.MainService;
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;

@@ -1,4 +1,4 @@
-package B2A3_M2S.mes.Service;
+package B2A3_M2S.mes.service;
 
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.PurchaseOrderDto;
@@ -8,7 +8,6 @@ import B2A3_M2S.mes.entity.Stock;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import B2A3_M2S.mes.repository.PurchaseOrderRepository;
 import B2A3_M2S.mes.repository.StockRepository;
-import B2A3_M2S.mes.service.CodeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

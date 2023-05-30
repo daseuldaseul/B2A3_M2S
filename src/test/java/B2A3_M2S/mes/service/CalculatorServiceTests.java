@@ -32,8 +32,6 @@ public class CalculatorServiceTests {
     @Autowired
     ProductionRepository productionRepository;
 
-    @Autowired
-    BOMRepository bomRepository;
 
     @Test
     public void test() {

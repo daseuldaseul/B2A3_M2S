@@ -1,6 +1,7 @@
 package B2A3_M2S.mes.util.service;
 
 import B2A3_M2S.mes.dto.*;
+import B2A3_M2S.mes.entity.LotNoLog;
 import B2A3_M2S.mes.entity.ProcessStock;
 import B2A3_M2S.mes.entity.RoutingItem;
 import B2A3_M2S.mes.repository.BOMRepository;
@@ -26,6 +27,8 @@ public class UtilServiceImpl implements UtilService {
     RoutingItemRepository routingItemRepository;
     @Autowired
     BOMRepository bomRepository;
+    @Autowired
+    StockService service;
 
     /**
      * 출고시 호출하는 메소드 입니다.
@@ -33,28 +36,28 @@ public class UtilServiceImpl implements UtilService {
      * @param "Enum 코드번호 (출고)"
      * @return 저장된 LotNoLog 객체 반환
      */
-    @Override
-    public ProcessStockDTO saveInput(WarehouseLogDTO wDto) {
-        // 최초 LotNoLog 생성
-        LotNoLogDTO lDto = new LotNoLogDTO();
-        lDto.setLotNo(wDto.getLotNo());
-        lDto.setFStockNo(-1L);
-        lDto.setInputQty(wDto.getQty());
-        lDto.setOutputQty(wDto.getQty());
-        lDto.setIItem(wDto.getItem());
-        lDto.setOItem(wDto.getItem());
-        lDto.setRemark(wDto.getInoutNo());
-        lDto = LotNoLogDTO.of(lotRepository.save(lDto.createLotNoLog()));
-
-        // 재공재고 생성
-        ProcessStockDTO pDto = new ProcessStockDTO();
-        pDto.setQty(wDto.getQty());
-        pDto.setItem(wDto.getItem());
-        pDto.setLotNoLog(lDto);
-        pDto.setLocation(NumPrefix.RELEASE.getTitle());
-        pDto = ProcessStockDTO.of(procStockRepository.save(pDto.createProcessStock()));
-        return pDto;
-    }
+//    @Override
+//    public ProcessStockDTO saveInput(WarehouseLogDTO wDto) {
+//        // 최초 LotNoLog 생성
+//        LotNoLogDTO lDto = new LotNoLogDTO();
+//        lDto.setLotNo(wDto.getLotNo());
+//        lDto.setFStockNo(-1L);
+//        lDto.setInputQty(wDto.getQty());
+//        lDto.setOutputQty(wDto.getQty());
+//        lDto.setIItem(wDto.getItem());
+//        lDto.setOItem(wDto.getItem());
+//        lDto.setRemark(wDto.getInoutNo());
+//        lDto = LotNoLogDTO.of(lotRepository.save(lDto.createLotNoLog()));
+//
+//        // 재공재고 생성
+//        ProcessStockDTO pDto = new ProcessStockDTO();
+//        pDto.setQty(wDto.getQty());
+//        pDto.setItem(wDto.getItem());
+//        pDto.setLotNoLog(lDto);
+//        pDto.setLocation(NumPrefix.RELEASE.getTitle());
+//        pDto = ProcessStockDTO.of(procStockRepository.save(pDto.createProcessStock()));
+//        return pDto;
+//    }
 
     /***
      * 출고를 제외한 각 공정 단계에서 자재 투입시 호출하는 메소드 입니다.
@@ -64,7 +67,7 @@ public class UtilServiceImpl implements UtilService {
     @Override
     public LotNoLogDTO saveInput(List<ProductionDTO> pList) {
         System.out.println("들어옴 " + pList);
-        StockService service = new StockService();
+
         // lot 저장할 리스트
         // 계획수립 -> 생산중 즉, 투입되는 Lot 이력을 저장하는 List 입니다.
         List<LotNoLogDTO> lList = new ArrayList<>();
@@ -187,14 +190,14 @@ public class UtilServiceImpl implements UtilService {
             }
 
 
-            lotRepository.saveAll(lList.stream().map(LotNoLogDTO::createLotNoLog).collect(Collectors.toList()));
+            List<LotNoLog> llist2 = lotRepository.saveAll(lList.stream().map(LotNoLogDTO::createLotNoLog).collect(Collectors.toList()));
             procStockRepository.saveAll(psList.stream().map(ProcessStockDTO::createProcessStock).collect(Collectors.toList()));
 
 
             System.out.println("최종 재공재고 ");
             psList.stream().forEach(System.out::println);
             System.out.println("최종 lot list: ");
-            lList.stream().forEach(System.out::println);
+            llist2.stream().forEach(System.out::println);
 
         }
         return null;

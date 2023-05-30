@@ -1,13 +1,12 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.LotNoLogDTO;
 import B2A3_M2S.mes.dto.ProcessStockDTO;
 import B2A3_M2S.mes.dto.WarehouseLogDTO;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Stock;
 import B2A3_M2S.mes.entity.WarehouseLog;
-import B2A3_M2S.mes.repository.ItemRepository;
-import B2A3_M2S.mes.repository.StockRepository;
-import B2A3_M2S.mes.repository.WarehouseLogRepository;
+import B2A3_M2S.mes.repository.*;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
 import B2A3_M2S.mes.util.service.UtilService;
@@ -24,15 +23,12 @@ public class StockService {
 
     @Autowired
     WarehouseLogRepository warehouseLogRepository;
-
     @Autowired
     StockRepository stockRepository;
-
     @Autowired
-    ItemRepository itemRepository;
-
+    LotNoLogRepository lotRepository;
     @Autowired
-    UtilService utilService;
+    ProcessStockRepository procStockRepository;
     @PersistenceContext
     EntityManager entityManager;
 
@@ -64,7 +60,7 @@ public class StockService {
         NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
         String ocd = service.getNumbering("inoutNo", NumPrefix.RECEIVING);
 
-        String lotNo = utilService.getLotNo(NumPrefix.RECEIVING);
+        String lotNo = getLotNo(NumPrefix.RECEIVING);
         Stock stock = Stock.builder()
                 .lotNo(lotNo)
                 .item(item)
@@ -142,7 +138,7 @@ public class StockService {
 
                  WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
                  warehouseLogRepository.save(warehouseLog);
-                 pDtoList.add(utilService.saveInput(warehouseLogDTO));
+                 pDtoList.add(saveInput(warehouseLogDTO));
                  stock.setQty(0L);
                  stockRepository.save(stock);
 
@@ -164,7 +160,7 @@ public class StockService {
 
                  WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
                  warehouseLogRepository.save(warehouseLog);
-                 pDtoList.add(utilService.saveInput(warehouseLogDTO));
+                 pDtoList.add(saveInput(warehouseLogDTO));
                  stock.setQty(stockQty);
                  stockRepository.save(stock);
 
@@ -174,6 +170,35 @@ public class StockService {
          }
 
          return pDtoList;
+    }
+
+    public ProcessStockDTO saveInput(WarehouseLogDTO wDto) {
+        // 최초 LotNoLog 생성
+        LotNoLogDTO lDto = new LotNoLogDTO();
+        lDto.setLotNo(wDto.getLotNo());
+        lDto.setFStockNo(-1L);
+        lDto.setInputQty(wDto.getQty());
+        lDto.setOutputQty(wDto.getQty());
+        lDto.setIItem(wDto.getItem());
+        lDto.setOItem(wDto.getItem());
+        lDto.setRemark(wDto.getInoutNo());
+        lDto = LotNoLogDTO.of(lotRepository.save(lDto.createLotNoLog()));
+
+        // 재공재고 생성
+        ProcessStockDTO pDto = new ProcessStockDTO();
+        pDto.setQty(wDto.getQty());
+        pDto.setItem(wDto.getItem());
+        pDto.setLotNoLog(lDto);
+        pDto.setLocation(NumPrefix.RELEASE.getTitle());
+        pDto = ProcessStockDTO.of(procStockRepository.save(pDto.createProcessStock()));
+        return pDto;
+    }
+
+    public String getLotNo(NumPrefix numbering) {
+        if (!numbering.equals(numbering.RECEIVING))
+            return null;
+
+        return lotRepository.createLotNo(numbering.getTitle());
     }
 
 }

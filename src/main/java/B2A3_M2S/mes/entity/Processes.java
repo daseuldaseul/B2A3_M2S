@@ -27,6 +27,8 @@ public class Processes extends BaseTimeEntity {
 
     //공통 코드
     private String procUnit;        //단위
+    private String prodUnit;        //단위
+
     private String readyUnit;   //준비시간 단위
     private String procState;       //공정상태
     //계산하려고 추가

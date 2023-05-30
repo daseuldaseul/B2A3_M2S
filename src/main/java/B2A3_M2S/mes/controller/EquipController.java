@@ -87,7 +87,6 @@ public class EquipController {
         model.addAttribute("codeList1", CodeServiceImpl.getCodeList("EQUIP_STATE"));
         model.addAttribute("codeList2", CodeServiceImpl.getCodeList("UNIT_TYPE"));
 
-
         return "equipPage";
     }
 

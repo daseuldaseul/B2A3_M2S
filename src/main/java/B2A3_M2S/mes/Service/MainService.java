@@ -6,6 +6,7 @@ import B2A3_M2S.mes.dto.StockDto;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.entity.Stock;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
+import B2A3_M2S.mes.repository.ProductionRepository;
 import B2A3_M2S.mes.repository.PurchaseOrderRepository;
 import B2A3_M2S.mes.repository.StockRepository;
 import B2A3_M2S.mes.service.CodeServiceImpl;
@@ -29,7 +30,8 @@ public class MainService {
     @Autowired
     StockRepository stockRepository;
 
-
+    @Autowired
+    ProductionRepository productionRepository;
 
 
     public List<ObtainOrderDto> getObtainOrderDtoList() {
@@ -54,9 +56,6 @@ public class MainService {
             orders.setPurchaseStateNm(CodeServiceImpl.getCodeNm("PURCHASE_STATE", orders.getPurchaseState()));
             orders.setProgressPercent(progressPercent(orders.getOrderDate() , orders.getDueDate()));
 
-
-
-
         }
 
         return purchaseOrderList;
@@ -65,16 +64,49 @@ public class MainService {
     public Map<String, Integer> getProcessesPercent() {
         Map<String, Integer> processes = new HashMap<>();
 
-        processes.put("계량", 30);
-        processes.put("전처리", 30);
-        processes.put("추출", 30);
-        processes.put("혼합", 33);
-        processes.put("충진", 32);
-        processes.put("포장", 40);
+        Integer proc1percent = 0;
+        Integer proc2percent = 0;
+        Integer proc3percent = 0;
+        Integer proc4percent = 0;
+        Integer proc6percent = 0;
+        Integer proc10percent = 0;
+        try {
+            proc1percent = progressPercent(productionRepository.findByProcessesProcCdAndStatus("PROC01", "STATUS02").getStartDate(), productionRepository.findByProcessesProcCdAndStatus("PROC01", "STATUS02").getEndDate());
+        } catch (Exception e) {
+        }
+        try {
+            proc2percent = progressPercent(productionRepository.findByProcessesProcCdAndStatus("PROC02", "STATUS02").getStartDate(), productionRepository.findByProcessesProcCdAndStatus("PROC02", "STATUS02").getEndDate());
+        } catch (Exception e) {
+        }
+        try {
+            proc3percent = progressPercent(productionRepository.findByProcessesProcCdAndStatus("PROC03", "STATUS02").getStartDate(), productionRepository.findByProcessesProcCdAndStatus("PROC03", "STATUS02").getEndDate());
+        } catch (Exception e) {
+        }
+        try {
+            proc4percent = progressPercent(productionRepository.findByProcessesProcCdAndStatus("PROC04", "STATUS02").getStartDate(), productionRepository.findByProcessesProcCdAndStatus("PROC04", "STATUS02").getEndDate());
+        } catch (Exception e) {
+        }
+        try {
+            proc6percent = progressPercent(productionRepository.findByProcessesProcCdAndStatus("PROC06", "STATUS02").getStartDate(), productionRepository.findByProcessesProcCdAndStatus("PROC06", "STATUS02").getEndDate());
+        } catch (Exception e) {
+        }
+        try {
+            proc10percent = progressPercent(productionRepository.findByProcessesProcCdAndStatus("PROC10", "STATUS02").getStartDate(), productionRepository.findByProcessesProcCdAndStatus("PROC10", "STATUS02").getEndDate());
+        } catch (Exception e) {
+        }
+
+
+        processes.put("계량", proc1percent);
+        processes.put("전처리", proc2percent);
+        processes.put("추출", proc3percent);
+        processes.put("혼합", proc4percent);
+        processes.put("충진", proc6percent);
+        processes.put("포장", proc10percent);
 
 
         return processes;
     }
+
 
     public List<Long> getDailyProduction() {
         List<Long> dailyProduction = new ArrayList<>(Arrays.asList(0L, 0L, 0L, 0L));

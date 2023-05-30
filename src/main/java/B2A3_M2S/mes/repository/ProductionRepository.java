@@ -23,4 +23,7 @@ public interface ProductionRepository extends JpaRepository<Production, String>,
     List<Production> findByStartDateAndEndDateAndStatus();
     @Query("SELECT p FROM Production p WHERE p.endDate <= CURRENT_TIMESTAMP AND (p.status = 'STATUS01' or p.status = 'STATUS02')")
     List<Production> findByEndDateAndStatus();
+
+    Production findByProcessesProcCdAndStatus(String ProcCd , String status);
+
 }

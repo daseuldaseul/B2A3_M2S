@@ -326,8 +326,10 @@
                 tableRow += '<tr>';
                 tableRow += '<td>' + production.planNo + '</td>';
                 tableRow += '<td>' + production.processes.procNm + '</td>';
-                tableRow += '<td>' + production.planQty + '</td>';
-                tableRow += '<td>' + production.planQty + '</td>';
+                tableRow += '<td>' + production.planQty;
+                tableRow += production.processes.prodUnitNm + '</td>';
+                tableRow += '<td>' + production.planQty;
+                tableRow += production.processes.prodUnitNm + '</td>';
                 tableRow += '<td>' + production.statusNm + '</td>';
                 var formattedStartDate = getFormattedDateTime(production.startDate);
                 tableRow += '<td>' + formattedStartDate  + '</td>';

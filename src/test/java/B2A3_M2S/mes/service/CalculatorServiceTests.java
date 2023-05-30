@@ -24,7 +24,6 @@ public class CalculatorServiceTests {
     @Test
     public void test() {
         System.out.println("계산기 테스트 시작합니다.");
-
         service.getDeliveryDate();
     }
 

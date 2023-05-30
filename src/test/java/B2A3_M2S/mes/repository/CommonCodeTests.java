@@ -1,6 +1,7 @@
 package B2A3_M2S.mes.repository;
 
 import B2A3_M2S.mes.entity.*;
+import B2A3_M2S.mes.entity.QCommonCode;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
 import com.querydsl.core.BooleanBuilder;
@@ -37,7 +38,7 @@ public class CommonCodeTests {
                 .useYn('Y')
                 .remark("테스트로 넣음")
                 .build();
-        repository.save(commonCode);
+        //repository.save(commonCode);
     }
 
     @Test

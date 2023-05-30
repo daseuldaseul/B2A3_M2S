@@ -4,4 +4,6 @@ import java.time.LocalDateTime;
 
 public interface CalculatorService {
     LocalDateTime getDeliveryDate();
+
+    void schedulerApplication();
 }

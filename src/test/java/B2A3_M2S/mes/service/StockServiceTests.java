@@ -29,32 +29,31 @@ public class StockServiceTests {
 
     @Autowired
     UtilService utilService;
+
     @Test
-    public void addStockTest(){
+    public void addStockTest() {
         Item item = repository.findByItemNm("흑마늘");
-        service.addMaterials(item , 100000L);
-        service.addMaterials(item , 100000L);
-        service.addMaterials(item , 100000L);
+        service.addMaterials(item, 100000L);
+        service.addMaterials(item, 100000L);
+        service.addMaterials(item, 100000L);
     }
 
     @Test
-    public void addStockTestProduct(){
+    public void addStockTestProduct() {
         Item item = repository.findByItemNm("양배추즙(BOX)");
         String lotNo = "001";
-        service.addMaterials(item , 100L);
-        service.addMaterials(item , 30L);
+        service.addMaterials(item, 100L);
+        service.addMaterials(item, 30L);
     }
 
     @Test
-    public void releaseStockTest(){
-        Item item =repository.findByItemNm("양배추");
-
-       service.releaseItem(item, 105L);
-
-
+    public void releaseStockTest() {
+        Item item = repository.findByItemNm("양배추");
+        service.releaseItem(item, 105L);
     }
+
     @Test
-    public void asdsadada(){
+    public void asdsadada() {
         BOMDTO bomdto = new BOMDTO();
 
         List<BOMDTO> BOM = bomService.selectAllBOM(bomdto);
@@ -65,7 +64,7 @@ public class StockServiceTests {
     @Test
     public void test2() {
         System.out.println("입고 " +
-                "Lot No 입니다" +  utilService.getLotNo(NumPrefix.RECEIVING));
+                "Lot No 입니다" + utilService.getLotNo(NumPrefix.RECEIVING));
         //utilService.saveInput(WarehouseLogDTO.of());
     }
 }

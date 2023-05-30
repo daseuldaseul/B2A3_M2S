@@ -47,12 +47,6 @@ public class StockService {
 
     }
 
-
-
-
-
-
-
 /**
  * 자재를 재고 테이블에 저장하고 입출고 테이블에 기록.
  *

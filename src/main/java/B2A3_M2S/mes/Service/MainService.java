@@ -135,6 +135,8 @@ public class MainService {
         int progressPercentInt = (int) Math.round(progressPercent);
         if(progressPercentInt > 100){
             progressPercentInt = 100;
+        }else if(progressPercentInt < 0){
+            progressPercentInt = 0;
         }
 
         return  progressPercentInt;

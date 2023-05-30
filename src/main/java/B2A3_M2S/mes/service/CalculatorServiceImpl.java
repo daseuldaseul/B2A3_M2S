@@ -1,6 +1,7 @@
 package B2A3_M2S.mes.service;
 
 import B2A3_M2S.mes.dto.*;
+import B2A3_M2S.mes.entity.ProcessStock;
 import B2A3_M2S.mes.entity.Production;
 import B2A3_M2S.mes.repository.*;
 import B2A3_M2S.mes.util.enums.NumPrefix;
@@ -37,9 +38,12 @@ public class CalculatorServiceImpl implements CalculatorService {
     private ObtainOrderRepository obtainOrderRepository;
     @Autowired
     private RoutingItemRepository routingItemRepository;
-
     @Autowired
     private ProductionRepository productionRepository;
+    @Autowired
+    LotNoLogRepository lotRepository;
+    @Autowired
+    ProcessStockRepository procStockRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -64,14 +68,11 @@ public class CalculatorServiceImpl implements CalculatorService {
         }
 
         // 테스트를 위해 수주 정보 조회
-//
-//        ObtainOrderDto oDto = obtainOrderRepository.findAll()
-//                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
+        oDto = obtainOrderRepository.findAll().stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
         System.out.println("여기야1. : " + oDto);
 
         // 자재 조회
-        List<BOMDTO> bList = bomRepository.findBypItem
-                        (oDto.getItem().getItemCd(), oDto.getQty()).stream()
+        List<BOMDTO> bList = bomRepository.findBypItem(oDto.getItem().getItemCd(), oDto.getQty()).stream()
                 .map(BOMDTO::of).collect(Collectors.toList());
 
         // material 목록 추출
@@ -274,8 +275,8 @@ public class CalculatorServiceImpl implements CalculatorService {
         return start.plusMinutes(workTime + leadTime);
     }
 
-/*    @Scheduled(fixedDelay = 30000)
-    @Transactional*/
+    /*    @Scheduled(fixedDelay = 30000)
+        @Transactional*/
     @Override
     public void schedulerApplication() {
         System.out.println("스케쥴러 실행 중");
@@ -284,6 +285,8 @@ public class CalculatorServiceImpl implements CalculatorService {
         // 계획수립 -> 생산중 변경
         if (list.size() > 0) {
             list.stream().forEach(a -> a.setStatus("STATUS02"));
+
+            // 생산중 상태 저장
             productionRepository.saveAll(list.stream().map(ProductionDTO::createProduction).collect(Collectors.toList()));
 
             // 출고 루틴 해야할지 정함
@@ -295,7 +298,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                 }
             }
 
-            if(releaseCheck) {
+            if (releaseCheck) {
                 /*
             ////////////////////////////////////////////////////////////////////
             ////////////// 출고 로직 작성 및 재고 테이블 차감 로직 작성 //////////////
@@ -304,10 +307,27 @@ public class CalculatorServiceImpl implements CalculatorService {
             //////////////////////////////////////////////////////////////////
              */
                 System.out.println("큰일");
+
+                // 생산계획 만큼 돕니다.
+                for (ProductionDTO pDto : list) {
+                    // bom이 잇는지 조히 ㄱ
+                    List<RoutingItemDTO> riList = routingItemRepository.findByRouting(pDto.getRouting()).stream().map(RoutingItemDTO::of).collect(Collectors.toList());
+
+                    // bom이 있으면
+                    for (RoutingItemDTO riDto : riList) {
+                        if (riDto.getBom() != null) {
+                            /*
+                                재공재고에 있는지 확인하고 없으면 출고
+                             */
+                            // 재공재고 조회
+                            List<ProcessStock> psList = procStockRepository.findByItemAndQtyNot(riDto.getInputItem().createItem(), 0L);
+                        }
+                    }
+                    // 그냥 재공재고에서 차감
+
+                }
+
             }
-
-
-
 
 
             /////////////////////////////////
@@ -348,5 +368,10 @@ public class CalculatorServiceImpl implements CalculatorService {
             /////////////////////////////////////////////////////////////////////
         }
 
+    }
+
+    @Override
+    public LotNoLogDTO saveInput(List<ProductionDTO> pList) {
+        return null;
     }
 }

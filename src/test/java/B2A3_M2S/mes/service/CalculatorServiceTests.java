@@ -44,7 +44,8 @@ public class CalculatorServiceTests {
     @Test
     public void test2() {
         //System.out.println("테스트 : "+ productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
-        utilService.saveInput(productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
+        //utilService.saveInput(productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
+       // service.saveInput(productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
 
     }
 

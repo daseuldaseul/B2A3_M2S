@@ -49,18 +49,26 @@ public class CalculatorServiceImpl implements CalculatorService {
 
     @Transactional
     @Override
-    public LocalDateTime getDeliveryDate() {
+    public LocalDateTime getDeliveryDate(LocalDateTime startTime, ObtainOrderDto oDto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+        System.out.println(oDto.getOrderCd());
+        // startTime = 자재 중 가장 늦은 입고 시간
         // 수주가 들어오면 자재량 계산 이후 발주일 뽑고 해당 시간 추가
         //LocalDateTime start = LocalDateTime.now();  //임시 시작시간
 
         LocalDateTime start = productionRepository.findByMaxEndDate();
+        start = start == null ? LocalDateTime.now() : start;
 
+        if (start.compareTo(startTime) <= 0) {
+            //지금이 dateTime보다 빠르다
+            start = startTime;
+        }
 
         // 테스트를 위해 수주 정보 조회
-        ObtainOrderDto oDto = obtainOrderRepository.findAll()
-                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
+//
+//        ObtainOrderDto oDto = obtainOrderRepository.findAll()
+//                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
         System.out.println("여기야1. : " + oDto);
 
         // 자재 조회
@@ -260,7 +268,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         System.out.println("전체 시간: " + (workTime + leadTime));
         System.out.println("끝나는 날: " + LocalDateTime.now().plusMinutes(workTime + leadTime).format(formatter));
         System.out.println("계산기 종료");
-        return null;
+        return start.plusMinutes(workTime + leadTime);
     }
 
     @Scheduled(fixedDelay = 30000)

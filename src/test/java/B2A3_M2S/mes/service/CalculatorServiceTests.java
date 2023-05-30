@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -24,7 +25,7 @@ public class CalculatorServiceTests {
     @Test
     public void test() {
         System.out.println("계산기 테스트 시작합니다.");
-        service.getDeliveryDate();
+        service.getDeliveryDate(LocalDateTime.now(), null);
     }
 
     @Test

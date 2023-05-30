@@ -14,7 +14,6 @@ public interface RoutingRepository extends JpaRepository<Routing, Long>, Queryds
 
     // 품목번호를 넣으면 품목에 대한 routing 순서가 보이는
     List<Routing> findByRoutingNo(Long RoutingNo);
-
     List<Routing> findByItem(Item item);
 
 }

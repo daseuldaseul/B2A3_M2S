@@ -29,9 +29,6 @@ public class MainService {
     @Autowired
     StockRepository stockRepository;
 
-
-
-
     public List<ObtainOrderDto> getObtainOrderDtoList() {
 
         List<ObtainOrder> obtainOrderList = obtainOrderRepository.findAll();

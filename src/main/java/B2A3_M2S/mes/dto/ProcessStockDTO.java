@@ -15,6 +15,7 @@ public class ProcessStockDTO {
     private Long stockNo;       //재고 번호
     private String location;    //위치
     private Long qty;           //수량
+    private Long consumption;           //수량
     private String remark;      //비고
     private ItemDto item;
     private LotNoLogDTO lotNoLog;

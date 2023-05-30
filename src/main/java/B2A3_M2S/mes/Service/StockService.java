@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.ProcessStockDTO;
 import B2A3_M2S.mes.dto.WarehouseLogDTO;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Stock;
@@ -59,14 +60,11 @@ public class StockService {
  * @param qty 수량
  *
  * */
-    public void addMaterials(Item item, Long qty ){
-
-
+    public WarehouseLogDTO addMaterials(Item item, Long qty ){
         NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
         String ocd = service.getNumbering("inoutNo", NumPrefix.RECEIVING);
 
         String lotNo = utilService.getLotNo(NumPrefix.RECEIVING);
-
         Stock stock = Stock.builder()
                 .lotNo(lotNo)
                 .item(item)
@@ -83,8 +81,11 @@ public class StockService {
 
         stockRepository.save(stock);
         warehouseLogRepository.save(warehouseLog);
+
+        return WarehouseLogDTO.of(warehouseLog);
     }
-    public void addProducts(Item item ,String lotNo, Long qty ){
+
+    public WarehouseLogDTO addProducts(Item item ,String lotNo, Long qty ){
         NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
         String ocd = service.getNumbering("inoutNo", NumPrefix.RECEIVING);
 
@@ -103,10 +104,8 @@ public class StockService {
                 .build();
 
         stockRepository.save(stock);
-
         warehouseLogRepository.save(warehouseLog);
-
-
+        return WarehouseLogDTO.of(warehouseLog);
 
     }
     /**
@@ -119,13 +118,12 @@ public class StockService {
      * @param qty 수량
      *
      * */
-    public void releaseItem(Item item, Long qty){
-
+    public List<ProcessStockDTO> releaseItem(Item item, Long qty){
+        System.out.println("아이템: " + item);
         List<Stock> stockList = stockRepository.findByItem(item);
-
+        List<ProcessStockDTO> pDtoList = new ArrayList<>();
 
          for(Stock stock : stockList){
-
              if(stock.getQty() <= qty){
                  NumberingService<WarehouseLog> service = new NumberingService<>(entityManager, WarehouseLog.class);
                  String ocd = service.getNumbering("inoutNo", NumPrefix.RELEASE);
@@ -144,7 +142,7 @@ public class StockService {
 
                  WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
                  warehouseLogRepository.save(warehouseLog);
-                 utilService.saveInput(warehouseLogDTO);
+                 pDtoList.add(utilService.saveInput(warehouseLogDTO));
                  stock.setQty(0L);
                  stockRepository.save(stock);
 
@@ -166,7 +164,7 @@ public class StockService {
 
                  WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
                  warehouseLogRepository.save(warehouseLog);
-                 utilService.saveInput(warehouseLogDTO);
+                 pDtoList.add(utilService.saveInput(warehouseLogDTO));
                  stock.setQty(stockQty);
                  stockRepository.save(stock);
 
@@ -175,6 +173,7 @@ public class StockService {
 
          }
 
+         return pDtoList;
     }
 
 }

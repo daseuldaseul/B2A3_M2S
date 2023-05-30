@@ -7,6 +7,7 @@ import B2A3_M2S.mes.entity.WarehouseLog;
 import B2A3_M2S.mes.repository.BOMRepository;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.repository.UtilRepositoryImpl;
 import B2A3_M2S.mes.util.service.UtilService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ public class StockServiceTests {
     UtilService utilService;
     @Test
     public void addStockTest(){
-        Item item = repository.findByItemNm("양배추");
-
-        service.addMaterials(item , 100L);
-        service.addMaterials(item , 30L);
+        Item item = repository.findByItemNm("흑마늘");
+        service.addMaterials(item , 100000L);
+        service.addMaterials(item , 100000L);
+        service.addMaterials(item , 100000L);
     }
 
     @Test

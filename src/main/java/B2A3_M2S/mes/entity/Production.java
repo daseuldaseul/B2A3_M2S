@@ -34,11 +34,23 @@ public class Production extends BaseTimeEntity {
     @JoinColumn(name = "proc_cd")
     private Processes processes;     //공정 코드
 
-    @OneToOne
-    private LotNoLog lotNoLog;
+
+
+    @OneToOne // 왜 있지?
+    private LotNoLog lotNoLog; // 왜 있지?
+
     private String status;              // 계획상태
 
     private boolean completion;
     private boolean firstGb;            // 첫번째 구분
     private boolean lastGb;             // 마지막 구분
+
+    @ManyToOne
+    @JoinColumn(name = "item_cd")
+    private Item item;                   //제품 코드
+
+    // 이친구도 ,,, 공정코드 뺄까 생각 ㄱㄱ 없으면 쿼리 복잡해지긴함
+    @ManyToOne
+    @JoinColumn(name = "routing_no")
+    private Routing routing;
 }

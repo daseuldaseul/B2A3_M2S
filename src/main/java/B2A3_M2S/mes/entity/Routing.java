@@ -27,7 +27,6 @@ public class Routing extends BaseTimeEntity{
 
 
     /**외래키 설정**/
-
     @ManyToOne
     @JoinColumn(name = "item_cd")
     private Item item;    //품목 코드
@@ -38,4 +37,5 @@ public class Routing extends BaseTimeEntity{
 
     // 내가 추가함
     private Double yield;       // 수율
+
 }

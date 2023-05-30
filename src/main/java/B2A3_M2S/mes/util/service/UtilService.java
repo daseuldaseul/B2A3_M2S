@@ -29,7 +29,7 @@ public interface UtilService {
 
 
     // 출고시
-    LotNoLogDTO saveInput(WarehouseLogDTO wDto);
+    ProcessStockDTO saveInput(WarehouseLogDTO wDto);
 
     // 각 공정별 Input
     LotNoLogDTO saveInput(List<ProductionDTO> pList);
@@ -42,5 +42,10 @@ public interface UtilService {
 
     // 입고시 Lot 가져옴
     String getLotNo(NumPrefix numbering);
+
+
+    // 입고시 log 찍음
+    LotNoLogDTO saveReceiving(WarehouseLogDTO wDto);
+
 
 }

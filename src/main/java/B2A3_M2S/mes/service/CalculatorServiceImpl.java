@@ -6,8 +6,12 @@ import B2A3_M2S.mes.entity.RoutingItem;
 import B2A3_M2S.mes.repository.*;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +22,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@EnableScheduling
+@Log4j2
 public class CalculatorServiceImpl implements CalculatorService {
     @Autowired
     private ProcessesRepository procRepository;
@@ -40,40 +46,42 @@ public class CalculatorServiceImpl implements CalculatorService {
     @PersistenceContext
     private EntityManager entityManager;
     // 나는 시뮬레이터
+
+    @Transactional
     @Override
     public LocalDateTime getDeliveryDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         // 수주가 들어오면 자재량 계산 이후 발주일 뽑고 해당 시간 추가
-        LocalDateTime start = LocalDateTime.now();  //임시 시작시간
+        //LocalDateTime start = LocalDateTime.now();  //임시 시작시간
+
+        LocalDateTime start = productionRepository.findByMaxEndDate();
+
+
         // 테스트를 위해 수주 정보 조회
         ObtainOrderDto oDto = obtainOrderRepository.findAll()
                 .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
         System.out.println("여기야1. : " + oDto);
 
         // 자재 조회
-        List<BOMDTO> bList = bomRepository.findBypItem(oDto.getItem().getItemCd(), oDto.getQty()).stream().map(BOMDTO::of).collect(Collectors.toList());
+        List<BOMDTO> bList = bomRepository.findBypItem
+                        (oDto.getItem().getItemCd(), oDto.getQty()).stream()
+                .map(BOMDTO::of).collect(Collectors.toList());
 
         // material 목록 추출
         List<ItemDto> materialList = bList.stream().map(a -> {
             a.getMaterialItem().setConsumption(a.getConsumption());
             a.getMaterialItem().setCurrentQty(a.getConsumption());
             a.getMaterialItem();
+            System.out.println("material 찾는중 " + a.getMaterialItem());
             return a.getMaterialItem();
         }).collect(Collectors.toList());
 
-
-
-        System.out.println("여긴 BOM 출력입니다");
         bList.forEach(System.out::println);
 
         // 라우팅 정보 조회
         List<RoutingDto> rList = routingRepository.findByItem(oDto.getItem().createItem()).stream().map(RoutingDto::of).collect(Collectors.toList());
 
-        /*
-            각 품목별 더하기 고고
-            우선 양배추 하나로만 해봅시다
-        */
         // 요긴 전체시간
         Long workTime = 0L;
 
@@ -115,7 +123,7 @@ public class CalculatorServiceImpl implements CalculatorService {
             // 여기서 한개의 자재가 투입되는 친구가 아닐수도 있기에 조건을 구해봅시다
             // 총 합계
             double total = currentMaterial.stream().filter(a -> !a.getItemType().equals("ITEM04")).mapToDouble(ItemDto::getCurrentQty).sum();
-            System.out.println("가라 레시피:" + recipeList);
+            //System.out.println("가라 레시피:" + recipeList);
 
             //단위변환 몰라서 하드코딩 -> ml -> ea, ea -> box
             for (int j = 0; j < recipeList.size(); j++) {
@@ -136,7 +144,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                     break;
                 }
             }
-            
+
             // 전체 수량 저장하기 위해 사용
             double total_2 = total;
             System.out.println("현재 자재 좀 출력해바:");
@@ -147,7 +155,6 @@ public class CalculatorServiceImpl implements CalculatorService {
 
             double test = total;
 
-
             //작업별로 돌립니다
             // 2열 짜리도 계산 추가로 넣어야 함
             while (total > 0) {
@@ -155,6 +162,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                 System.out.println("공정 정보: " + pDto);
                 System.out.println("workTime(현재까지 전체시간): " + workTime);
                 System.out.println("전체 자재 및 생산계획 수량: " + total);
+
                 // 수용할 수 있는 만큼 계산하기 위해 임시저장 변수 (투입 수량)
                 double total_temp = total;
 
@@ -169,6 +177,10 @@ public class CalculatorServiceImpl implements CalculatorService {
                     total = 0;
                 }
 
+                // 계획 짤떄 넣는 시간
+                Long workTime_plan = workTime_temp;
+                Long leadTime_plan = leadTime_temp;
+
                 // 작업시간 구하기
                 // capa가 없으면 고정적인 시간 소요
                 if (pDto.getCapacity() == null) {
@@ -180,15 +192,36 @@ public class CalculatorServiceImpl implements CalculatorService {
                     System.out.println("total_temp(투입 수량): " + total_temp);
                     System.out.println("pDto.getWorkTime(): " + pDto.getWorkTime());
 
-                    // 시간구하기 (고정이 아니므로 열 갯수로 나눔)
-                    //workTime_temp += (int) Math.ceil((total_temp / capacity_temp) * pDto.getWorkTime() / pDto.getRowCnt());
-                    
                     // 먼저 수량을 나눠서 해봄
                     workTime_temp += (int) Math.ceil((total_temp / capacity_temp) * pDto.getWorkTime());
                 }
 
                 System.out.println("workTime_temp: " + workTime_temp);
                 System.out.println("여기야 getWorkTime(): " + pDto.getWorkTime());
+
+                // 생산계획 insert 부분
+                //수정 // 다시 수정
+                for (int j = 0; j < pDto.getRowCnt(); j++) {
+                    ProductionDTO productionDTO = new ProductionDTO();
+                    NumberingService<Production> service = new NumberingService<>(entityManager, Production.class);
+                    String pn = service.getNumbering("planNo", NumPrefix.PRODUCTION);
+                    productionDTO.setPlanNo(pn);
+                    productionDTO.setPlanQty((long) total_temp);
+                    productionDTO.setStartDate(start.plusMinutes(workTime + leadTime + workTime_plan + leadTime_plan));
+                    productionDTO.setProcesses(pDto);
+                    productionDTO.setObtainOrder(oDto);
+                    productionDTO.setCompletion(false);
+                    productionDTO.setEndDate(start.plusMinutes(workTime + leadTime + workTime_temp + leadTime_temp));
+                    productionDTO.setStatus("STATUS01");
+                    productionDTO.setFirstGb(false);
+                    productionDTO.setLastGb(false);
+                    if (i == 0 && total_2 == (total + total_temp))
+                        productionDTO.setFirstGb(true);
+                    else if ((rList.size() - 1) == i && total <= 0)
+                        productionDTO.setLastGb(true);
+                    productionRepository.save(productionDTO.createProduction());
+                }
+                //수정 // 다시 수정
 
             } // 공정에 따른 작업시간 계산 끝
 
@@ -200,6 +233,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                 }
             }
 
+            currentMaterial.stream().forEach(System.out::println);
             // 친구들 정리_2
             for (int j = 0; j < currentMaterial.size(); j++) {
                 if (j == 0 && !recipeList.get(0).getOutputItem().getItemType().equals("ITEM04")) {
@@ -217,37 +251,88 @@ public class CalculatorServiceImpl implements CalculatorService {
             System.out.println(pDto.getProcNm() + " 공정 리드타임: " + leadTime_temp);
             System.out.println(pDto.getProcNm() + " 종료");
 
-            //수정
-            for(int j=0; j<pDto.getRowCnt(); j++) {
-                ProductionDTO productionDTO = new ProductionDTO();
-                NumberingService<Production> service = new NumberingService<>(entityManager, Production.class);
-                String pn = service.getNumbering("planNo", NumPrefix.PRODUCTION);
-                productionDTO.setPlanNo(pn);
-                productionDTO.setPlanQty((long) test);
-                productionDTO.setStartDate(start.plusMinutes(workTime + leadTime));
-                productionDTO.setProcesses(pDto);
-                productionDTO.setObtainOrder(oDto);
-                productionDTO.setCompletion(false);
-                productionDTO.setEndDate(start.plusMinutes(workTime + leadTime + workTime_temp + leadTime_temp));
-                productionRepository.save(productionDTO.createProduction());
-            }
-            //수정
-
-
             workTime += workTime_temp;
             leadTime += leadTime_temp;
-
-
-
-
-
         }
 
         System.out.println("전체 작업시간: " + workTime);
         System.out.println("전체 리드타임: " + leadTime);
-        System.out.println("전체 시간: " + workTime + leadTime);
+        System.out.println("전체 시간: " + (workTime + leadTime));
         System.out.println("끝나는 날: " + LocalDateTime.now().plusMinutes(workTime + leadTime).format(formatter));
         System.out.println("계산기 종료");
         return null;
+    }
+
+    @Scheduled(fixedDelay = 30000)
+    @Transactional
+    @Override
+    public void schedulerApplication() {
+        System.out.println("스케쥴러 실행 중");
+
+        List<ProductionDTO> list = productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList());
+
+        // 계획수립 -> 생산중 변경
+        if (list.size() > 0) {
+            list.stream().forEach(a -> a.setStatus("STATUS02"));
+            productionRepository.saveAll(list.stream().map(ProductionDTO::createProduction).collect(Collectors.toList()));
+
+            // 출고 루틴 해야할지 정함
+            boolean releaseCheck = false;
+            for (int i = 0; i <= list.size(); i++) {
+                if (list.get(i).isFirstGb()) {
+                    releaseCheck = true;
+                    break;
+                }
+            }
+            ////////////////////////////////////////////////////////////////////
+            ////////////// 출고 로직 작성 및 재고 테이블 차감 로직 작성 /////////////
+            ////////////////////////////////////////////////////////////////////
+
+            if(releaseCheck) {
+                /*
+
+
+                 */
+            }
+
+
+
+            /////////////////////////////////
+            // 재공재고 및 Lot 이력 로직 작성 //
+            /////////////////////////////////
+
+
+            
+        }
+        list = productionRepository.findByEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList());
+
+        // 생산중 -> 생산완료 변경
+        if (list.size() > 0) {
+            list.stream().forEach(a -> a.setStatus("STATUS03"));
+
+            // 출하 루틴 해야할지 정함
+            boolean shipCheck = false;
+            for (int i = list.size() - 1; i >= 0; i--) {
+                if (list.get(i).isLastGb()) {
+                    shipCheck = true;
+                    break;
+                }
+            }
+            
+            // 우선 생산완료로 변경
+            productionRepository.saveAll(list.stream().map(ProductionDTO::createProduction).collect(Collectors.toList()));
+
+            /////////////////////////////////
+            // 재공재고 및 Lot 관련 로직 작성 //
+            /////////////////////////////////
+
+            // 출하 아니면 종료
+            if (!shipCheck)
+                return;
+            /////////////////////////////////////////////////////////////////////
+            //////////// 출하 로직 작성 및 완재품 재고 테이블 반영 로직 작성///////////
+            /////////////////////////////////////////////////////////////////////
+        }
+
     }
 }

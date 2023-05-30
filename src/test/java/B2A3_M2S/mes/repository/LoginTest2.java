@@ -62,14 +62,17 @@ public class LoginTest2 {
 
     @Autowired
     private LotNoLogRepository repository;
-
+    @Autowired
+    private ProductionRepository productionRepository;
     @Test
     public void logNoTest() {
-        Item ii = Item.builder()
+       /* Item ii = Item.builder()
                 .itemCd("P_001")
                 .build();
         List<RoutingDto> rList = routingRepository.findByItem(ii).stream().map(RoutingDto::of).collect(Collectors.toList());
         System.out.println("뭐고");
-        rList.stream().forEach(a -> System.out.println(repository.createLotNo(a.getProcesses().getProcCd())));
+        rList.stream().forEach(a -> System.out.println(repository.createLotNo(a.getProcesses().getProcCd())));*/
+        System.out.println("여기:" + productionRepository.findByMaxEndDate());
+        System.out.println("여기:");
     }
 }

@@ -58,9 +58,9 @@ public class BOMRepositoryTests {
                 .productItem(item)
                     .build();
 
-        itemRepository.save(material);
+ /*       itemRepository.save(material);
         itemRepository.save(item);
-        bomRepository.save(bom);
+        bomRepository.save(bom);*/
 
 
 

@@ -2,12 +2,15 @@ package B2A3_M2S.mes.util.service;
 
 import B2A3_M2S.mes.dto.LotNoLogDTO;
 import B2A3_M2S.mes.dto.ProcessStockDTO;
+import B2A3_M2S.mes.dto.ProductionDTO;
 import B2A3_M2S.mes.dto.WarehouseLogDTO;
 import B2A3_M2S.mes.repository.LotNoLogRepository;
 import B2A3_M2S.mes.repository.ProcessStockRepository;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UtilServiceImpl implements UtilService {
@@ -52,14 +55,15 @@ public class UtilServiceImpl implements UtilService {
      */
 
     @Override
-    public LotNoLogDTO saveInput(LotNoLogDTO lDto) {
+    public LotNoLogDTO saveInput(List<ProductionDTO> pList) {
         return null;
     }
 
     @Override
-    public LotNoLogDTO saveOutput(LotNoLogDTO log) {
-        log.setLotNo(log.getProcesses().getProcCd());
-        return LotNoLogDTO.of(lotRepository.save(log.createLotNoLog()));
+    public LotNoLogDTO saveOutput(List<ProductionDTO> pList) {
+        //log.setLotNo(log.getProcesses().getProcCd());
+        //return LotNoLogDTO.of(lotRepository.save(log.createLotNoLog()));
+        return null;
     }
 
     @Override

@@ -28,6 +28,9 @@ public class ProductionDTO {
     private ProcessesDto processes;     //공정 코드
     private LotNoLogDTO lotNoLog;
     private boolean completion;
+    private String status;              // 계획상태
+    private boolean firstGb;            // 첫번째 구분
+    private boolean lastGb;             // 마지막 구분
 
     public static ModelMapper modelMapper = new ModelMapper();
 

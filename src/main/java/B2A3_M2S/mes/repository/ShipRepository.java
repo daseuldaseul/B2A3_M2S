@@ -1,5 +1,6 @@
 package B2A3_M2S.mes.repository;
 
+import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.entity.Ship;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -13,5 +14,5 @@ public interface ShipRepository extends JpaRepository<Ship, String>, QuerydslPre
 
     List<Ship> findAll();
 
-
+    List<Ship> findByObtainOrder(ObtainOrder obtainOrder);
 }

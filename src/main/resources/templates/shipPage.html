@@ -115,12 +115,7 @@
                                             <input type="text" id="itemName" name="itemNm" class="form-control" placeholder="품목명" onkeyup="autoComplete2(this.value)" autocomplete="off">
                                             <input type="hidden" id="itemCode" name="itemCd">
                                         </div>
-                                        <div class="input-group col-3">
-                                            <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">출하번호</button>
-                                            </div>
-                                            <input type="text" name="shipNo" class="form-control">
-                                        </div>
+
                                         <div class="input-group col-3">
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">수주번호</button>
@@ -142,26 +137,14 @@
 
                                         </div>
 
-                                        <div class="input-group col-3">
-                                            <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">납품예정일</button>
-                                            </div>
-                                            <input type="date" class="form-control" name="startDueDate">
-                                            <input type="date" class="form-control" name="endDueDate">
-
-                                        </div>
 
                                         <div class="input-group col-3">
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">출하일</button>
                                             </div>
-                                            <input type="date" class="form-control" name="startShipDate">
-                                            <input type="date" class="form-control" name="endShipDate">
-
+                                            <input type="date" class="form-control" name="startDueDate">
+                                            <input type="date" class="form-control" name="endDueDate">
                                         </div>
-
-
-
                                     </div>
                                 </form>
 
@@ -175,28 +158,24 @@
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
                                     <tr>
-                                        <th>출하번호</th>
                                         <th>수주번호</th>
                                         <th>업체명</th>
                                         <th>품목명</th>
-                                        <th>납품예정일</th>
-                                        <th>출하일자</th>
                                         <th>요청 수량</th>
-                                        <th>출하 수량</th>
+                                        <th>수주일</th>
+                                        <th>출하일</th>
                                         <th>비고</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="shipDto, status: ${shipList}">
-                                        <td th:text="${shipDto.shipNo}" ></td>
-                                        <td th:text="${shipDto.obtainOrder.orderCd}" ></td>
-                                        <td th:text="${shipDto.obtainOrder.company.companyNm}"></td>
-                                        <td th:text="${shipDto.obtainOrder.item.itemNm}"></td>
-                                        <td th:text="${#temporals.format(shipDto.obtainOrder.dueDate, 'yyyy-MM-dd')}" ></td>
-                                        <td th:text="${#temporals.format(shipDto.shipDate, 'yyyy-MM-dd')}" ></td>
-                                        <td th:text="${shipDto.obtainOrder.qty}"></td>
-                                        <td th:text="${shipDto.shipQty}"></td>
-                                        <td th:text="${shipDto.remark}"></td>
+                                    <tr th:each="obtainOrderDto, status: ${obtainOrderList}" onclick="getShipValue(this)">
+                                        <td th:text="${obtainOrderDto.orderCd}" ></td>
+                                        <td th:text="${obtainOrderDto.company.companyNm}" ></td>
+                                        <td th:text="${obtainOrderDto.item.itemNm}"></td>
+                                        <td th:text="${obtainOrderDto.qty}"></td>
+                                        <td th:text="${#temporals.format(obtainOrderDto.orderDate, 'yyyy-MM-dd')}" ></td>
+                                        <td th:text="${#temporals.format(obtainOrderDto.dueDate, 'yyyy-MM-dd')}" ></td>
+                                        <td th:text="${obtainOrderDto.remark}"></td>
                                     </tr>
 
                                     </tbody>
@@ -205,22 +184,26 @@
 
                                 </table>
                             </div>
-
                             <!-- /.card-body -->
+                            <div class="card-body">
 
+                                <table class="table table-bordered table-hover">
+                                    <thead style="background-color: rgb(16, 23, 86); color: #ffffff;">
+                                    <tr>
+                                        <th>출하 번호</th>
+                                        <th>Lot 번호</th>
+                                        <th>출하일</th>
+                                        <th>출하량</th>
+                                        <th>비고</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="ship">
 
-
-
-
+                                    </tbody>
+                                </table>
+                            </div>
                     </div>
                     <!-- /.card -->
-
-
-
-
-
-
-
                 </div>
                 <!-- /.col -->
 
@@ -386,6 +369,59 @@ function autoComplete2(text) {
 
   }
 
+
+
+
+  function getShipValue(element) {
+        var obtain = $(element); // 선택한 요소의 값을 가져옵니다.
+        $('tr').css('background-color', '');
+
+        element.style.backgroundColor = '#80808061';
+        var orderCd = obtain.find('td:first').text();
+
+        $.ajax({
+        url: '/ship/detail',
+        type: 'GET',
+        data: { orderCd: orderCd },
+        success: function(response) {
+        console.log(response);
+        var ships = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+
+              var tableRow = '';
+              ships.forEach(function(ship) {
+                tableRow += '<tr>';
+                tableRow += '<td th:text="${ship.shipNo}">' + ship.shipNo + '</td>';
+                tableRow += '<td th:text="${ship.lotNo}">' + ship.lotNo + '</td>';
+                var formattedShipDate = getFormattedDateTime(ship.shipDate);
+                tableRow += '<td>' + formattedShipDate + '</td>';
+                tableRow += '<td th:text="${ship.shipQty}">' + ship.shipQty + '</td>';
+                tableRow += '<td th:text="${ship.remark}">' + ship.remark + '</td>';
+                tableRow += '</tr>';
+              });
+
+              document.getElementById('ship').innerHTML = tableRow;
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+}
+
+function getFormattedDateTime(localDateTime) {
+  var year = localDateTime.date.year;
+  var month = localDateTime.date.month.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var day = localDateTime.date.day.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var hour = localDateTime.time.hour.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var minute = localDateTime.time.minute.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var second = localDateTime.time.second.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+
+
+  // 원하는 형식에 맞게 포맷팅
+  var formattedDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+  return formattedDateTime;
+}
 
 </script>
 

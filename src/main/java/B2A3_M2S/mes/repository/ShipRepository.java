@@ -11,8 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ShipRepository extends JpaRepository<Ship, String>, QuerydslPredicateExecutor<Ship> {
-
     List<Ship> findAll();
-
     List<Ship> findByObtainOrder(ObtainOrder obtainOrder);
 }

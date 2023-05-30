@@ -1,6 +1,5 @@
 package B2A3_M2S.mes.service;
 
-import B2A3_M2S.mes.service.MainService;
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.ProductionDTO;
 import B2A3_M2S.mes.entity.ObtainOrder;
@@ -11,7 +10,6 @@ import B2A3_M2S.mes.util.service.UtilService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +38,7 @@ public class CalculatorServiceTests {
     @Test
     public void test() {
         System.out.println("계산기 테스트 시작합니다.");
-        service.getDeliveryDate();
+        service.getDeliveryDate(LocalDateTime.now(), new ObtainOrderDto());
     }
 
     @Test
@@ -66,5 +64,4 @@ public class CalculatorServiceTests {
             System.out.println(obtainOrderDto.getProgressPercent());
         }
     }
-
 }

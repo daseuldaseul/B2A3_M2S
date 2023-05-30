@@ -16,7 +16,7 @@ import java.util.List;
 public class RoutingFormDto {
     private Long routingNo; //라우팅번호
 
-    private Long pTime;     //생산 시간
+    private Long capacity;     // 총 수용량
 
     private Long pOrder;  //순서
 
@@ -31,6 +31,8 @@ public class RoutingFormDto {
     private LocalDate regDate;
 
     private LocalDate modDate;
+
+    private Double yield;
 
     public static ModelMapper modelMapper = new ModelMapper();
 

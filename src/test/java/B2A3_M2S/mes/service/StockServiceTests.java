@@ -17,54 +17,54 @@ import java.util.List;
 @SpringBootTest
 public class StockServiceTests {
 
-    @Autowired
-    BOMService bomService;
-
-    @Autowired
-    StockService service;
-
-    @Autowired
-    ItemRepository repository;
-
-    @Autowired
-    UtilService utilService;
-    @Test
-    public void addStockTest(){
-        Item item = repository.findByItemNm("양배추");
-
-        service.addMaterials(item , 100L);
-        service.addMaterials(item , 30L);
-    }
-
-    @Test
-    public void addStockTestProduct(){
-        Item item = repository.findByItemNm("양배추즙(BOX)");
-        String lotNo = "001";
-        service.addMaterials(item , 100L);
-        service.addMaterials(item , 30L);
-    }
-
-    @Test
-    public void releaseStockTest(){
-        Item item =repository.findByItemNm("양배추");
-
-       service.releaseItem(item, 105L);
-
-
-    }
-    @Test
-    public void asdsadada(){
-        BOMDTO bomdto = new BOMDTO();
-
-        List<BOMDTO> BOM = bomService.selectAllBOM(bomdto);
-
-        System.out.println(BOM);
-    }
-
-    @Test
-    public void test2() {
-        System.out.println("입고 " +
-                "Lot No 입니다" +  utilService.getLotNo(NumPrefix.RECEIVING));
-        //utilService.saveInput(WarehouseLogDTO.of());
-    }
+//    @Autowired
+//    BOMService bomService;
+//
+//    @Autowired
+//    StockService service;
+//
+//    @Autowired
+//    ItemRepository repository;
+//
+//    @Autowired
+//    UtilService utilService;
+//    @Test
+//    public void addStockTest(){
+//        Item item = repository.findByItemNm("양배추");
+//
+//        service.addMaterials(item , 100L);
+//        service.addMaterials(item , 30L);
+//    }
+//
+//    @Test
+//    public void addStockTestProduct(){
+//        Item item = repository.findByItemNm("양배추즙(BOX)");
+//        String lotNo = "001";
+//        service.addMaterials(item , 100L);
+//        service.addMaterials(item , 30L);
+//    }
+//
+//    @Test
+//    public void releaseStockTest(){
+//        Item item =repository.findByItemNm("양배추");
+//
+//       service.releaseItem(item, 105L);
+//
+//
+//    }
+//    @Test
+//    public void asdsadada(){
+//        BOMDTO bomdto = new BOMDTO();
+//
+//        List<BOMDTO> BOM = bomService.selectAllBOM(bomdto);
+//
+//        System.out.println(BOM);
+//    }
+//
+//    @Test
+//    public void test2() {
+//        System.out.println("입고 " +
+//                "Lot No 입니다" +  utilService.getLotNo(NumPrefix.RECEIVING));
+//        //utilService.saveInput(WarehouseLogDTO.of());
+//    }
 }

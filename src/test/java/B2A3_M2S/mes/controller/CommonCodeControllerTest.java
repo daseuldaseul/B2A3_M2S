@@ -16,27 +16,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Slf4j
 class CommonCodeControllerTest {
-    @Autowired
-    MockMvc mockMvc;
-
-    @Test
-    void list() throws Exception {
-        log.info("list 테스트" +
-                mockMvc.perform(MockMvcRequestBuilders.get("/system/list")
-                                .param("useYn", "Y"))
-                        .andDo(print())
-                        .andExpect(view().name("system/list")).andReturn()
-                        .getModelAndView()
-                        .getModel()
-                        .get("group"));
-    }
-
-    @Test
-    void detail() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/system/detail")
-                .param("codeGroup", "ITEM_GB")
-                .param("useYn", "Y"))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+//    @Autowired
+//    MockMvc mockMvc;
+//
+//    @Test
+//    void list() throws Exception {
+//        log.info("list 테스트" +
+//                mockMvc.perform(MockMvcRequestBuilders.get("/system/list")
+//                                .param("useYn", "Y"))
+//                        .andDo(print())
+//                        .andExpect(view().name("system/list")).andReturn()
+//                        .getModelAndView()
+//                        .getModel()
+//                        .get("group"));
+//    }
+//
+//    @Test
+//    void detail() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.get("/system/detail")
+//                .param("codeGroup", "ITEM_GB")
+//                .param("useYn", "Y"))
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//    }
 }

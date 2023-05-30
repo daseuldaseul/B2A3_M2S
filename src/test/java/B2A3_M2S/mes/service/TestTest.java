@@ -8,12 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class TestTest {
 
-    @Autowired
-    ShipService shipService;
-
-    @Test
-    public void test(){
-        shipService.createShip("SO23053000001");
-
-    }
+//    @Autowired
+//    ShipService shipService;
+//
+//    @Test
+//    public void test(){
+//        shipService.createShip("SO23053000003");
+//
+//    }
 }

@@ -32,6 +32,7 @@ public class ProductionDTO {
     private LotNoLogDTO lotNoLog;
     private boolean completion;
     private String status;              // 계획상태
+    private String statusNm;
     private boolean firstGb;            // 첫번째 구분
     private boolean lastGb;             // 마지막 구분
 

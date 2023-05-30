@@ -166,16 +166,14 @@
                                     <thead style="background-color: rgb(16, 23, 86); color: #ffffff;">
                                     <tr>
                                         <th>계획 번호</th>
-                                        <th>Lot 번호</th>
                                         <th>공정명</th>
                                         <th>공정별 계획 수량</th>
                                         <th>공정별 생산 수량</th>
+                                        <th>상태</th>
                                         <th>시작 시간</th>
                                         <th>종료 시간</th>
                                         <th>비고</th>
                                     </tr>
-
-
                                     </thead>
                                     <tbody id="production">
 
@@ -329,7 +327,8 @@
                 tableRow += '<td>' + production.planNo + '</td>';
                 tableRow += '<td>' + production.processes.procNm + '</td>';
                 tableRow += '<td>' + production.planQty + '</td>';
-                tableRow += '<td>' + production.prodQty + '</td>';
+                tableRow += '<td>' + production.planQty + '</td>';
+                tableRow += '<td>' + production.statusNm + '</td>';
                 var formattedStartDate = getFormattedDateTime(production.startDate);
                 tableRow += '<td>' + formattedStartDate  + '</td>';
                 var formattedEndDate = getFormattedDateTime(production.endDate);

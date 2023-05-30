@@ -40,4 +40,32 @@ public class LotNoLogService {
         return (List<LotNoLog>) lotNoLogRepository.findAll(builder);
 
     }
+
+    @Transactional
+    public List<LotNoLog> searchLotNoLogReverse(String lotNo, String itemCd, String itemNm,
+//                                                String state,
+                                                LocalDate startDate, LocalDate endDate) {
+        QLotNoLog qLotNoLog = QLotNoLog.lotNoLog;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (lotNo != null) {
+            builder.and(qLotNoLog.lotNo.contains(lotNo));
+        }
+        if (itemCd != null) {
+            builder.and(qLotNoLog.oItem.itemCd.contains(itemCd));
+        }
+        if (itemNm != null) {
+            builder.and(qLotNoLog.oItem.itemNm.contains(itemNm));
+        }
+//        state 추가되면
+//        if (!state.equals("미선택")) {
+//            builder.and(qLotNoLog.iItem.itemNm.eq(state));
+//        }
+        if (startDate != null && endDate != null) {
+            builder.and(qLotNoLog.regDate.between(startDate, endDate));
+        }
+
+        return (List<LotNoLog>) lotNoLogRepository.findAll(builder);
+
+    }
 }

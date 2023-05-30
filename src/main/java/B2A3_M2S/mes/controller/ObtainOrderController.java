@@ -1,6 +1,5 @@
 package B2A3_M2S.mes.controller;
 
-import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.ObtainOrderFormDto;
 import B2A3_M2S.mes.entity.ObtainOrder;
@@ -21,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ObtainOrderController {
@@ -34,7 +32,7 @@ public class ObtainOrderController {
     ObtainOrderService obtainOrderService;
 
     @Autowired
-    ProductionServiceImpl productionService;
+    ProductionCalService productionService;
 
     @Autowired
     ItemRepository itemRepository;

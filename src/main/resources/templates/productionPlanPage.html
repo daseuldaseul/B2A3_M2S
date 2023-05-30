@@ -76,7 +76,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <form action="/productionPlan/search" method="GET">
+                                <form action="/production/search" method="GET">
                                     <div class="row">
                                         <div class="input-group col-12 justify-content-end">
 
@@ -98,31 +98,25 @@
                                             </div>
                                             <input type="text" id="orderCode" name="orderCd" class="form-control" placeholder="수주번호">
                                         </div>
+                                        <div class="input-group col-3">
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-default">품목</button>
+                                            </div>
+                                            <div id="autocomplete-results" class="autocomplete-results">
+
+                                            </div>
+                                            <input type="text" id="itemName" name="itemNm" class="form-control" placeholder="품목명" onkeyup="autoComplete(this.value)" autocomplete="off">
+                                            <input type="hidden" id="itemCode" name="itemCd">
+                                        </div>
 
                                         <div class="input-group col-3">
                                             <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">계획일자</button>
+                                                <button type="button" class="btn btn-default">생산 종료일</button>
                                             </div>
-                                                <input type="date" class="form-control" name="planStartDate">
-                                                <input type="date" class="form-control" name="planEndDate">
+                                                <input type="date" class="form-control" name="dueStartDate">
+                                                <input type="date" class="form-control" name="dueEndDate">
                                         </div>
-                                        <div class="input-group col-3">
-                                            <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">생산일자</button>
-                                            </div>
-                                                <input type="date" class="form-control" name="startDate">
-                                                <input type="date" class="form-control" name="endDate">
-                                        </div>
-                                        <div class="input-group col-3">
-                                            <div class="input-group-prepend">
-                                                <button type="button" class="btn btn-default">상태</button>
-                                            </div>
-                                            <select class="form-control" name="completion">
-                                                <option selected>미선택</option>
-                                                <option value="true">완료</option>
-                                                <option value="false">미완료</option>
-                                            </select>
-                                        </div>
+
                                     </div>
 
 
@@ -143,31 +137,51 @@
                                         <th>수주 번호</th>
                                         <th>계획 수량</th>
                                         <th>생산 수량</th>
-                                        <th>생산시작 계획일시</th>
                                         <th>생산종료 계획일시</th>
-                                        <th>생산시작 일시</th>
                                         <th>생산종료 일시</th>
+                                        <th>비고</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="obtainOrderList, status: ${obtainOrderList}">
+                                    <tr th:each="obtainOrderList, status: ${obtainOrderList}" onclick="getProductionValue(this)">
                                         <td th:text="${obtainOrderList.orderCd}"></td>
+                                        <td th:text="${obtainOrderList.item.itemNm}"></td>
                                         <td th:text="${obtainOrderList.qty}"></td>
                                         <td th:text="${obtainOrderList.qty}"></td>
-                                        <td th:text="${#temporals.format(firstProductionDto.startDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                        <td th:text="${#temporals.format(lastProductionDto.endDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                        <td th:text="${#temporals.format(firstProductionDto.startDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                        <td th:text="${#temporals.format(lastProductionDto.endDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-
+                                        <td th:text="${#temporals.format(obtainOrderList.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                        <td th:text="${#temporals.format(obtainOrderList.dueDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                        <td th:text="${obtainOrderList.remark}"></td>
                                     </tr>
-
-
 
 
                                     </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->
+
+                            <div class="card-body">
+
+                                <table class="table table-bordered table-hover">
+                                    <thead style="background-color: rgb(16, 23, 86); color: #ffffff;">
+                                    <tr>
+                                        <th>계획 번호</th>
+                                        <th>Lot 번호</th>
+                                        <th>공정명</th>
+                                        <th>공정별 계획 수량</th>
+                                        <th>공정별 생산 수량</th>
+                                        <th>시작 시간</th>
+                                        <th>종료 시간</th>
+                                        <th>비고</th>
+                                    </tr>
+
+
+                                    </thead>
+                                    <tbody id="production">
+
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                         <!-- /.card -->
 
@@ -178,6 +192,7 @@
                 <!-- /.row -->
 
                 <!-- /.container-fluid -->
+            </div>
         </section>
         <!-- /.content -->
     </div>
@@ -248,7 +263,7 @@
     console.log(text);
 
             $.ajax({
-        url: '/autoComplete2',
+        url: '/autoComplete3',
         type: 'GET',
         data: { text: text },
         success: function(response) {
@@ -291,42 +306,38 @@
   }
 
 
-function autoComplete2(text) {
-    console.log(text);
 
-            $.ajax({
-        url: '/autoComplete',
+  function getProductionValue(element) {
+        var obtain = $(element); // 선택한 요소의 값을 가져옵니다.
+        $('tr').css('background-color', '');
+
+        element.style.backgroundColor = '#80808061';
+        var orderCd = obtain.find('td:first').text();
+
+        $.ajax({
+        url: '/production/detail',
         type: 'GET',
-        data: { text: text },
+        data: { orderCd: orderCd },
         success: function(response) {
         console.log(response);
-        var companyList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
-        var div = document.getElementById('autocomplete-results2'); // JSON 문자열을 객체로 변환합니다.
-        div.innerHTML = "";
-        var code = document.getElementById('companyCode');
-        code.value = "";
+        var productions = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
 
-        var ul = document.createElement("ul");
+              var tableRow = '';
+              productions.forEach(function(production) {
+                tableRow += '<tr>';
+                tableRow += '<td>' + production.planNo + '</td>';
+                tableRow += '<td>' + production.processes.procNm + '</td>';
+                tableRow += '<td>' + production.planQty + '</td>';
+                tableRow += '<td>' + production.prodQty + '</td>';
+                var formattedStartDate = getFormattedDateTime(production.startDate);
+                tableRow += '<td>' + formattedStartDate  + '</td>';
+                var formattedEndDate = getFormattedDateTime(production.endDate);
+                tableRow += '<td>' + formattedEndDate + '</td>';
+                tableRow += '<td>' + production.remark + '</td>';
+                tableRow += '</tr>';
+              });
 
-          for (var i=0; i < companyList.length; i++){
-            var list = document.createElement("li");
-            list.innerText ='[' + companyList[i].companyCd + ']' + companyList[i].companyNm;
-            list.setAttribute("data-company-nm", companyList[i].companyNm); // 데이터 속성 추가
-            list.setAttribute("data-company-cd", companyList[i].companyCd);
-
-
-            list.addEventListener("click", function() {
-            var result = document.getElementById('companyName');
-            var companyNm = this.getAttribute("data-company-nm"); // 데이터 속성 값 가져오기
-            var companyCd = this.getAttribute("data-company-cd");
-            result.value = companyNm;
-            code.value = companyCd;
-            div.innerHTML = "";
-          });
-
-            ul.append(list);
-            div.append(ul);
-          }
+              document.getElementById('production').innerHTML = tableRow;
 
         },
         error: function(xhr) {
@@ -334,54 +345,22 @@ function autoComplete2(text) {
         console.log(xhr.responseText);
         }
         });
-
-  }
-
-  function autoComplete3(text) {
-    console.log(text);
-
-            $.ajax({
-        url: '/autoComplete',
-        type: 'GET',
-        data: { text: text },
-        success: function(response) {
-        console.log(response);
-        var companyList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
-        var div = document.getElementById('autocomplete-results3'); // JSON 문자열을 객체로 변환합니다.
-        div.innerHTML = "";
-        var code = document.getElementById('companyCode');
-        code.value = "";
-
-        var ul = document.createElement("ul");
-
-          for (var i=0; i < companyList.length; i++){
-            var list = document.createElement("li");
-            list.innerText ='[' + companyList[i].companyCd + ']' + companyList[i].companyNm;
-            list.setAttribute("data-company-nm", companyList[i].companyNm); // 데이터 속성 추가
-            list.setAttribute("data-company-cd", companyList[i].companyCd);
+}
 
 
-            list.addEventListener("click", function() {
-            var result = document.getElementById('companySearch');
-            var companyNm = this.getAttribute("data-company-nm"); // 데이터 속성 값 가져오기
-            var companyCd = this.getAttribute("data-company-cd");
-            result.value = companyNm;
-            code.value = companyCd;
-            div.innerHTML = "";
-          });
+function getFormattedDateTime(localDateTime) {
+  var year = localDateTime.date.year;
+  var month = localDateTime.date.month.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var day = localDateTime.date.day.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var hour = localDateTime.time.hour.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var minute = localDateTime.time.minute.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
+  var second = localDateTime.time.second.toString().padStart(2, '0'); // 두 자리 숫자로 포맷팅
 
-            ul.append(list);
-            div.append(ul);
-          }
 
-        },
-        error: function(xhr) {
-        // 에러 처리를 수행합니다.
-        console.log(xhr.responseText);
-        }
-        });
-
-  }
+  // 원하는 형식에 맞게 포맷팅
+  var formattedDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+  return formattedDateTime;
+}
 </script>
 
 

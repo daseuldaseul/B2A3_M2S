@@ -224,29 +224,43 @@
                                             <div class="input-group-prepend">
                                                 <button type="button" class="btn btn-default">품목</button>
                                             </div>
-
-                                            <input type="text" class="form-control" name="itemCd" placeholder="품목코드">
-                                            &nbsp;&nbsp;&nbsp;
-                                            <input type="text" class="form-control" name="itemNm" placeholder="품목명">
+                                            <div id="autocomplete-results2" class="autocomplete-results">
+                                            </div>
+                                            <input type="hidden" class="form-control" name="itemCd" id="itemCode">
+                                            <input type="text" class="form-control" name="itemNm" id="itemName" placeholder="품목명" onkeyup="autoComplete2(this.value)" autocomplete="off">
                                         </div>
-
+                                    </div>
+                                    <hr>
+                                    <div class="row">
                                         <table class="table table-bordered table-hover">
                                             <thead style="background-color: rgb(16, 23, 86); color: #ffffff;">
-                                            <tr>
-                                                <th>공정 순서</th>
-                                                <th>공정</th>
-                                                <th>비고</th>
-                                            </tr>
-
-
+                                                <tr>
+                                                    <th>순서</th>
+                                                    <th>공정</th>
+                                                    <th>용량</th>
+                                                    <th>수율</th>
+                                                    <th>비고</th>
+                                                </tr>
                                             </thead>
+                                            <tbody>
 
-
+                                                    <th:block th:each="index : ${#numbers.sequence(1, 8)}">
+                                                        <tr>
+                                                            <th th:text="${index}"></th>
+                                                            <th>
+                                                                <select class="form-control" th:name="'processCd' + ${index}">
+                                                                    <option value="none"></option>
+                                                                    <option th:each="processList : ${processList}" th:value="${processList.procCd}" th:text="${processList.procNm}"></option>
+                                                                </select>
+                                                            </th>
+                                                            <th><input type="text" class="form-control" th:name="'capacity' + ${index}" placeholder="용량"></th>
+                                                            <th><input type="text" class="form-control" th:name="'yield' + ${index}" placeholder="수율"></th>
+                                                            <th><input type="text" class="form-control" th:name="'remark' + ${index}" placeholder="비고"></th>
+                                                        </tr>
+                                                    </th:block>
+                                            </tbody>
                                         </table>
-
                                     </div>
-
-                                    <hr>
 
 
                                 </div>
@@ -390,6 +404,52 @@
         console.log(xhr.responseText);
         }
         });
+  }
+
+function autoComplete2(text) {
+    console.log(text);
+
+            $.ajax({
+        url: '/autoComplete3',
+        type: 'GET',
+        data: { text: text },
+        success: function(response) {
+        console.log(response);
+        var itemList = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+        var div = document.getElementById('autocomplete-results2'); // JSON 문자열을 객체로 변환합니다.
+        div.innerHTML = "";
+        var code = document.getElementById('itemCode');
+        code.value = "";
+
+        var ul = document.createElement("ul");
+
+          for (var i=0; i < itemList.length; i++){
+            var list = document.createElement("li");
+            list.innerText ='[' + itemList[i].itemCd + ']' + itemList[i].itemNm;
+            list.setAttribute("data-item-nm", itemList[i].itemNm); // 데이터 속성 추가
+            list.setAttribute("data-item-cd", itemList[i].itemCd);
+
+
+            list.addEventListener("click", function() {
+            var result = document.getElementById('itemName');
+            var itemNm = this.getAttribute("data-item-nm"); // 데이터 속성 값 가져오기
+            var itemCd = this.getAttribute("data-item-cd");
+            result.value = itemNm;
+            code.value = itemCd;
+            div.innerHTML = "";
+          });
+
+            ul.append(list);
+            div.append(ul);
+          }
+
+        },
+        error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+        }
+        });
+
   }
 
 

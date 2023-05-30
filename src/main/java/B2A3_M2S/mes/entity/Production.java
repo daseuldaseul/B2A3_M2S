@@ -36,6 +36,9 @@ public class Production extends BaseTimeEntity {
 
     @OneToOne
     private LotNoLog lotNoLog;
-    private boolean completion;
+    private String status;              // 계획상태
 
+    private boolean completion;
+    private boolean firstGb;            // 첫번째 구분
+    private boolean lastGb;             // 마지막 구분
 }

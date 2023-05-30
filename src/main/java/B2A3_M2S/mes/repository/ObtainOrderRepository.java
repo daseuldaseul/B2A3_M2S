@@ -3,8 +3,11 @@ package B2A3_M2S.mes.repository;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.entity.Processes;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ObtainOrderRepository extends JpaRepository<ObtainOrder, String>, QuerydslPredicateExecutor<ObtainOrder> {
@@ -13,6 +16,7 @@ public interface ObtainOrderRepository extends JpaRepository<ObtainOrder, String
     List<ObtainOrder> findByOrderCd(String orderCd);
 
 
+    ObtainOrder findSingleByOrderCd(String orderCd);
 
 
 

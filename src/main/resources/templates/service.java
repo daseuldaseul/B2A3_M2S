@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-public class ProductionServiceImpl implements ProductionService {
+public class ProductionService {
     @Autowired
     private ProcessesRepository procRepository;
     @Autowired

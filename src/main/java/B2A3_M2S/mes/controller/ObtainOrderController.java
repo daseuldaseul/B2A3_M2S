@@ -1,6 +1,5 @@
 package B2A3_M2S.mes.controller;
 
-import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.ObtainOrderFormDto;
 import B2A3_M2S.mes.entity.ObtainOrder;
@@ -21,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ObtainOrderController {
@@ -34,7 +32,7 @@ public class ObtainOrderController {
     ObtainOrderService obtainOrderService;
 
     @Autowired
-    ProductionServiceImpl productionService;
+    ProductionCalService productionService;
 
     @Autowired
     ItemRepository itemRepository;
@@ -42,6 +40,8 @@ public class ObtainOrderController {
     @Autowired
     private CalculatorService service;
 
+    @Autowired
+    CalculatorServiceImpl calculatorService;
 
 
     @GetMapping("/obtainOrder")
@@ -76,13 +76,16 @@ public class ObtainOrderController {
         ObtainOrder obtainOrder = new ObtainOrder();
         obtainOrder = result.createObtainOrder();
         obtainOrderRepository.save(obtainOrder);
-        purchaseOrderService.purchaseOrderCreate(itemNm,(int)(long)obtainOrderFormDto.getQty());
-        LocalDateTime startTime = LocalDateTime.now();
-        int qty = purchaseOrderService.needQty(itemNm,(int)(long)obtainOrderFormDto.getQty());
 
-
-        productionService.calculate(itemRepository.findByItemNm(itemNm).getItemCd()
-                , startTime, obtainOrderFormDto.getOrderCd(), qty);
+        LocalDateTime time = purchaseOrderService.purchaseOrderCreate(itemNm,(int)(long)obtainOrderFormDto.getQty());
+        // 입고예정시간 중 가장 늦은 시간 = time
+        LocalDateTime start = calculatorService.getDeliveryDate(time, ObtainOrderDto.of(obtainOrder));
+//        LocalDateTime startTime = LocalDateTime.now();
+//        int qty = purchaseOrderService.needQty(itemNm,(int)(long)obtainOrderFormDto.getQty());
+        obtainOrder.setDueDate(start);
+        obtainOrderRepository.save(obtainOrder);
+//        productionService.calculate(itemRepository.findByItemNm(itemNm).getItemCd()
+//                , startTime, obtainOrderFormDto.getOrderCd(), qty);
 
 //        service.getDeliveryDate();
 

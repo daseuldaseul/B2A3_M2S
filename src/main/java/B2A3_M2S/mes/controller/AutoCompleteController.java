@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -97,7 +98,15 @@ public class AutoCompleteController {
     public String autoComplete6(@RequestParam("text") String text) {
 
         Gson gson = new Gson();
-        List<Item> items = itemRepository.findByItemNmContainingAndItemCdContaining(text, "M");
+        List<Item> item = itemRepository.findByItemNmContainingAndItemCdContaining(text, "M_");
+        List<Item> items = new ArrayList<>();
+        System.out.println(item.toString());
+        for(Item list :item){
+            if(list.getItemCd().length() == 5){
+                items.add(list);
+            }
+        }
+
         List<ItemDto> itemList = ItemDto.of(items);
 
         String json = gson.toJson(itemList);

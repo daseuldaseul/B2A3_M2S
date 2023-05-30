@@ -1,7 +1,7 @@
 package B2A3_M2S.mes.controller;
 
 import B2A3_M2S.mes.service.CalculatorService;
-import B2A3_M2S.mes.service.ProductionServiceImpl;
+import B2A3_M2S.mes.service.ProductionCalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Controller
 public class testController {
     @Autowired
-    ProductionServiceImpl productionService;
+    ProductionCalService productionService;
 
     @Autowired
     private CalculatorService service;

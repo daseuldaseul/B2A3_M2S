@@ -1,9 +1,17 @@
 package B2A3_M2S.mes.controller;
 
 import B2A3_M2S.mes.dto.ItemDto;
+import B2A3_M2S.mes.dto.ProcessesDto;
 import B2A3_M2S.mes.dto.RoutingDto;
+import B2A3_M2S.mes.dto.RoutingFormDto;
 import B2A3_M2S.mes.entity.Item;
+import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.repository.ItemRepository;
+import B2A3_M2S.mes.repository.ProcessesRepository;
+import B2A3_M2S.mes.dto.RoutingItemDTO;
+import B2A3_M2S.mes.entity.Item;
+import B2A3_M2S.mes.entity.RoutingItem;
+import B2A3_M2S.mes.repository.RoutingItemRepository;
 import B2A3_M2S.mes.repository.RoutingRepository;
 import B2A3_M2S.mes.entity.Routing;
 import B2A3_M2S.mes.service.ObtainOrderService;
@@ -22,6 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class RoutingController {
@@ -35,22 +44,31 @@ public class RoutingController {
     @Autowired
     RoutingService routingService;
 
+    @Autowired
+    ProcessesRepository processesRepository;
+
+    @Autowired
+    RoutingItemRepository routingItemRepository;
+
 
     @GetMapping("/routing")
     public String routing(Model model) {
         List<Item> itemList = itemRepository.findByItemCdContaining("P");
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
 
+        List<ProcessesDto> processesDtoList = ProcessesDto.of(processesRepository.findAll());
         model.addAttribute("itemList", itemDtoList);
+        model.addAttribute("processList", processesDtoList);
         return "routingPage";
     }
 
     @PostMapping("/routing")
-    public String routingRegister(Model model) {
+    public String routingWrite(@RequestParam Map<String, String> requestParams,
+                               @RequestParam String itemCd, Model model) {
 
+        routingService.routingWrtie(requestParams, itemCd);
 
-//        model.addAttribute("routingFormDto", routingFormDto);
-        return "routingPage";
+        return "redirect:/routing";
     }
 
     @ResponseBody
@@ -65,6 +83,20 @@ public class RoutingController {
 
 
         String json = gson.toJson(routingDtoList);
+        return json;
+    }
+
+    @ResponseBody
+    @GetMapping("/routing/detail2")
+    public String routingDetail2(@RequestParam Long routingNo, Model model) {
+
+        Gson gson = new Gson();
+        Routing routing = routingRepository.findByRoutingNo(routingNo);
+        List<RoutingItem> routingItem = routingItemRepository.findByRouting(routing);
+
+        List<RoutingItemDTO> routingItemDtoList = RoutingItemDTO.of(routingItem);
+
+        String json = gson.toJson(routingItemDtoList);
         return json;
     }
 

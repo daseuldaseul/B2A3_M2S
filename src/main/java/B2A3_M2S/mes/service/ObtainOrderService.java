@@ -39,6 +39,8 @@ public class ObtainOrderService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    CalculatorServiceImpl calculatorService;
 
     @Transactional
     public ObtainOrderFormDto writeObtainOrder(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm) {
@@ -49,24 +51,26 @@ public class ObtainOrderService {
         String ocd = service.getNumbering("orderCd", NumPrefix.OBTAIN_ORDER);
         obtainOrderFormDto.setOrderCd(ocd);
         LocalDateTime orderDate = LocalDateTime.now();
-        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 0));
-        LocalDateTime dueTime = orderDate;
+
         obtainOrderFormDto.setOrderDate(orderDate);
 
+//        LocalDateTime dateTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 0));
+//        LocalDateTime dueTime = orderDate;
+//        if (orderDate.compareTo(dateTime) <= 0) {
+//            dueTime = dueTime.plusDays(2);
+//            dueTime = LocalDateTime.of(dueTime.toLocalDate(), LocalTime.of(10,0));
+//        } else {
+//            dueTime = dueTime.plusDays(3);
+//            dueTime = LocalDateTime.of(dueTime.toLocalDate(), LocalTime.of(10,0));
+//        }
+//        long n = obtainOrderFormDto.getQty();
+//        dueTime = test((int)n,dueTime);
+//
 
-        if (orderDate.compareTo(dateTime) <= 0) {
-            dueTime = dueTime.plusDays(2);
-            dueTime = LocalDateTime.of(dueTime.toLocalDate(), LocalTime.of(10,0));
-        } else {
-            dueTime = dueTime.plusDays(3);
-            dueTime = LocalDateTime.of(dueTime.toLocalDate(), LocalTime.of(10,0));
-        }
-        long n = obtainOrderFormDto.getQty();
-        dueTime = test((int)n,dueTime);
 
         obtainOrderFormDto.setOrderState("ORDER01");
         obtainOrderFormDto.setOrderUnit("UNIT01");
-        obtainOrderFormDto.setDueDate(dueTime);
+//        obtainOrderFormDto.setDueDate(dueTime);
         return obtainOrderFormDto;
     }
     @Transactional

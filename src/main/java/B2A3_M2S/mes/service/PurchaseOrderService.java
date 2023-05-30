@@ -132,10 +132,11 @@ public class PurchaseOrderService {
     }
 
    @Transactional
-   public void purchaseOrderCreate(String itemNm, int qty){
+   public LocalDateTime purchaseOrderCreate(String itemNm, int qty){
        String itemCd = itemRepository.findByItemNm(itemNm).getItemCd();
        List<BOMDTO> list2 = bomRepository.findNeedQtyBypItem(itemCd, qty);
 
+       LocalDateTime time = LocalDateTime.now();
 
        for(BOMDTO list : list2){
 
@@ -154,14 +155,18 @@ public class PurchaseOrderService {
                System.out.println(orderQty);
                // 주문해야할 수량
                while (orderQty > 0) {
+                   LocalDateTime compare = null;
                    if(orderQty > orderMax){
-                       test2(orderMax, list);
+                       compare = test2(orderMax, list);
                        orderQty -= orderMax;
 
 
                    }else{
-                       test2(orderQty, list);
+                       compare = test2(orderQty, list);
                        orderQty = 0;
+                   }
+                   if(time.compareTo(compare) <= 0){
+                       time = compare;
                    }
 
 
@@ -172,11 +177,11 @@ public class PurchaseOrderService {
 
        }
 
-
+        return time;
    }
 
     @Transactional
-    public void test2(int orderQty, BOMDTO list){
+    public LocalDateTime test2(int orderQty, BOMDTO list){
         NumberingService<PurchaseOrder> service = new NumberingService<>(entityManager, PurchaseOrder.class);
         String orderNo = service.getNumbering("orderNo", NumPrefix.PURCHASE_ORDER);
 
@@ -221,6 +226,7 @@ public class PurchaseOrderService {
         PurchaseOrder purchaseOrder = purchaseOrderFormDto.createPurchaseOrder();
         purchaseOrderRepository.save(purchaseOrder);
 
+        return dueTime;
     }
 
     @Scheduled(cron = "0 0 10 * * *")

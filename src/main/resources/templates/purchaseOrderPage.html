@@ -174,8 +174,8 @@
                                         <td th:text="${purchaseOrderDto.orderNo}" ></td>
                                         <td th:text="${purchaseOrderDto.company.companyNm}"></td>
                                         <td th:text="${purchaseOrderDto.item.itemNm}"></td>
-                                        <td th:text="${#temporals.format(purchaseOrderDto.orderDate, 'yyyy-MM-dd')}" ></td>
-                                        <td th:text="${#temporals.format(purchaseOrderDto.dueDate, 'yyyy-MM-dd')}" ></td>
+                                        <td th:text="${#temporals.format(purchaseOrderDto.orderDate, 'yyyy-MM-dd HH:mm:ss')}" ></td>
+                                        <td th:text="${#temporals.format(purchaseOrderDto.dueDate, 'yyyy-MM-dd HH:mm:ss')}" ></td>
                                         <td th:text="${purchaseOrderDto.orderQty}"></td>
                                         <td th:text="${purchaseOrderDto.purchaseStateNm}"></td>
                                         <td th:text="${purchaseOrderDto.remark}"></td>

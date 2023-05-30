@@ -164,7 +164,7 @@
                                         <td th:text="${purchaseInDto.company.companyNm}"></td>
                                         <td th:text="${purchaseInDto.item.itemCd}"></td>
                                         <td th:text="${purchaseInDto.item.itemNm}"></td>
-                                        <td th:text="${#temporals.format(purchaseInDto.dueDate, 'yyyy-MM-dd')}" ></td>
+                                        <td th:text="${#temporals.format(purchaseInDto.dueDate, 'yyyy-MM-dd HH:mm:ss')}" ></td>
                                         <td th:text="${purchaseInDto.orderQty}"></td>
                                         <td th:text="${purchaseInDto.remark}"></td>
                                     </tr>

@@ -21,4 +21,6 @@ public interface StockRepository extends JpaRepository<Stock, Long>, QuerydslPre
 
     List<Stock> findByRegDateBetween(LocalDate startDate, LocalDate endDate);
 
+    List<Stock> findByItemAndQtyNotOrderByLotNoAsc(Item item, long qty);
  }
+

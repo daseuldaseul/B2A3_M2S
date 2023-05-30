@@ -1,14 +1,21 @@
 package B2A3_M2S.mes.service;
 
-import B2A3_M2S.mes.entity.Company;
-import B2A3_M2S.mes.entity.QShip;
-import B2A3_M2S.mes.entity.Ship;
+import B2A3_M2S.mes.dto.ObtainOrderDto;
+import B2A3_M2S.mes.dto.ShipDto;
+import B2A3_M2S.mes.dto.ShipFormDto;
+import B2A3_M2S.mes.entity.*;
+import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import B2A3_M2S.mes.repository.ShipRepository;
+import B2A3_M2S.mes.repository.StockRepository;
+import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.service.NumberingService;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,6 +27,51 @@ public class ShipService {
 
     @Autowired
     ShipRepository shipRepository;
+
+    @Autowired
+    ObtainOrderRepository obtainOrderRepository;
+    @Autowired
+    StockRepository stockRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public void createShip(String orderCd){
+        ObtainOrder obtainOrder = obtainOrderRepository.findSingleByOrderCd(orderCd);
+        ObtainOrderDto obtainOrderDto = ObtainOrderDto.of(obtainOrder);
+        List<Stock> stockList = stockRepository.findByItemAndQtyNotOrderByLotNoAsc(obtainOrder.getItem(), 0L);
+        long qty = obtainOrderDto.getQty();
+        for(Stock stock : stockList){
+            ShipFormDto shipFormDto = new ShipFormDto();
+            NumberingService<Ship> service = new NumberingService<>(entityManager, Ship.class);
+            String sn = service.getNumbering("shipNo", NumPrefix.SHIP);
+            shipFormDto.setShipNo(sn);
+            shipFormDto.setObtainOrder(obtainOrderDto);
+            shipFormDto.setShipDate(obtainOrderDto.getDueDate());
+            shipFormDto.setLotNo(stock.getLotNo());
+            if(stock.getQty() <= qty){
+
+                shipFormDto.setShipQty(stock.getQty());
+                qty -= stock.getQty();
+                stock.setQty(0L);
+                stockRepository.save(stock);
+            }else{
+                shipFormDto.setShipQty(qty);
+                stock.setQty(stock.getQty() - qty);
+                qty = 0;
+                stockRepository.save(stock);
+            }
+            shipRepository.save(shipFormDto.createShip());
+            if(qty == 0){
+                break;
+            }
+        }
+        obtainOrderDto.setOrderState("ORDER03");
+        obtainOrderRepository.save(obtainOrderDto.createObtainOrder());
+
+
+    }
 
     @Transactional
     public List<Ship> searchShip(String shipNo, String companyCd, String companyNm, String obtainOrderCd,

@@ -2,6 +2,8 @@ package B2A3_M2S.mes.dto;
 
 import B2A3_M2S.mes.entity.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Getter
+@Setter
 public class ProductionDTO {
     private String planNo;      //계획 번호
     private Long planQty;       //계획 수량

@@ -1,11 +1,16 @@
 package B2A3_M2S.mes.service;
 
 import B2A3_M2S.mes.dto.*;
+import B2A3_M2S.mes.entity.Production;
 import B2A3_M2S.mes.entity.RoutingItem;
 import B2A3_M2S.mes.repository.*;
+import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.service.NumberingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,15 +34,21 @@ public class CalculatorServiceImpl implements CalculatorService {
     @Autowired
     private RoutingItemRepository routingItemRepository;
 
+    @Autowired
+    private ProductionRepository productionRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
     // 나는 시뮬레이터
     @Override
     public LocalDateTime getDeliveryDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         // 수주가 들어오면 자재량 계산 이후 발주일 뽑고 해당 시간 추가
+        LocalDateTime start = LocalDateTime.now();  //임시 시작시간
         // 테스트를 위해 수주 정보 조회
         ObtainOrderDto oDto = obtainOrderRepository.findAll()
-                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(0);
+                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
         System.out.println("여기야1. : " + oDto);
 
         // 자재 조회
@@ -50,6 +61,8 @@ public class CalculatorServiceImpl implements CalculatorService {
             a.getMaterialItem();
             return a.getMaterialItem();
         }).collect(Collectors.toList());
+
+
 
         System.out.println("여긴 BOM 출력입니다");
         bList.forEach(System.out::println);
@@ -132,6 +145,9 @@ public class CalculatorServiceImpl implements CalculatorService {
             // 열 갯수만큼 나누기
             total /= pDto.getRowCnt();
 
+            double test = total;
+
+
             //작업별로 돌립니다
             // 2열 짜리도 계산 추가로 넣어야 함
             while (total > 0) {
@@ -200,8 +216,31 @@ public class CalculatorServiceImpl implements CalculatorService {
             System.out.println(pDto.getProcNm() + " 공정 작업시간: " + workTime_temp);
             System.out.println(pDto.getProcNm() + " 공정 리드타임: " + leadTime_temp);
             System.out.println(pDto.getProcNm() + " 종료");
+
+            //수정
+            for(int j=0; j<pDto.getRowCnt(); j++) {
+                ProductionDTO productionDTO = new ProductionDTO();
+                NumberingService<Production> service = new NumberingService<>(entityManager, Production.class);
+                String pn = service.getNumbering("planNo", NumPrefix.PRODUCTION);
+                productionDTO.setPlanNo(pn);
+                productionDTO.setPlanQty((long) test);
+                productionDTO.setStartDate(start.plusMinutes(workTime + leadTime));
+                productionDTO.setProcesses(pDto);
+                productionDTO.setObtainOrder(oDto);
+                productionDTO.setCompletion(false);
+                productionDTO.setEndDate(start.plusMinutes(workTime + leadTime + workTime_temp + leadTime_temp));
+                productionRepository.save(productionDTO.createProduction());
+            }
+            //수정
+
+
             workTime += workTime_temp;
             leadTime += leadTime_temp;
+
+
+
+
+
         }
 
         System.out.println("전체 작업시간: " + workTime);

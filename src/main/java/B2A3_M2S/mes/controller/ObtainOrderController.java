@@ -1,12 +1,12 @@
 package B2A3_M2S.mes.controller;
 
+import B2A3_M2S.mes.dto.BOMDTO;
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.ObtainOrderFormDto;
 import B2A3_M2S.mes.entity.ObtainOrder;
+import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
-import B2A3_M2S.mes.service.CodeServiceImpl;
-import B2A3_M2S.mes.service.ObtainOrderService;
-import B2A3_M2S.mes.service.PurchaseOrderService;
+import B2A3_M2S.mes.service.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ObtainOrderController {
@@ -31,6 +32,16 @@ public class ObtainOrderController {
     PurchaseOrderService purchaseOrderService;
     @Autowired
     ObtainOrderService obtainOrderService;
+
+    @Autowired
+    ProductionServiceImpl productionService;
+
+    @Autowired
+    ItemRepository itemRepository;
+
+    @Autowired
+    private CalculatorService service;
+
 
 
     @GetMapping("/obtainOrder")
@@ -61,12 +72,20 @@ public class ObtainOrderController {
 
     @PostMapping("/obtainOrder")
     public String obtainOrderWrite(ObtainOrderFormDto obtainOrderFormDto, String companyNm, String itemNm, Model model){
-
         ObtainOrderFormDto result = obtainOrderService.writeObtainOrder(obtainOrderFormDto, companyNm, itemNm);
         ObtainOrder obtainOrder = new ObtainOrder();
         obtainOrder = result.createObtainOrder();
         obtainOrderRepository.save(obtainOrder);
         purchaseOrderService.purchaseOrderCreate(itemNm,(int)(long)obtainOrderFormDto.getQty());
+        LocalDateTime startTime = LocalDateTime.now();
+        int qty = purchaseOrderService.needQty(itemNm,(int)(long)obtainOrderFormDto.getQty());
+
+
+        productionService.calculate(itemRepository.findByItemNm(itemNm).getItemCd()
+                , startTime, obtainOrderFormDto.getOrderCd(), qty);
+
+//        service.getDeliveryDate();
+
         return "redirect:/obtainOrder";
     }
 

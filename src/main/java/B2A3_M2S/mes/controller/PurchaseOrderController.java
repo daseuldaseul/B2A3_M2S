@@ -78,7 +78,7 @@ public class PurchaseOrderController {
 
     @ResponseBody
     @GetMapping("/purchaseOrder/detail")
-    public String purchaseOrderDetail(@RequestParam String orderNo, Model model) {
+    public String purchaseOrderDetail(@RequestParam String orderNo) {
 
         Gson gson = new Gson();
         PurchaseOrderDto purchaseOrderDto = PurchaseOrderDto.of(purchaseOrderRepository.findByOrderNo(orderNo));
@@ -89,4 +89,35 @@ public class PurchaseOrderController {
 
 
 
+    @GetMapping("/purchaseIn")
+    public String purchaseIn(Model model){
+        List<PurchaseOrderDto> purchaseInList = PurchaseOrderDto.of(purchaseOrderRepository.findByPurchaseState("ORDER03"));
+        model.addAttribute("purchaseInList", purchaseInList);
+        return "purchaseInPage";
+    }
+
+    @GetMapping("/purchaseIn/search")
+    public String purchaseInSearch(@RequestParam String companyCd,
+                                      @RequestParam String companyNm,
+                                      @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                      @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+                                      @RequestParam String itemCd,
+                                      @RequestParam String itemNm,
+                                      @RequestParam String orderNo,
+                                      Model model){
+        LocalDateTime startDateTime = null;
+        LocalDateTime endDateTime = null;
+        if(startDate != null && endDate != null) {
+            startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+            endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+        }
+
+        List<PurchaseOrder> purchaseIn = purchaseOrderService.searchPurchaseIn(companyCd, companyNm, itemCd, itemNm, orderNo, startDateTime, endDateTime);
+        List<PurchaseOrderDto> purchaseInList = PurchaseOrderDto.of(purchaseIn);
+
+
+        model.addAttribute("purchaseInList", purchaseInList);
+         return "purchaseInPage";
+
+    }
 }

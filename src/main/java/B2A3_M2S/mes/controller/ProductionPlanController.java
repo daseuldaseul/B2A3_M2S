@@ -1,9 +1,6 @@
 package B2A3_M2S.mes.controller;
 
-import B2A3_M2S.mes.dto.EquipDto;
-import B2A3_M2S.mes.dto.ObtainOrderDto;
-import B2A3_M2S.mes.dto.ProductionDTO;
-import B2A3_M2S.mes.dto.RoutingDto;
+import B2A3_M2S.mes.dto.*;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.entity.Production;
@@ -66,8 +63,11 @@ public class ProductionPlanController {
         List<Production> production = productionRepository.findByObtainOrder(obtainOrder);
         List<ProductionDTO> productionDTOList = ProductionDTO.of(production);
 
+
         for(ProductionDTO prodDto : productionDTOList){
             prodDto.setStatusNm(CodeServiceImpl.getCodeNm("PLAN_STATUS", prodDto.getStatus()));
+            ProcessesDto processDto = prodDto.getProcesses();
+            processDto.setProdUnitNm(CodeServiceImpl.getCodeNm("UNIT_TYPE", prodDto.getProcesses().getProdUnit()));
         }
 
         String json = gson.toJson(productionDTOList);

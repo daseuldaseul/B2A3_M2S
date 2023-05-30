@@ -69,7 +69,7 @@ public class ObtainOrderService {
 
 
         obtainOrderFormDto.setOrderState("ORDER01");
-        obtainOrderFormDto.setOrderUnit("UNIT01");
+        obtainOrderFormDto.setOrderUnit(obtainOrderFormDto.getItem().getItemUnit());
 //        obtainOrderFormDto.setDueDate(dueTime);
         return obtainOrderFormDto;
     }

@@ -142,7 +142,7 @@
                     <tr th:each="equipDto, status: ${equipList}">
                       <td th:text="${equipDto.equipCd}"></td>
                       <td th:text="${equipDto.equipNm}"></td>
-                      <td th:text="${equipDto.processes != null } ? ${equipDto.processes.procNm} : 'Null입니다^^'"></td>
+                      <td th:text="${equipDto.processes != null } ? ${equipDto.processes.procNm} : ' '"></td>
                       <td th:text="${equipDto.capacity != null} ? ${equipDto.capacity}  + ' ' + ${equipDto.capaUnitNm} : ''"></td>
                       <td th:text="${equipDto.workTime != null} ? ${equipDto.workTime}  + ' ' + ${equipDto.workTimeUnitNm} : ''"></td>
                       <td th:text="${equipDto.fixYn}"></td>

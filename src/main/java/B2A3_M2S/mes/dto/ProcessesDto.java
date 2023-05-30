@@ -26,6 +26,8 @@ public class ProcessesDto {
     private String remark;      //비고
     private Character useYn;    //사용유무
     private String procUnit;        //단위
+    private String prodUnit;        //단위
+    private String prodUnitNm;        //단위
     private String readyUnit;   //준비시간 단위
     private String procState;       //
     private LocalDate regDate;

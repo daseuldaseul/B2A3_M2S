@@ -10,23 +10,6 @@ import B2A3_M2S.mes.util.enums.NumPrefix;
 import java.util.List;
 
 public interface UtilService {
-    /*
-    lot_seq
-    mod_date
-    reg_date
-    c_lot_seq1
-    c_lot_seq2
-    f_stock_no
-    input_qty
-    lot_no
-    output_qty
-    p_lot_seq1
-    p_lot_seq2
-    remark
-    item_cd
-    proc_cd
-     */
-
 
     // 출고시
 //    ProcessStockDTO saveInput(WarehouseLogDTO wDto);
@@ -43,9 +26,8 @@ public interface UtilService {
     // 입고시 Lot 가져옴
     String getLotNo(NumPrefix numbering);
 
-
     // 입고시 log 찍음
     LotNoLogDTO saveReceiving(WarehouseLogDTO wDto);
 
-
+    public String getLotNo(String pcodCd);
 }

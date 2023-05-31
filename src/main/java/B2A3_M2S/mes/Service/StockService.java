@@ -33,14 +33,9 @@ public class StockService {
     EntityManager entityManager;
 
     public List<Stock> getStockList() {
-
         List<Stock> stockList = new ArrayList<>();
-
         stockList = stockRepository.findByQtyIsNot(0L);
-
-
         return stockList;
-
     }
 
     /**

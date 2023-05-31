@@ -6,6 +6,7 @@ import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.WarehouseLog;
 import B2A3_M2S.mes.repository.BOMRepository;
 import B2A3_M2S.mes.repository.ItemRepository;
+import B2A3_M2S.mes.repository.LotNoLogRepository;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.repository.UtilRepositoryImpl;
 import B2A3_M2S.mes.util.service.UtilService;
@@ -34,11 +35,11 @@ public class StockServiceTests {
         Item item = repository.findByItemNm("흑마늘");
         WarehouseLogDTO wDto;
         wDto = service.addMaterials(item , 100000L);
-        service.saveInput(wDto);
+        utilService.saveReceiving(wDto);
         wDto = service.addMaterials(item , 100000L);
-        service.saveInput(wDto);
+        utilService.saveReceiving(wDto);
         wDto = service.addMaterials(item , 100000L);
-        service.saveInput(wDto);
+        utilService.saveReceiving(wDto);
     }
 
     @Test
@@ -57,9 +58,7 @@ public class StockServiceTests {
     @Test
     public void asdsadada(){
         BOMDTO bomdto = new BOMDTO();
-
         List<BOMDTO> BOM = bomService.selectAllBOM(bomdto);
-
         System.out.println(BOM);
     }
 
@@ -68,5 +67,12 @@ public class StockServiceTests {
         System.out.println("입고 " +
                 "Lot No 입니다" +  utilService.getLotNo(NumPrefix.RECEIVING));
         //utilService.saveInput(WarehouseLogDTO.of());
+    }
+
+    @Autowired
+    LotNoLogRepository lotNoLogRepository;
+    @Test
+    public void test3() {
+        System.out.println(lotNoLogRepository.findByProcCdAndLotNoNull("PROC01"));
     }
 }

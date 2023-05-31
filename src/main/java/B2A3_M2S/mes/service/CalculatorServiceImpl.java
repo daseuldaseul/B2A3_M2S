@@ -1,13 +1,16 @@
 package B2A3_M2S.mes.service;
 
 import B2A3_M2S.mes.dto.*;
+import B2A3_M2S.mes.entity.LotNoLog;
 import B2A3_M2S.mes.entity.Production;
 import B2A3_M2S.mes.repository.*;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
+import B2A3_M2S.mes.util.service.UtilService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,13 +40,16 @@ public class CalculatorServiceImpl implements CalculatorService {
     private ObtainOrderRepository obtainOrderRepository;
     @Autowired
     private RoutingItemRepository routingItemRepository;
-
     @Autowired
     private ProductionRepository productionRepository;
-
+    @Autowired
+    private UtilService utilService;
+    @Autowired
+    private LotNoLogRepository lotNoLogRepository;
+    @Autowired
+    private ShipService shipService;
     @PersistenceContext
     private EntityManager entityManager;
-    // 나는 시뮬레이터
 
     @Transactional
     @Override
@@ -64,15 +70,11 @@ public class CalculatorServiceImpl implements CalculatorService {
         }
 
         // 테스트를 위해 수주 정보 조회
-//
-//        ObtainOrderDto oDto = obtainOrderRepository.findAll()
-//                .stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
+        oDto = obtainOrderRepository.findAll().stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
         System.out.println("여기야1. : " + oDto);
 
         // 자재 조회
-        List<BOMDTO> bList = bomRepository.findBypItem
-                        (oDto.getItem().getItemCd(), oDto.getQty()).stream()
-                .map(BOMDTO::of).collect(Collectors.toList());
+        List<BOMDTO> bList = bomRepository.findBypItem(oDto.getItem().getItemCd(), oDto.getQty()).stream().map(BOMDTO::of).collect(Collectors.toList());
 
         // material 목록 추출
         List<ItemDto> materialList = bList.stream().map(a -> {
@@ -274,48 +276,25 @@ public class CalculatorServiceImpl implements CalculatorService {
         return start.plusMinutes(workTime + leadTime);
     }
 
-/*    @Scheduled(fixedDelay = 30000)
-    @Transactional*/
+    @Scheduled(fixedDelay = 30000)
+    @Transactional
     @Override
     public void schedulerApplication() {
         System.out.println("스케쥴러 실행 중");
         List<ProductionDTO> list = productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList());
+        System.out.println("여기부터 출력");
 
         // 계획수립 -> 생산중 변경
         if (list.size() > 0) {
             list.stream().forEach(a -> a.setStatus("STATUS02"));
-            productionRepository.saveAll(list.stream().map(ProductionDTO::createProduction).collect(Collectors.toList()));
-
-            // 출고 루틴 해야할지 정함
-            boolean releaseCheck = false;
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).isFirstGb()) {
-                    releaseCheck = true;
-                    break;
-                }
-            }
-
-            if(releaseCheck) {
-                /*
-            ////////////////////////////////////////////////////////////////////
-            ////////////// 출고 로직 작성 및 재고 테이블 차감 로직 작성 //////////////
-            ///////////////////////////////////////////////////////////////////
-            //////////////////// 걍 자재 투입시마다 출고로 떄려버려 ////////////////
-            //////////////////////////////////////////////////////////////////
-             */
-                System.out.println("큰일");
-            }
-
-            /////////////////////////////////
-            // 재공재고 및 Lot 이력 로직 작성 //
-            /////////////////////////////////
-
-
-            // 재공재고 조회
-
-
+            productionRepository.saveAll(list.stream()
+                    .map(ProductionDTO::createProduction)
+                    .collect(Collectors.toList()));
+            utilService.saveInput(list);
         }
-        list = productionRepository.findByEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList());
+        list = productionRepository.findByEndDateAndStatus()
+                .stream().map(ProductionDTO::of)
+                .collect(Collectors.toList());
 
         // 생산중 -> 생산완료 변경
         if (list.size() > 0) {
@@ -329,16 +308,34 @@ public class CalculatorServiceImpl implements CalculatorService {
                     break;
                 }
             }
-
             // 우선 생산완료로 변경
-            productionRepository.saveAll(list.stream().map(ProductionDTO::createProduction).collect(Collectors.toList()));
+            list = ProductionDTO.of(productionRepository.saveAll(list.stream().map(ProductionDTO::createProduction).collect(Collectors.toList())));
+            for (ProductionDTO pDto : list) {
+                List<RoutingItemDTO> riList = routingItemRepository.findByRouting(pDto.getRouting()).stream().map(RoutingItemDTO::of).collect(Collectors.toList());
+                for(RoutingItemDTO riDto : riList) {
+
+                }
+
+                List<LotNoLogDTO> lotDto = LotNoLogDTO.of(lotNoLogRepository.findByProcCdAndLotNoNull(pDto.getProcesses().getProcCd()));
+                lotDto.stream().forEach(a -> {
+                    a.setLotNo(utilService.getLotNo(pDto.getProcesses().getProcCd()));
+                    a.setOutputQty(pDto.getPlanQty());
+                });
+            }
 
             /////////////////////////////////
             // 재공재고 및 Lot 관련 로직 작성 //
             /////////////////////////////////
+
+         /*   for(ProductionDTO pDto : list) {
+                LotNoLogRepository.findByProcCdAndLotNoNull(pDto.getProcesses().getProcCd());
+                pDto.getProcesses().getProcCd();
+            }*/
+
             // 출하 아니면 종료
-            if (!shipCheck)
-                return;
+            if (shipCheck) {
+                shipService.createShip(list.get(0).getObtainOrder().getOrderCd());
+            }
             /////////////////////////////////////////////////////////////////////
             //////////// 출하 로직 작성 및 완재품 재고 테이블 반영 로직 작성///////////
             /////////////////////////////////////////////////////////////////////

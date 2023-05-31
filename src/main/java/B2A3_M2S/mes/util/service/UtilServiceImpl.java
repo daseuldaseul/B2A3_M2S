@@ -37,8 +37,6 @@ public class UtilServiceImpl implements UtilService {
      */
     @Override
     public LotNoLogDTO saveInput(List<ProductionDTO> pList) {
-        System.out.println("들어옴 " + pList);
-
         // lot 저장할 리스트
         // 계획수립 -> 생산중 즉, 투입되는 Lot 이력을 저장하는 List 입니다.
         List<LotNoLogDTO> lList = new ArrayList<>();
@@ -47,39 +45,41 @@ public class UtilServiceImpl implements UtilService {
         List<ProcessStockDTO> psList = procStockRepository.findByQtyNot(0L).stream().map(ProcessStockDTO::of).collect(Collectors.toList());
         List<RoutingItemDTO> riList = null;
 
-        System.out.println("들어옴1 " + psList);
-        System.out.println("들어옴2 " + riList);
         // 생산계획 조회
         for (ProductionDTO pDto : pList) {
             // 하나의 생산계획 단계에서 투입할 자재를 모아두는 리스트입니다.
             List<ProcessStockDTO> inputItem = new ArrayList<>();
+            // 계획의 공정에 대한 라우팅 아이템을 조회합니다.
             riList = routingItemRepository.findByRouting(pDto.getRouting()).stream().map(RoutingItemDTO::of).collect(Collectors.toList());
-
             // 라우팅 아이템, 즉 소모되는 자재 기준으로 (재공재고가 충분한지 파악하기 위해서)
             for (RoutingItemDTO riDto : riList) {
 
                 // 한 라우팅 아이템의 한 자재를 저장할 리스트 ?
                 List<ProcessStockDTO> currentList = new ArrayList<>();
 
+                // 정제수는 제외합니다.
                 if (riDto.getInputItem().getItemType().equals("ITEM05"))
                     continue;
 
+                // 총 갯수
                 double totalQty = 0;
+                // 필요한 갯수
                 Double needQty = 0.0;
 
                 // 재공재고 루프를 돈다 (재공재고에 존재하는지 확인)
                 for (ProcessStockDTO psDto : psList) {
                     // 재공재고에 해당 재고가 존재한다면 psDto : 재공재고, riDto : 라우팅 아이템(인풋 아이템, 아웃풋 아이템으로 사용)
+                    // 현재 공정의 라우팅 아이템에 설정된 재공재고를 찾습니다. (투입할 자재)
                     if (psDto.getItem().getItemCd().equals(riDto.getInputItem().getItemCd()) &&
                             psDto.getLocation().equals(riDto.getRouting().getProcesses().getProcCd())) {
-
-                        // 필요한 자재 저장해놔 (현재 재공재고이 있는애들로만)
+                        // 필요한 자재 저장 (현재 재공재고이 있는애들로만)
                         currentList.add(psDto);
                     }
                 }
 
                 // bom이 존재할때
                 if (riDto.getBom() != null) {
+
                     // 해당 bom 조회
                     BOMDTO bDto = BOMDTO.of(bomRepository.findByBomNo(riDto.getBom().getBomNo()));
                     needQty = (pDto.getPlanQty() / bDto.getStandard()) * bDto.getConsumption();
@@ -93,32 +93,27 @@ public class UtilServiceImpl implements UtilService {
                     totalQty = currentList.stream().mapToDouble(ProcessStockDTO::getQty).sum();
                 }
 
+                // 소모량 보다 적을때
                 if (totalQty < needQty) {
                     // 필요 수량만큼 출고 후 재공재고에 저장
-                    System.out.println("필요: totalQty " + totalQty);
-                    System.out.println("필요: needQty " + needQty);
+                    // 다시 재공재고에 더함
                     service.releaseItem(riDto.getInputItem().createItem(), (long) (needQty - totalQty)).stream().forEach(a -> psList.add(a));
-                }
-                // 소모량 보다 많을때
-                else if (totalQty > needQty) {
+                } else if (totalQty > needQty) {
                     // 필요 수량만큼 출고 후 재공재고에 저장
-                    System.out.println("필요: totalQty " + totalQty);
-                    System.out.println("필요: needQty " + needQty);
-                    service.releaseItem(riDto.getInputItem().createItem(), (long) (needQty - totalQty)).stream().forEach(a -> psList.add(a));
                 }
 
-
-                // 아까넣은 친구들과 다 같이 모움 (투입 준비)
-                Double needQty_temp =  needQty;
+                // 아까 넣은 친구들과 다 같이 모움 (투입 준비)
+                Double needQty_temp = needQty;
                 for (ProcessStockDTO psDto : psList) {
                     // 재공재고에 해당 재고가 존재한다면 psDto : 재공재고, riDto : 라우팅 아이템(인풋 아이템, 아웃풋 아이템으로 사용)
-                    if (psDto.getItem().getItemCd().equals(riDto.getInputItem().getItemCd()) &&
-                            psDto.getLocation().equals(riDto.getRouting().getProcesses().getProcCd())) {
+//                    if (psDto.getItem().getItemCd().equals(riDto.getInputItem().getItemCd()) &&
+//                            psDto.getLocation().equals(riDto.getRouting().getProcesses().getProcCd())) {
+                    if (psDto.getItem().getItemCd().equals(riDto.getInputItem().getItemCd())) {
                         // 필요한 자재 저장해놔
                         inputItem.add(psDto);
 
                         if (psDto.getQty() >= needQty_temp) {
-                            psDto.setConsumption(Long.valueOf(String.valueOf(needQty_temp)));
+                            psDto.setConsumption(Long.valueOf(String.valueOf((needQty_temp.intValue()))));
                             needQty_temp = 0.0;
                         } else {
                             psDto.setConsumption(psDto.getQty());
@@ -136,27 +131,38 @@ public class UtilServiceImpl implements UtilService {
                 lDto.setIItem(data.getItem());
                 lDto.setProcesses(pDto.getProcesses());
                 lDto.setInputQty(data.getConsumption());
-                lDto.setPLotSeq1(data.getLotNoLog().getPLotSeq1());
-                data.setQty(data.getQty() - data.getConsumption());
-                data.setConsumption(0L);
+                lDto.setFStockNo(0L);
+                lDto.setPLotSeq1(data.getLotNoLog().getLotSeq());
+                lDto = LotNoLogDTO.of(lotRepository.save(lDto.createLotNoLog()));
+                if((data.getQty() - data.getConsumption()) == 0) {
+                    data.setConsumption(0L);
+                    data.setLocation(pDto.getProcesses().getProcCd());
+                    data.setLotNoLog(lDto);
+                    data = ProcessStockDTO.of(procStockRepository.save(data.createProcessStock()));
+                    lDto.setFStockNo(data.getStockNo());
+                } else {
+                    data.setQty(data.getQty() - data.getConsumption());
+                    ProcessStockDTO newDto = new ProcessStockDTO();
+                    newDto.setQty(data.getConsumption());
+                    newDto.setLocation(pDto.getProcesses().getProcCd());
+                    newDto.setItem(data.getItem());
+                    newDto.setLotNoLog(lDto);
+                    psList.add(newDto);
+                    newDto = ProcessStockDTO.of(procStockRepository.save(newDto.createProcessStock()));
+                    lDto.setFStockNo(newDto.getStockNo());
+                }
                 lList.add(lDto);
             }
 
-            List<LotNoLog> llist2 = lotRepository.saveAll(lList.stream().map(LotNoLogDTO::createLotNoLog).collect(Collectors.toList()));
-            procStockRepository.saveAll(psList.stream().map(ProcessStockDTO::createProcessStock).collect(Collectors.toList()));
-
-            System.out.println("최종 재공재고 ");
-            psList.stream().forEach(System.out::println);
-            System.out.println("최종 lot list: ");
-            llist2.stream().forEach(System.out::println);
-            System.out.println("최종 lot list: " + llist2);
-            System.out.println("최종 lot list: " + llist2.size());
+            lotRepository.saveAll(lList.stream().map(LotNoLogDTO::createLotNoLog).collect(Collectors.toList()));
+            //procStockRepository.saveAll(psList.stream().map(ProcessStockDTO::createProcessStock).collect(Collectors.toList()));
         }
         return null;
     }
 
     @Override
     public LotNoLogDTO saveOutput(List<ProductionDTO> pList) {
+
         return null;
     }
 
@@ -172,6 +178,12 @@ public class UtilServiceImpl implements UtilService {
 
         return lotRepository.createLotNo(numbering.getTitle());
     }
+
+    @Override
+    public String getLotNo(String pcodCd) {
+        return lotRepository.createLotNo(pcodCd);
+    }
+
 
     // 입고시 사용합니다.
     @Override

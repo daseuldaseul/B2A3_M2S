@@ -58,7 +58,8 @@ public interface BOMRepository extends JpaRepository<BOM, Long>, QuerydslPredica
 
 
     @Query("SELECT (b.consumption * :std) as consumption FROM BOM b WHERE b.productItem.itemCd = :pCode and b.materialItem.itemCd = :mCode")
-    Double findByProductItemAndMaterialItem(@Param("pCode")String pCode, @Param("mCode")String mCode, @Param("std")double std);
+    Double findByProductItemAndMaterialItem(@Param("pCode") String pCode, @Param("mCode") String mCode, @Param("std") double std);
+
     @Query(nativeQuery = true)
     List<BOMDTO> findNeedQtyBypItem(@Param("productCode") String productCode, @Param("standard") int standard);
 

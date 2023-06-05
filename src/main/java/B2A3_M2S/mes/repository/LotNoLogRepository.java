@@ -15,4 +15,7 @@ public interface LotNoLogRepository extends JpaRepository<LotNoLog, Long>, UtilR
 
     @Query("SELECT l FROM LotNoLog l WHERE l.processes.procCd = :procCd AND l.lotNo IS NULL")
     List<LotNoLog> findByProcCdAndLotNoNull(@Param("procCd") String procCd);
+
+    //LotNoLog findByLotSeqAndLotNoNotNull(Long lotSeq);
+    LotNoLog findByfStockNoAndLotNoNull(Long fStockNo);
 }

@@ -1,7 +1,6 @@
 package B2A3_M2S.mes.service;
 
 import B2A3_M2S.mes.dto.*;
-import B2A3_M2S.mes.entity.LotNoLog;
 import B2A3_M2S.mes.entity.Production;
 import B2A3_M2S.mes.repository.*;
 import B2A3_M2S.mes.util.enums.NumPrefix;
@@ -10,7 +9,6 @@ import B2A3_M2S.mes.util.service.UtilService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,25 +25,15 @@ import java.util.stream.Collectors;
 @Log4j2
 public class CalculatorServiceImpl implements CalculatorService {
     @Autowired
-    private ProcessesRepository procRepository;
-    @Autowired
     private RoutingRepository routingRepository;
     @Autowired
     private BOMRepository bomRepository;
-    @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
-    private EquipRepository equipRepository;
-    @Autowired
-    private ObtainOrderRepository obtainOrderRepository;
     @Autowired
     private RoutingItemRepository routingItemRepository;
     @Autowired
     private ProductionRepository productionRepository;
     @Autowired
     private UtilService utilService;
-    @Autowired
-    private LotNoLogRepository lotNoLogRepository;
     @Autowired
     private ShipService shipService;
     @PersistenceContext
@@ -70,7 +58,6 @@ public class CalculatorServiceImpl implements CalculatorService {
         }
 
         // 테스트를 위해 수주 정보 조회
-        oDto = obtainOrderRepository.findAll().stream().map(ObtainOrderDto::of).collect(Collectors.toList()).get(1);
         System.out.println("여기야1. : " + oDto);
 
         // 자재 조회
@@ -276,8 +263,8 @@ public class CalculatorServiceImpl implements CalculatorService {
         return start.plusMinutes(workTime + leadTime);
     }
 
-    @Scheduled(fixedDelay = 30000)
-    @Transactional
+/*    @Scheduled(fixedDelay = 30000)
+    @Transactional*/
     @Override
     public void schedulerApplication() {
         System.out.println("스케쥴러 실행 중");
@@ -287,11 +274,12 @@ public class CalculatorServiceImpl implements CalculatorService {
         // 계획수립 -> 생산중 변경
         if (list.size() > 0) {
             list.stream().forEach(a -> a.setStatus("STATUS02"));
-            productionRepository.saveAll(list.stream()
+            list = ProductionDTO.of(productionRepository.saveAll(list.stream()
                     .map(ProductionDTO::createProduction)
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList())));
             utilService.saveInput(list);
         }
+
         list = productionRepository.findByEndDateAndStatus()
                 .stream().map(ProductionDTO::of)
                 .collect(Collectors.toList());
@@ -299,7 +287,7 @@ public class CalculatorServiceImpl implements CalculatorService {
         // 생산중 -> 생산완료 변경
         if (list.size() > 0) {
             list.stream().forEach(a -> a.setStatus("STATUS03"));
-
+            utilService.saveOutput(list);
             // 출하 루틴 해야할지 정함
             boolean shipCheck = false;
             for (int i = list.size() - 1; i >= 0; i--) {
@@ -310,7 +298,7 @@ public class CalculatorServiceImpl implements CalculatorService {
             }
             // 우선 생산완료로 변경
             list = ProductionDTO.of(productionRepository.saveAll(list.stream().map(ProductionDTO::createProduction).collect(Collectors.toList())));
-            for (ProductionDTO pDto : list) {
+/*            for (ProductionDTO pDto : list) {
                 List<RoutingItemDTO> riList = routingItemRepository.findByRouting(pDto.getRouting()).stream().map(RoutingItemDTO::of).collect(Collectors.toList());
                 for(RoutingItemDTO riDto : riList) {
 
@@ -321,7 +309,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                     a.setLotNo(utilService.getLotNo(pDto.getProcesses().getProcCd()));
                     a.setOutputQty(pDto.getPlanQty());
                 });
-            }
+            }*/
 
             /////////////////////////////////
             // 재공재고 및 Lot 관련 로직 작성 //

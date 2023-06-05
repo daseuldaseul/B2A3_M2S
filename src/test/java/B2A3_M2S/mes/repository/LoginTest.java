@@ -5,10 +5,7 @@ import B2A3_M2S.mes.dto.CodeSetDTO;
 import B2A3_M2S.mes.dto.ItemDto;
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.RoutingDto;
-import B2A3_M2S.mes.entity.BOM;
-import B2A3_M2S.mes.entity.Item;
-import B2A3_M2S.mes.entity.ObtainOrder;
-import B2A3_M2S.mes.entity.Routing;
+import B2A3_M2S.mes.entity.*;
 import B2A3_M2S.mes.service.CodeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -302,4 +299,17 @@ public class LoginTest {
 //        System.out.println("포장공정 종료 (생산수량): " + outputQty);
 //        return outputQty;
 //    }
+
+
+    @Autowired
+    private ProcessStockRepository stockRepository;
+
+    @Test
+    public void test() {
+        Item item = Item.builder().itemCd("M_002").build();
+        List<ProcessStock> list = stockRepository.findByQtyNotAndLocationAndItem(0L, "PROC01", item);
+
+        System.out.println("출력합니다");
+        list.forEach(System.out::println);
+    }
 }

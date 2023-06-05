@@ -15,10 +15,10 @@ public interface UtilService {
 //    ProcessStockDTO saveInput(WarehouseLogDTO wDto);
 
     // 각 공정별 Input
-    LotNoLogDTO saveInput(List<ProductionDTO> pList);
+    List<LotNoLogDTO> saveInput(List<ProductionDTO> pList);
 
     // 각 공정별 생산량 Update
-    LotNoLogDTO saveOutput(List<ProductionDTO> pList);
+    List<LotNoLogDTO> saveOutput(List<ProductionDTO> pList);
 
     // 포장 완료시 호출
     LotNoLogDTO saveFinalOutput(LotNoLogDTO log);

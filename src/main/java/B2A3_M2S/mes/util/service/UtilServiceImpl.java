@@ -1,15 +1,15 @@
 package B2A3_M2S.mes.util.service;
 
 import B2A3_M2S.mes.dto.*;
-import B2A3_M2S.mes.entity.LotNoLog;
-import B2A3_M2S.mes.entity.ProcessStock;
-import B2A3_M2S.mes.entity.RoutingItem;
+import B2A3_M2S.mes.entity.*;
 import B2A3_M2S.mes.repository.BOMRepository;
 import B2A3_M2S.mes.repository.LotNoLogRepository;
 import B2A3_M2S.mes.repository.ProcessStockRepository;
 import B2A3_M2S.mes.repository.RoutingItemRepository;
 import B2A3_M2S.mes.service.StockService;
 import B2A3_M2S.mes.util.enums.NumPrefix;
+import B2A3_M2S.mes.util.repository.UtilRepository;
+import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +31,14 @@ public class UtilServiceImpl implements UtilService {
     StockService service;
 
     /***
-     * 출고를 제외한 각 공정 단계에서 자재 투입시 호출하는 메소드 입니다.
-     * @param "Enum 코드번호 (출고)"
-     * @return 저장된 LotNoLog 객체 반환
+     * 각 공정 단계에서 자재 투입시 호출하는 메소드 입니다.
+     * @param "List<ProductionDTO> pList" 생산계획 리스트를 전달합니다.
+     * @return "List<LotNoLogDTO>" 생성된 LotNoLogDTO를 반환합니다.
      */
     @Override
-    public LotNoLogDTO saveInput(List<ProductionDTO> pList) {
+    public List<LotNoLogDTO> saveInput(List<ProductionDTO> pList) {
+        System.out.println("0번0번");
+        System.out.println(pList);
         // lot 저장할 리스트
         // 계획수립 -> 생산중 즉, 투입되는 Lot 이력을 저장하는 List 입니다.
         List<LotNoLogDTO> lList = new ArrayList<>();
@@ -44,16 +46,18 @@ public class UtilServiceImpl implements UtilService {
         // 재공재고 조회, 임마 DB반영
         List<ProcessStockDTO> psList = procStockRepository.findByQtyNot(0L).stream().map(ProcessStockDTO::of).collect(Collectors.toList());
         List<RoutingItemDTO> riList = null;
-
+        System.out.println("1번1번");
         // 생산계획 조회
         for (ProductionDTO pDto : pList) {
+            System.out.println("2번2번");
+            System.out.println(pDto);
             // 하나의 생산계획 단계에서 투입할 자재를 모아두는 리스트입니다.
             List<ProcessStockDTO> inputItem = new ArrayList<>();
             // 계획의 공정에 대한 라우팅 아이템을 조회합니다.
             riList = routingItemRepository.findByRouting(pDto.getRouting()).stream().map(RoutingItemDTO::of).collect(Collectors.toList());
             // 라우팅 아이템, 즉 소모되는 자재 기준으로 (재공재고가 충분한지 파악하기 위해서)
             for (RoutingItemDTO riDto : riList) {
-
+                System.out.println("3번3번");
                 // 한 라우팅 아이템의 한 자재를 저장할 리스트 ?
                 List<ProcessStockDTO> currentList = new ArrayList<>();
 
@@ -125,7 +129,9 @@ public class UtilServiceImpl implements UtilService {
 
             // 이제 투입 준비합니다
             // Lot No 찍읍시다
+            System.out.println("4번4번");
             for (ProcessStockDTO data : inputItem) {
+                System.out.println("5번5번");
                 // 등록할 Lot 이력 생성
                 LotNoLogDTO lDto = new LotNoLogDTO();
                 lDto.setIItem(data.getItem());
@@ -134,8 +140,9 @@ public class UtilServiceImpl implements UtilService {
                 lDto.setFStockNo(0L);
                 lDto.setPLotSeq1(data.getLotNoLog().getLotSeq());
                 lDto = LotNoLogDTO.of(lotRepository.save(lDto.createLotNoLog()));
-                if((data.getQty() - data.getConsumption()) == 0) {
+                if ((data.getQty() - data.getConsumption()) == 0) {
                     data.setConsumption(0L);
+                    //data.setQty(0L);
                     data.setLocation(pDto.getProcesses().getProcCd());
                     data.setLotNoLog(lDto);
                     data = ProcessStockDTO.of(procStockRepository.save(data.createProcessStock()));
@@ -153,17 +160,135 @@ public class UtilServiceImpl implements UtilService {
                 }
                 lList.add(lDto);
             }
-
+            System.out.println("6번6번");
             lotRepository.saveAll(lList.stream().map(LotNoLogDTO::createLotNoLog).collect(Collectors.toList()));
             //procStockRepository.saveAll(psList.stream().map(ProcessStockDTO::createProcessStock).collect(Collectors.toList()));
         }
-        return null;
+        return lList;
     }
 
+    /***
+     * 각 공정 단계가 종료되었을 시 호출하는 메소드 입니다.
+     * @param "List<ProductionDTO> pList" 생산계획 리스트를 전달합니다.
+     * @return "List<LotNoLogDTO>" 생성된 LotNoLogDTO를 반환합니다.
+     */
     @Override
-    public LotNoLogDTO saveOutput(List<ProductionDTO> pList) {
+    public List<LotNoLogDTO> saveOutput(List<ProductionDTO> pList) {
+        System.out.println("0번0번");
+        System.out.println(pList);
+        // lot 저장할 리스트
+        // 생산중 -> 생산완료 즉, 투입되는 Lot 이력을 저장하는 List 입니다.
+        List<LotNoLogDTO> lList = new ArrayList<>();
 
-        return null;
+        // 재공재고 조회, 임마 DB반영
+        List<ProcessStockDTO> psList = procStockRepository.findByQtyNot(0L).stream().map(ProcessStockDTO::of).collect(Collectors.toList());
+        List<RoutingItemDTO> riList = null;
+        System.out.println("1번1번");
+        // 생산계획 기준으로 ㄱㄱ
+        for (ProductionDTO pDto : pList) {
+            System.out.println("2번2번");
+            System.out.println(pDto);
+
+            // 하나의 생산계획 단계에서 투입할 자재를 모아두는 리스트입니다.
+            List<ProcessStockDTO> inputItem = new ArrayList<>();
+
+            // 계획의 공정에 대한 라우팅 아이템을 조회합니다.
+            riList = routingItemRepository.findByRouting(pDto.getRouting()).stream().map(RoutingItemDTO::of).collect(Collectors.toList());
+            List<ProcessStockDTO> currentList = new ArrayList<>();
+
+            // 라우팅 아이템, 인풋 아이템을 재공재고에서 차감합니다!
+            for (RoutingItemDTO riDto : riList) {
+                System.out.println("3번3번");
+                // 해당 라우팅에서 사용되는 인풋아이템의 재공재고를 조회합니다.
+                List<ProcessStock> totalList = procStockRepository.findByQtyNotAndLocationAndItem(0L, riDto.getRouting().getProcesses().getProcCd(), riDto.getInputItem().createItem());
+                System.out.println("왜 안되냐구 " + totalList);
+                System.out.println("왜 안되냐구 " + riDto.getRouting().getProcesses().getProcCd());
+                System.out.println("왜 안되냐구 " + riDto.getInputItem().createItem());
+                // 정제수는 제외합니다.
+                if (riDto.getInputItem().getItemType().equals("ITEM05"))
+                    continue;
+
+                Long total = 0L;
+                Long currentTotal = 0L;
+                // BOM이 없으면 재고 그대로 차감 ㄱ
+                if (riDto.getBom() == null) {
+                    total = pDto.getPlanQty();
+                    currentTotal = totalList.stream().mapToLong(a -> a.getQty()).sum();
+                }
+                // BOM이 있으면 비율 계산 후 차감합니다.
+                else {
+                    BOM bEntity = null;
+                    bEntity = bomRepository.findByBomNo(riDto.getBom().getBomNo());
+                    total = (long) (bEntity.getConsumption() * (pDto.getPlanQty() / bEntity.getStandard()));
+                }
+
+                // 차감합니다
+                if (total >= currentTotal) {
+                    totalList.stream().forEach(a -> a.setQty(0L));
+                    total -= currentTotal;
+                    currentList.addAll(ProcessStockDTO.of(totalList));
+                    currentList.stream().forEach(a -> a.setConsumption(a.getQty()));
+                } else {
+                    for (ProcessStock pEntity : totalList) {
+                        ProcessStockDTO cpDto = ProcessStockDTO.of(pEntity);
+                        currentList.add(cpDto);
+
+                        if (total >= pEntity.getQty()) {
+                            total -= pEntity.getQty();
+                            cpDto.setConsumption(pEntity.getQty());
+                            pEntity.setQty(0L);
+                        } else if (total < pEntity.getQty()) {
+                            cpDto.setConsumption(pEntity.getQty() - total);
+                            pEntity.setQty(pEntity.getQty() - total);
+                            total = 0L;
+                        }
+                        if (total == 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // 아웃풋 재공재고 생성합니다.
+            ProcessStockDTO processStockDto = new ProcessStockDTO();
+            processStockDto.setQty(pDto.getPlanQty());
+            processStockDto.setItem(riList.get(0).getOutputItem());
+            processStockDto.setLocation(pDto.getProcesses().getProcCd());
+            processStockDto = ProcessStockDTO.of(procStockRepository.save(processStockDto.createProcessStock()));
+
+
+            System.out.println("왜 안들어옴 " + currentList);
+            // lot 조회
+            List<LotNoLogDTO> lotList = new ArrayList<>();
+            for(ProcessStockDTO pstock : currentList) {
+                System.out.println("여기 오류남" + pstock);
+                LotNoLog logTemp = lotRepository.findByfStockNoAndLotNoNull(pstock.getStockNo());
+                System.out.println("여기 오류남2" + logTemp);
+                lotList.add(LotNoLogDTO.of(logTemp));
+            }
+            // 이제 산출합니다
+            // Lot No 찍읍시다
+            String tempLotNo = lotRepository.createLotNo(pDto.getProcesses().getProcCd());
+
+            for (LotNoLogDTO lotDto : lotList) {
+                // Lot 이력 수정
+                RoutingItem rItem = null;
+                rItem = routingItemRepository.findByRoutingAndInputItem(pDto.getRouting(), lotDto.getIItem().createItem());
+
+                if(rItem.getBom() == null) {
+                    lotDto.setOutputQty(lotDto.getInputQty());
+                } else {
+                    lotDto.setOutputQty((long) ((lotDto.getInputQty() / rItem.getBom().getStandard()) * rItem.getBom().getConsumption()));
+                }
+                lotDto.setOItem(pDto.getItem());
+                lotDto.setLotNo(tempLotNo);
+                lotDto.setFStockNo(processStockDto.getStockNo());
+            }
+            System.out.println("6번6번");
+            lotRepository.saveAll(lotList.stream().map(LotNoLogDTO::createLotNoLog).collect(Collectors.toList()));
+            procStockRepository.saveAll(currentList.stream().map(ProcessStockDTO::createProcessStock).collect(Collectors.toList()));
+        }
+        return lList;
     }
 
     @Override

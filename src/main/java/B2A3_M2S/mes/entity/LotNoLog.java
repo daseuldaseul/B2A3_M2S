@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity
-@Table
 @AllArgsConstructor
 @NoArgsConstructor
 public class LotNoLog extends BaseTimeEntity{

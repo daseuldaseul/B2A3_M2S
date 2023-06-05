@@ -23,6 +23,7 @@ public class LotNoLogDTO extends BaseTimeEntity {
     private ProcessesDto processes; //공정 코드
     private Long inputQty;  //투입 수량
     private Long outputQty;  //생산 수량
+    private Long outputQty2;  //생산 수량(임시저장)
     private String remark;  //비고
     private ItemDto oItem;
 

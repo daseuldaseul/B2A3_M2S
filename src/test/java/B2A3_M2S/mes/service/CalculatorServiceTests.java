@@ -2,8 +2,11 @@ package B2A3_M2S.mes.service;
 
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.ProductionDTO;
+import B2A3_M2S.mes.dto.WarehouseLogDTO;
+import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.ObtainOrder;
 import B2A3_M2S.mes.repository.BOMRepository;
+import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import B2A3_M2S.mes.repository.ProductionRepository;
 import B2A3_M2S.mes.util.service.UtilService;
@@ -32,17 +35,36 @@ public class CalculatorServiceTests {
     @Autowired
     ProductionRepository productionRepository;
 
+    @Autowired
+    CalculatorService calculatorService;
+
+    @Autowired
+    ItemRepository repository;
+    @Autowired
+    StockService stockService;
 
     @Test
     public void test() {
         System.out.println("계산기 테스트 시작합니다.");
-        service.getDeliveryDate(LocalDateTime.now(), new ObtainOrderDto());
+
+        Item item = repository.findByItemNm("흑마늘");
+        WarehouseLogDTO wDto;
+        wDto = stockService.addMaterials(item , 100000L);
+        utilService.saveReceiving(wDto);
+        wDto = stockService.addMaterials(item , 100000L);
+        utilService.saveReceiving(wDto);
+        wDto = stockService.addMaterials(item , 100000L);
+        utilService.saveReceiving(wDto);
+
+        ObtainOrderDto odt = ObtainOrderDto.of(obtainOrderRepository.findByOrderCd("SO23053100001").get(0));
+        service.getDeliveryDate(LocalDateTime.now(), odt);
     }
 
     @Test
     public void test2() {
         //System.out.println("테스트 : "+ productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
-        utilService.saveInput(productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
+        calculatorService.schedulerApplication();
+        //utilService.saveInput(productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
 
     }
 

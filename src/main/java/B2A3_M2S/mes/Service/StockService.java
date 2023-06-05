@@ -112,8 +112,6 @@ public class StockService {
                 String ocd = service.getNumbering("inoutNo", NumPrefix.RELEASE);
 
                 qty -= stock.getQty();
-                System.out.println(stock.getQty());
-                System.out.println(qty);
 
                 WarehouseLog warehouseLog = WarehouseLog.builder()
                         .inoutNo(ocd)

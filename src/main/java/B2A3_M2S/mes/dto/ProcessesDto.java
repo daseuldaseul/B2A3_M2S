@@ -2,6 +2,7 @@ package B2A3_M2S.mes.dto;
 
 
 import B2A3_M2S.mes.entity.Processes;
+import B2A3_M2S.mes.entity.Production;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,6 +45,10 @@ public class ProcessesDto {
     public static List<ProcessesDto> of(List<Processes> processesList) {
         return modelMapper.map(processesList, new TypeToken<List<ProcessesDto>>() {
         }.getType());
+    }
+
+    public Processes createProcesses() {
+        return modelMapper.map(this, Processes.class);
     }
 
     public static ProcessesDto of(Processes processes) {

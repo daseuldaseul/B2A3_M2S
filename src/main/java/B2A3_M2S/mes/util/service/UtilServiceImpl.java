@@ -142,7 +142,7 @@ public class UtilServiceImpl implements UtilService {
                 lDto = LotNoLogDTO.of(lotRepository.save(lDto.createLotNoLog()));
                 if ((data.getQty() - data.getConsumption()) == 0) {
                     data.setConsumption(0L);
-                    //data.setQty(0L);
+                    data.setQty(0L);
                     data.setLocation(pDto.getProcesses().getProcCd());
                     data.setLotNoLog(lDto);
                     data = ProcessStockDTO.of(procStockRepository.save(data.createProcessStock()));
@@ -196,59 +196,6 @@ public class UtilServiceImpl implements UtilService {
             riList = routingItemRepository.findByRouting(pDto.getRouting()).stream().map(RoutingItemDTO::of).collect(Collectors.toList());
             List<ProcessStockDTO> currentList = new ArrayList<>();
 
-            // 라우팅 아이템, 인풋 아이템을 재공재고에서 차감합니다!
-            for (RoutingItemDTO riDto : riList) {
-                System.out.println("3번3번");
-                // 해당 라우팅에서 사용되는 인풋아이템의 재공재고를 조회합니다.
-                List<ProcessStock> totalList = procStockRepository.findByQtyNotAndLocationAndItem(0L, riDto.getRouting().getProcesses().getProcCd(), riDto.getInputItem().createItem());
-                System.out.println("왜 안되냐구 " + totalList);
-                System.out.println("왜 안되냐구 " + riDto.getRouting().getProcesses().getProcCd());
-                System.out.println("왜 안되냐구 " + riDto.getInputItem().createItem());
-                // 정제수는 제외합니다.
-                if (riDto.getInputItem().getItemType().equals("ITEM05"))
-                    continue;
-
-                Long total = 0L;
-                Long currentTotal = 0L;
-                // BOM이 없으면 재고 그대로 차감 ㄱ
-                if (riDto.getBom() == null) {
-                    total = pDto.getPlanQty();
-                    currentTotal = totalList.stream().mapToLong(a -> a.getQty()).sum();
-                }
-                // BOM이 있으면 비율 계산 후 차감합니다.
-                else {
-                    BOM bEntity = null;
-                    bEntity = bomRepository.findByBomNo(riDto.getBom().getBomNo());
-                    total = (long) (bEntity.getConsumption() * (pDto.getPlanQty() / bEntity.getStandard()));
-                }
-
-                // 차감합니다
-                if (total >= currentTotal) {
-                    totalList.stream().forEach(a -> a.setQty(0L));
-                    total -= currentTotal;
-                    currentList.addAll(ProcessStockDTO.of(totalList));
-                    currentList.stream().forEach(a -> a.setConsumption(a.getQty()));
-                } else {
-                    for (ProcessStock pEntity : totalList) {
-                        ProcessStockDTO cpDto = ProcessStockDTO.of(pEntity);
-                        currentList.add(cpDto);
-
-                        if (total >= pEntity.getQty()) {
-                            total -= pEntity.getQty();
-                            cpDto.setConsumption(pEntity.getQty());
-                            pEntity.setQty(0L);
-                        } else if (total < pEntity.getQty()) {
-                            cpDto.setConsumption(pEntity.getQty() - total);
-                            pEntity.setQty(pEntity.getQty() - total);
-                            total = 0L;
-                        }
-                        if (total == 0) {
-                            break;
-                        }
-                    }
-                }
-            }
-
             // 아웃풋 재공재고 생성합니다.
             ProcessStockDTO processStockDto = new ProcessStockDTO();
             processStockDto.setQty(pDto.getPlanQty());
@@ -256,37 +203,41 @@ public class UtilServiceImpl implements UtilService {
             processStockDto.setLocation(pDto.getProcesses().getProcCd());
             processStockDto = ProcessStockDTO.of(procStockRepository.save(processStockDto.createProcessStock()));
 
+            // 라우팅 아이템을 기준으로 정제수를 제외한 LotNo을 조회해서 수정합니다.
+            List<LotNoLog> lotNoList = new ArrayList<>();
 
-            System.out.println("왜 안들어옴 " + currentList);
-            // lot 조회
-            List<LotNoLogDTO> lotList = new ArrayList<>();
-            for(ProcessStockDTO pstock : currentList) {
-                System.out.println("여기 오류남" + pstock);
-                LotNoLog logTemp = lotRepository.findByfStockNoAndLotNoNull(pstock.getStockNo());
-                System.out.println("여기 오류남2" + logTemp);
-                lotList.add(LotNoLogDTO.of(logTemp));
+            for (RoutingItemDTO riDto : riList) {
+                System.out.println("3번3번");
+
+                // 정제수는 제외합니다.
+                if (riDto.getInputItem().getItemType().equals("ITEM05"))
+                    continue;
+
+                // 해당 라우팅에서 사용되는 인풋아이템의 재공재고를 조회합니다. (ㄴㄴ LotNo 기준으로 변경합니다)
+                List<LotNoLog> tempLotNoList = lotRepository.findByiItemAndProcessesAndLotNoNull(riDto.getInputItem().createItem(), pDto.getProcesses().createProcesses());
+                //List<LotNoLog> tempLotNoList = null;
+                Long fStockNo = processStockDto.getStockNo();
+                ProcessStockDTO finalProcessStockDto = processStockDto;
+                String tempLotNo = lotRepository.createLotNo(pDto.getProcesses().getProcCd());
+
+                tempLotNoList.stream().forEach(a -> {
+                            if (riDto.getBom() == null) {
+                                a.setOutputQty(a.getInputQty());
+                            } else {
+                                BOM bEntity = null;
+                                bEntity = bomRepository.findByBomNo(riDto.getBom().getBomNo());
+                                Long std = bEntity.getStandard();
+                                Double csp = bEntity.getConsumption();
+                                a.setOutputQty((long) ((a.getInputQty() / std) * csp));
+                            }
+                            a.setFStockNo(fStockNo);
+                            a.setOItem(finalProcessStockDto.getItem().createItem());
+                            a.setLotNo(tempLotNo);
+                        }
+                );
+                lotNoList.addAll(tempLotNoList);
             }
-            // 이제 산출합니다
-            // Lot No 찍읍시다
-            String tempLotNo = lotRepository.createLotNo(pDto.getProcesses().getProcCd());
-
-            for (LotNoLogDTO lotDto : lotList) {
-                // Lot 이력 수정
-                RoutingItem rItem = null;
-                rItem = routingItemRepository.findByRoutingAndInputItem(pDto.getRouting(), lotDto.getIItem().createItem());
-
-                if(rItem.getBom() == null) {
-                    lotDto.setOutputQty(lotDto.getInputQty());
-                } else {
-                    lotDto.setOutputQty((long) ((lotDto.getInputQty() / rItem.getBom().getStandard()) * rItem.getBom().getConsumption()));
-                }
-                lotDto.setOItem(pDto.getItem());
-                lotDto.setLotNo(tempLotNo);
-                lotDto.setFStockNo(processStockDto.getStockNo());
-            }
-            System.out.println("6번6번");
-            lotRepository.saveAll(lotList.stream().map(LotNoLogDTO::createLotNoLog).collect(Collectors.toList()));
-            procStockRepository.saveAll(currentList.stream().map(ProcessStockDTO::createProcessStock).collect(Collectors.toList()));
+            lotRepository.saveAll(lotNoList);
         }
         return lList;
     }

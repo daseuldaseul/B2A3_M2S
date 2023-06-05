@@ -206,6 +206,7 @@ public class UtilServiceImpl implements UtilService {
             // 라우팅 아이템을 기준으로 정제수를 제외한 LotNo을 조회해서 수정합니다.
             List<LotNoLog> lotNoList = new ArrayList<>();
 
+            String tempLotNo = lotRepository.createLotNo(pDto.getProcesses().getProcCd());
             for (RoutingItemDTO riDto : riList) {
                 System.out.println("3번3번");
 
@@ -213,12 +214,10 @@ public class UtilServiceImpl implements UtilService {
                 if (riDto.getInputItem().getItemType().equals("ITEM05"))
                     continue;
 
-                // 해당 라우팅에서 사용되는 인풋아이템의 재공재고를 조회합니다. (ㄴㄴ LotNo 기준으로 변경합니다)
+                // LotNo을 조회해서 (공정, inputItem, Lot Null 여부) 생산품의 정보를 설정해준다.
                 List<LotNoLog> tempLotNoList = lotRepository.findByiItemAndProcessesAndLotNoNull(riDto.getInputItem().createItem(), pDto.getProcesses().createProcesses());
-                //List<LotNoLog> tempLotNoList = null;
                 Long fStockNo = processStockDto.getStockNo();
                 ProcessStockDTO finalProcessStockDto = processStockDto;
-                String tempLotNo = lotRepository.createLotNo(pDto.getProcesses().getProcCd());
 
                 tempLotNoList.stream().forEach(a -> {
                             if (riDto.getBom() == null) {
@@ -235,6 +234,7 @@ public class UtilServiceImpl implements UtilService {
                             a.setLotNo(tempLotNo);
                         }
                 );
+
                 lotNoList.addAll(tempLotNoList);
             }
             lotRepository.saveAll(lotNoList);

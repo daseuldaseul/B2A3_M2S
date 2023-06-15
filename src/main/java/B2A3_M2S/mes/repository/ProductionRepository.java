@@ -26,4 +26,6 @@ public interface ProductionRepository extends JpaRepository<Production, String>,
     List<Production> findByEndDateAndStatus();
 
     List<Production> findByObtainOrderAndProcesses(ObtainOrder obtainOrder, Processes processes);
+
+    List<Production> findByProcessesProcCdAndStatus(String procCd, String status);
 }

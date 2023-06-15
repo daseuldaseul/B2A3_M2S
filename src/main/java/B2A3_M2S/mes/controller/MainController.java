@@ -28,7 +28,7 @@ public class MainController {
         model.addAttribute("dailyProduction" , mainService.getDailyProduction());
         model.addAttribute("monthlyProduction", mainService.getMonthlyProduction());
 
-
+        System.out.println("들어옴12321 " + mainService.getProcessesPercent());
 
         return "main";
     }

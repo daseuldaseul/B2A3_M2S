@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Stock extends BaseTimeEntity{
+public class Stock extends BaseTimeEntity2{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

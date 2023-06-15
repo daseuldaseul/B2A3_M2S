@@ -9,6 +9,7 @@ import org.modelmapper.TypeToken;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -28,12 +29,13 @@ public class StockDto {
     //외래키
     private ItemDto item;
 
-    private LocalDate regDate;
+    private LocalDateTime regDate;
 
-    private LocalDate modDate;
+    private LocalDateTime modDate;
 
 
     public static ModelMapper modelMapper = new ModelMapper();
+
     public static StockDto of(Stock stock) {return modelMapper.map(stock, StockDto.class);}
 
     public static List<StockDto> of(List<Stock> stockList) {

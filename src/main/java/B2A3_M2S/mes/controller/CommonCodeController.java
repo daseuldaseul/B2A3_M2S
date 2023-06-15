@@ -29,5 +29,6 @@ public class CommonCodeController {
     @GetMapping("/detail")
     public @ResponseBody ResponseEntity<List<CommonCodeDTO>> detail(String codeGroup, String useYn) throws Exception {
         return ResponseEntity.ok(service.getCodeList(codeGroup, useYn));
+
     }
 }

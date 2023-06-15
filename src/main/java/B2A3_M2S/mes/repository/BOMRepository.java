@@ -66,4 +66,5 @@ public interface BOMRepository extends JpaRepository<BOM, Long>, QuerydslPredica
     List<BOM> findByProductItem(Item pitem);
 
     BOM findByBomNo(Long bonNo);
+
 }

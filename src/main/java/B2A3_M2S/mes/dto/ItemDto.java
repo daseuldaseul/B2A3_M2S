@@ -89,4 +89,5 @@ public class ItemDto {
     // 임시로 추가
     private double currentQty;
     private double consumption;
+    private int depth;
 }

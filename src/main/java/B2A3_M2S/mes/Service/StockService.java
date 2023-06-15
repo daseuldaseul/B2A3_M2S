@@ -1,22 +1,25 @@
 package B2A3_M2S.mes.service;
 
-import B2A3_M2S.mes.dto.LotNoLogDTO;
-import B2A3_M2S.mes.dto.ProcessStockDTO;
-import B2A3_M2S.mes.dto.WarehouseLogDTO;
-import B2A3_M2S.mes.entity.Item;
-import B2A3_M2S.mes.entity.Stock;
-import B2A3_M2S.mes.entity.WarehouseLog;
+import B2A3_M2S.mes.dto.*;
+import B2A3_M2S.mes.entity.*;
 import B2A3_M2S.mes.repository.*;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
 import B2A3_M2S.mes.util.service.UtilService;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StockService {
@@ -31,10 +34,12 @@ public class StockService {
     ProcessStockRepository procStockRepository;
     @PersistenceContext
     EntityManager entityManager;
+    @Autowired
+    ItemRepository itemRepository;
 
-    public List<Stock> getStockList() {
-        List<Stock> stockList = new ArrayList<>();
-        stockList = stockRepository.findByQtyIsNot(0L);
+    public List<StockDto> getStockList(String itemCd) {
+        List<StockDto> stockList = new ArrayList<>();
+        stockList = StockDto.of(stockRepository.findByItem_itemCdAndQtyIsNot(itemCd, 0L));
         return stockList;
     }
 
@@ -188,4 +193,61 @@ public class StockService {
         return lotRepository.createLotNo(numbering.getTitle());
     }
 
+    public List<StockDto> getLotList(boolean flag) {
+        List<Stock> sList = stockRepository.findAll();
+        // 정방향
+        if (flag) {
+            sList = sList.stream().filter(a -> a.getItem().getItemType().equals("ITEM03")).collect(Collectors.toList());
+        } else {
+            sList = sList.stream().filter(a -> a.getItem().getItemType().equals("ITEM01")).collect(Collectors.toList());
+        }
+
+        return StockDto.of(sList);
+    }
+
+    @Transactional
+    public List<StockDto> searchStock(String lotNo, String itemCd, String itemNm, LocalDate startDate, LocalDate endDate, boolean flag) {
+        QStock qStock = QStock.stock;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (lotNo != null) {
+            builder.and(qStock.lotNo.contains(lotNo));
+        }
+        if (itemCd != null) {
+            builder.and(qStock.item.itemCd.contains(itemCd));
+        }
+        if (itemNm != null) {
+            builder.and(qStock.item.itemNm.contains(itemNm));
+        }
+        if (startDate != null && endDate != null) {
+            LocalDateTime start = startDate.atStartOfDay();
+            LocalDateTime end = endDate.atTime(LocalTime.MAX);
+            builder.and(qStock.regDate.between(start, end));
+        }
+        List<StockDto> stockList = null;
+        if (flag)
+            stockList = ((List<Stock>) stockRepository.findAll(builder)).stream().filter(a -> a.getItem().getItemType().equals("ITEM03")).map(StockDto::of).collect(Collectors.toList());
+        else
+            stockList = ((List<Stock>) stockRepository.findAll(builder)).stream().filter(a -> a.getItem().getItemType().equals("ITEM01")).map(StockDto::of).collect(Collectors.toList());
+
+        return stockList;
+    }
+
+    @Transactional
+    public List<ItemDto> searchStockList(String itemNm, String itemGb) {
+        QItem qItem = QItem.item;
+        BooleanBuilder builder = new BooleanBuilder();
+        BooleanExpression expression = qItem.itemType.ne("ITEM06");
+        builder.and(expression);
+
+        if(itemGb != null)
+            builder.and(qItem.itemGb.contains(itemGb));
+
+        if (itemNm != null) {
+            builder.and(qItem.itemNm.contains(itemNm));
+        }
+        List<ItemDto> itemDtoList = null;
+        itemDtoList = ((List<Item>) itemRepository.findAll(builder)).stream().map(ItemDto::of).collect(Collectors.toList());
+        return itemDtoList;
+    }
 }

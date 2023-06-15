@@ -3,10 +3,13 @@ package B2A3_M2S.mes.service;
 import B2A3_M2S.mes.dto.ObtainOrderDto;
 import B2A3_M2S.mes.dto.ShipDto;
 import B2A3_M2S.mes.dto.ShipFormDto;
+import B2A3_M2S.mes.dto.WarehouseLogDTO;
 import B2A3_M2S.mes.entity.*;
+import B2A3_M2S.mes.entity.QObtainOrder;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import B2A3_M2S.mes.repository.ShipRepository;
 import B2A3_M2S.mes.repository.StockRepository;
+import B2A3_M2S.mes.repository.WarehouseLogRepository;
 import B2A3_M2S.mes.util.enums.NumPrefix;
 import B2A3_M2S.mes.util.service.NumberingService;
 import com.querydsl.core.BooleanBuilder;
@@ -32,7 +35,8 @@ public class ShipService {
     ObtainOrderRepository obtainOrderRepository;
     @Autowired
     StockRepository stockRepository;
-
+    @Autowired
+    WarehouseLogRepository warehouseLogRepository;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -42,7 +46,8 @@ public class ShipService {
         ObtainOrderDto obtainOrderDto = ObtainOrderDto.of(obtainOrder);
         List<Stock> stockList = stockRepository.findByItemAndQtyNotOrderByLotNoAsc(obtainOrder.getItem(), 0L);
         long qty = obtainOrderDto.getQty();
-        for(Stock stock : stockList){
+
+        for(Stock stock : stockList) {
             ShipFormDto shipFormDto = new ShipFormDto();
             NumberingService<Ship> service = new NumberingService<>(entityManager, Ship.class);
             String sn = service.getNumbering("shipNo", NumPrefix.SHIP);
@@ -50,27 +55,47 @@ public class ShipService {
             shipFormDto.setObtainOrder(obtainOrderDto);
             shipFormDto.setShipDate(obtainOrderDto.getDueDate());
             shipFormDto.setLotNo(stock.getLotNo());
-            if(stock.getQty() <= qty){
 
+            // 출고수량 Set
+            long outQty = 0L;
+            if(stock.getQty() <= qty){
                 shipFormDto.setShipQty(stock.getQty());
                 qty -= stock.getQty();
+                outQty = stock.getQty();
                 stock.setQty(0L);
                 stockRepository.save(stock);
             }else{
                 shipFormDto.setShipQty(qty);
                 stock.setQty(stock.getQty() - qty);
+                outQty = stock.getQty() - qty;
                 qty = 0;
                 stockRepository.save(stock);
             }
+
+            ///// 출고로직 /////
+            NumberingService<WarehouseLog> service2 = new NumberingService<>(entityManager, WarehouseLog.class);
+            String ocd = service2.getNumbering("inoutNo", NumPrefix.RECEIVING);
+
+            WarehouseLog warehouseLog = WarehouseLog.builder()
+                    .inoutNo(ocd)
+                    .item(stock.getItem())
+                    .lotNo(stock.getLotNo())
+                    .logGb("RELEASE")
+                    .qty(outQty)
+                    .build();
+
+            WarehouseLogDTO warehouseLogDTO = WarehouseLogDTO.of(warehouseLog);
+            warehouseLogRepository.save(warehouseLog);
+            ////////////////////
+
             shipRepository.save(shipFormDto.createShip());
+
             if(qty == 0){
                 break;
             }
         }
         obtainOrderDto.setOrderState("ORDER03");
         obtainOrderRepository.save(obtainOrderDto.createObtainOrder());
-
-
     }
 
     @Transactional

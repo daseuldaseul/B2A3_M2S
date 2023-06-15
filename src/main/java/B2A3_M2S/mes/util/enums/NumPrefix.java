@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum NumPrefix implements PrefixMapper {
-    
     OBTAIN_ORDER("SO"),     // 수주
     PURCHASE_ORDER("PO"),   // 발주
     RECEIVING("WI"),        // 입고

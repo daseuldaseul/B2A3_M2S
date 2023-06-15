@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -75,7 +76,7 @@ public class MainService {
 
     public List<Long> getDailyProduction() {
         List<Long> dailyProduction = new ArrayList<>(Arrays.asList(0L, 0L, 0L, 0L));
-        List<Stock> stockList = stockRepository.findByRegDate(LocalDate.now());
+        List<Stock> stockList = stockRepository.findByRegDateBetween(LocalDate.now().atStartOfDay(), LocalDate.now().atTime(LocalTime.MAX));
         List<StockDto> stockDtoList = StockDto.of(stockList);
         for (StockDto stockDto : stockDtoList) {
             if (stockDto.getItem().getItemCd().equals("P_001")) {
@@ -98,7 +99,7 @@ public class MainService {
         LocalDate startOfMonth = currentDate.withDayOfMonth(1); // 이번 달의 시작일
         LocalDate endOfMonth = currentDate.withDayOfMonth(currentDate.lengthOfMonth()); // 이번 달의 종료일
 
-        List<Stock> stockList = stockRepository.findByRegDateBetween(startOfMonth , endOfMonth);
+        List<Stock> stockList = stockRepository.findByRegDateBetween(startOfMonth.atStartOfDay() , endOfMonth.atTime(LocalTime.MAX));
         List<StockDto> stockDtoList = StockDto.of(stockList);
         for (StockDto stockDto : stockDtoList) {
             if (stockDto.getItem().getItemCd().equals("P_001")) {

@@ -9,6 +9,7 @@ import B2A3_M2S.mes.repository.BOMRepository;
 import B2A3_M2S.mes.repository.ItemRepository;
 import B2A3_M2S.mes.repository.ObtainOrderRepository;
 import B2A3_M2S.mes.repository.ProductionRepository;
+import B2A3_M2S.mes.util.enums.TestEnum;
 import B2A3_M2S.mes.util.service.UtilService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,16 +57,21 @@ public class CalculatorServiceTests {
         wDto = stockService.addMaterials(item , 100000L);
         utilService.saveReceiving(wDto);
 
-        ObtainOrderDto odt = ObtainOrderDto.of(obtainOrderRepository.findByOrderCd("SO23053100001").get(0));
+        item = repository.findByItemNm("파우치");
+        wDto = stockService.addMaterials(item , 30000L);
+        utilService.saveReceiving(wDto);
+
+        item = repository.findByItemNm("박스");
+        wDto = stockService.addMaterials(item , 1000L);
+        utilService.saveReceiving(wDto);
+
+        ObtainOrderDto odt = ObtainOrderDto.of(obtainOrderRepository.findByOrderCd("SO23061400001").get(0));
         service.getDeliveryDate(LocalDateTime.now(), odt);
     }
 
     @Test
     public void test2() {
-        //System.out.println("테스트 : "+ productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
         calculatorService.schedulerApplication();
-        //utilService.saveInput(productionRepository.findByStartDateAndEndDateAndStatus().stream().map(ProductionDTO::of).collect(Collectors.toList()));
-
     }
 
     @Test
@@ -83,5 +89,32 @@ public class CalculatorServiceTests {
             obtainOrderDto.setProgressPercent(mainService.progressPercent(obtainOrderDto.getOrderDate(), obtainOrderDto.getDueDate()));
             System.out.println(obtainOrderDto.getProgressPercent());
         }
+    }
+
+    @Test
+    public void testEnum() {
+        System.out.println("--------------------");
+        System.out.println("--------------------");
+        System.out.println(TestEnum.TEST1);
+        System.out.println(TestEnum.TEST2);
+        System.out.println(TestEnum.TEST3);
+        System.out.println("--------------------");
+        System.out.println("--------------------");
+
+        System.out.println(TestEnum.TEST1.getA());
+        System.out.println(TestEnum.TEST2.getA());
+        System.out.println(TestEnum.TEST3.getA());
+
+        System.out.println("--------------------");
+        System.out.println("--------------------");
+
+        TestEnum.TEST1.setA(1);
+
+        System.out.println(TestEnum.TEST1.getA());
+        System.out.println(TestEnum.TEST2.getA());
+        System.out.println(TestEnum.TEST3.getA());
+
+        System.out.println("--------------------");
+        System.out.println("--------------------");
     }
 }

@@ -35,7 +35,6 @@ public class ItemController {
 
     @GetMapping("/item")
     public String item(Model model){
-
         List<Item> itemList = itemRepository.findAll();
         List<ItemDto> itemDtoList = ItemDto.of(itemList);
         for(ItemDto items : itemDtoList){

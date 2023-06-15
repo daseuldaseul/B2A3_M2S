@@ -16,7 +16,7 @@ import java.util.List;
 
 @Data
 public class RoutingItemDTO {
-    private Long routing_seq;       // 기본키
+    private Long routingSeq;       // 기본키
     private RoutingDto routing;        // 외래키
     private ItemDto inputItem;     // 들어가는 친구
     private ItemDto outputItem;    // 나오는 친구

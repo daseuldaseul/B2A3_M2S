@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -34,7 +36,9 @@ public class LotNoLogService {
         }
 
         if (startDate != null && endDate != null) {
-            builder.and(qLotNoLog.regDate.between(startDate, endDate));
+            LocalDateTime start = startDate.atStartOfDay();
+            LocalDateTime end = endDate.atTime(LocalTime.MAX);
+            builder.and(qLotNoLog.regDate.between(start, end));
         }
 
         return (List<LotNoLog>) lotNoLogRepository.findAll(builder);
@@ -62,7 +66,9 @@ public class LotNoLogService {
 //            builder.and(qLotNoLog.iItem.itemNm.eq(state));
 //        }
         if (startDate != null && endDate != null) {
-            builder.and(qLotNoLog.regDate.between(startDate, endDate));
+            LocalDateTime start = startDate.atStartOfDay();
+            LocalDateTime end = endDate.atTime(LocalTime.MAX);
+            builder.and(qLotNoLog.regDate.between(start, end));
         }
 
         return (List<LotNoLog>) lotNoLogRepository.findAll(builder);

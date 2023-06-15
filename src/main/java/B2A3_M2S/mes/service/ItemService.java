@@ -15,10 +15,8 @@ import java.util.List;
 
 @Service
 public class ItemService {
-
     @Autowired
     private ItemRepository repository;
-
 
     public List<ItemDto> getItemList(String text) {
 
@@ -80,9 +78,5 @@ public class ItemService {
         return (List<Item>) repository.findAll(builder);
 
     }
-
-
-
-
 
 }

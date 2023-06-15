@@ -78,4 +78,6 @@ public class BOM extends BaseTimeEntity{
     @ManyToOne
     @JoinColumn(name = "material_cd", referencedColumnName = "item_cd")
     private Item materialItem;    //자재 코드
+
+    private int depth;
 }

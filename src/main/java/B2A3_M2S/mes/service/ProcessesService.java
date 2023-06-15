@@ -1,6 +1,10 @@
 package B2A3_M2S.mes.service;
 
+import B2A3_M2S.mes.dto.ProcessStockDTO;
 import B2A3_M2S.mes.dto.ProcessesDto;
+import B2A3_M2S.mes.dto.ProcessesFormDto;
+import B2A3_M2S.mes.dto.StockDto;
+import B2A3_M2S.mes.entity.ProcessStock;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.entity.QProcesses;
 import B2A3_M2S.mes.repository.ProcessesRepository;
@@ -11,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +37,7 @@ public class ProcessesService {
         if (procCd != null) {
             builder.and(qProcesses.procCd.contains(procCd));
         }
-        if (!procState.equals("none")){
+        if (!procState.equals("none")) {
             builder.and(qProcesses.procState.eq(procState));
         }
         if (startDate != null && endDate != null) {
@@ -41,6 +46,19 @@ public class ProcessesService {
         return (List<Processes>) processesRepository.findAll(builder);
     }
 
+    public List<ProcessesDto> getProcessList(String procNm, String procCd) {
+        QProcesses qProcesses = QProcesses.processes;
+        BooleanBuilder builder = new BooleanBuilder();
 
+        if (procNm != null && !procNm.isEmpty())
+            builder.and(qProcesses.procNm.contains(procNm));
+        if (procCd != null && !procCd.isEmpty())
+            builder.and(qProcesses.procCd.eq(procCd));
 
+        return ProcessesDto.of((List<Processes>) processesRepository.findAll(builder));
+    }
+
+    public boolean saveProc(ProcessesFormDto processesDto) {
+        return processesRepository.save(processesDto.createProcesses()) != null ? true : false;
+    }
 }

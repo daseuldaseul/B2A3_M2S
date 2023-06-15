@@ -3,6 +3,7 @@ package B2A3_M2S.mes.dto;
 import B2A3_M2S.mes.entity.Item;
 import B2A3_M2S.mes.entity.Processes;
 import B2A3_M2S.mes.entity.Routing;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -15,8 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class RoutingDto {
     private Long routingNo; //라우팅번호
 

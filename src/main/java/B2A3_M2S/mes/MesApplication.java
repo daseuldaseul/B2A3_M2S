@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableJpaAuditing
 public class MesApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(MesApplication.class, args);
 	}

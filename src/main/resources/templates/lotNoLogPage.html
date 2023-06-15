@@ -131,26 +131,19 @@
 
                             <!-- /.card-header -->
                             <div class="card-body">
-
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead style="background-color: rgb(16, 23, 86); color: #ffffff;" >
                                     <tr>
                                         <th>품목명</th>
                                         <th>Lot No</th>
-<!--                                        단위 -->
-                                        <th>투입량</th>
-                                        <th>출고일</th>
-                                        <th>비고</th>
+                                        <th>입고일</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="lotNoLogDto, status: ${lotNoLogList}" onclick="getLotNoLogValue(this)">
-                                        <td th:text="${lotNoLogDto.iItem.itemNm}" ></td>
-                                        <td th:text="${lotNoLogDto.lotNo}"></td>
-                                        <td th:text="${lotNoLogDto.inputQty}"></td>
-                                        <td th:text="${#temporals.format(lotNoLogDto.regDate, 'yyyy-MM-dd')}" ></td>
-                                        <td th:text="${lotNoLogDto.remark}"></td>
-
+                                    <tr th:each="sDto, status: ${stockList}" onclick="getLotNoLogValue(this)">
+                                        <td th:text="${sDto.item.itemNm}" ></td>
+                                        <td th:text="${sDto.lotNo}"></td>
+                                        <td th:text="${#temporals.format(sDto.regDate, 'yyyy-MM-dd')}" ></td>
                                     </tr>
 
                                     </tbody>
@@ -171,9 +164,8 @@
                                     <tr>
                                         <th>품목명</th>
                                         <th>Lot No</th>
-                                        <th>생산량</th>
-<!--                                        단위-->
                                         <th>공정</th>
+                                        <th>생산량</th>
                                         <th>비고</th>
                                     </tr>
 
@@ -263,8 +255,6 @@
 </script>
 
 <script>
-
-
 function autoComplete(text) {
     console.log(text);
 
@@ -287,8 +277,6 @@ function autoComplete(text) {
             list.innerText ='[' + itemList[i].itemCd + ']' + itemList[i].itemNm;
             list.setAttribute("data-item-nm", itemList[i].itemNm); // 데이터 속성 추가
             list.setAttribute("data-item-cd", itemList[i].itemCd);
-
-
             list.addEventListener("click", function() {
             var result = document.getElementById('itemName');
             var itemNm = this.getAttribute("data-item-nm"); // 데이터 속성 값 가져오기
@@ -311,40 +299,46 @@ function autoComplete(text) {
 
   }
 
-
-  function getLotNoLogValue(element) {
+function getLotNoLogValue(element) {
 var lot = $(element); // 선택한 요소의 값을 가져옵니다.
-$('tr').css('background-color', '');
-<!--element.parentNode.style.backgroundColor = 'white';-->
+
+var p = element.parentNode;
+for(var i = 0; i < p.children.length; i++) {
+    p.children[i].style.backgroundColor = '';
+};
+<!--$('tr').css('background-color', '');-->
 element.style.backgroundColor = '#80808061';
 var lotNo = lot.find('td').eq(1).text();
 
 $.ajax({
-url: '/lotNoLog/detail',
-type: 'GET',
-data: { lotNo: lotNo },
-success: function(response) {
-console.log(response);
-var lotNoLogs = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
-
-      var tableRow = '';
-      lotNoLogs.forEach(function(lotNoLog) {
-        tableRow += '<tr>';
-        tableRow += '<td th:text="${lotNoLog.iItem.itemNm}">' + lotNoLog.iItem.itemNm + '</td>';
-        tableRow += '<td th:text="${lotNoLog.lotNo}">' + lotNoLog.lotNo + '</td>';
-        tableRow += '<td th:text="${lotNoLog.outputQty}">' + lotNoLog.outputQty + '</td>';
-        tableRow += '<td th:text="${lotNoLog.processes.procNm}">' + lotNoLog.processes.procNm + '</td>';
-        tableRow += '<td th:text="${lotNoLog.remark}">' + lotNoLog.remark + '</td>';
-        tableRow += '</tr>';
-      });
-
-      document.getElementById('lotNoLog').innerHTML = tableRow;
-
-},
-error: function(xhr) {
-// 에러 처리를 수행합니다.
-console.log(xhr.responseText);
-}
+    url: '/lotNoLog/detail',
+    type: 'GET',
+    data: { lotNo: lotNo },
+    success: function(response) {
+    console.log(response);
+    var lotNoLogs = JSON.parse(response); // JSON 문자열을 객체로 변환합니다.
+          var tableRow = '';
+          lotNoLogs.forEach(function(lotNoLog) {
+            tableRow += '<tr>';
+            tableRow += '<td>' + lotNoLog.oItem.itemNm + '</td>';
+            tableRow += '<td>' + lotNoLog.lotNo + '</td>';
+            if(lotNoLog.processes != null)
+                tableRow += '<td>' + lotNoLog.processes.procNm + '</td>';
+            else
+                tableRow += '<td>' + '출고' + '</td>';
+            tableRow += '<td>' + lotNoLog.outputQty + '</td>';
+            if(lotNoLog.remark != null)
+                tableRow += '<td>' + lotNoLog.remark + '</td>';
+            else
+                tableRow += '<td>' + ' ' + '</td>';
+            tableRow += '</tr>';
+          });
+          document.getElementById('lotNoLog').innerHTML = tableRow;
+    },
+    error: function(xhr) {
+        // 에러 처리를 수행합니다.
+        console.log(xhr.responseText);
+    }
 });
 }
 

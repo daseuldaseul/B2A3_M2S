@@ -47,4 +47,5 @@ public class Item extends BaseTimeEntity{
     @JoinColumn(name = "company_cd")
     private Company company;   // 업체코드
 
+    private Long planQty;
 }
